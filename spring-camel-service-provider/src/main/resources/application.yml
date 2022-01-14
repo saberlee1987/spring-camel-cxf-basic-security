@@ -1,0 +1,131 @@
+server:
+  port: 9090
+  servlet:
+    session:
+      cookie:
+        http-only: true
+      timeout: 15
+    encoding:
+      force: true
+      charset: UTF-8
+  jetty:
+    accesslog:
+      enabled: true
+    threads:
+      max: 4000
+      min: 400
+      acceptors: 400
+      selectors: 400
+      max-queue-capacity: 2000
+    max-http-form-post-size: 10
+  max-http-header-size: 512000
+
+  ssl:
+    key-store-type: JKS
+    key-store: classpath:keystore/person_api.jks
+    key-store-password: saber@123
+    key-alias: saber66
+    enabled: true
+    protocol: SSL
+
+service:
+  api:
+    path: /services/person
+  swagger:
+    path: '/services/person-docs/v2/api-docs'
+    title: 'Person Service APi'
+    version: 'version1.3-1400/10/23'
+    description: 'This is person api for test'
+    packageController: 'com.saber.person.soap.api.controllers'
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    csrf:
+      use-local-storage: true
+      enabled: true
+    display-request-duration: true
+    display-operation-id: true
+    persist-authorization: true
+    operations-sorter: method
+    oauth:
+      use-basic-authentication-with-access-code-grant: true
+      realm: saber
+  api-docs:
+    groups:
+      enabled: true
+    path: ${service.swagger.path}
+
+cxf:
+  path: /soapServices
+  endpoint: /personSoap
+
+
+spring:
+  application:
+    name: person-service
+  c3p0:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test2
+    username: saber66
+    password: AdminSaber66
+    minPoolSize: 40
+    maxPoolSize: 100
+    initialPoolSize: 50
+    acquireIncrement: 10
+    acquireRetryDelay: 600
+    checkTimeout: 10000
+    maxConnectionAge: 30
+    maxIdleTimeout: 30
+    maxStatementPerConnection: 100
+    idleConnectionTestPeriod: 180
+    testConnectionOnCheckout: false
+    testConnectionOnCheckin: true
+    numHelperThreads: 100
+    preferredTestQuery: 'SELECT 1'
+  jpa:
+    generate-ddl: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+    show-sql: true
+    database: mysql
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+camel:
+  springboot:
+    route-controller-thread-pool-size: 30000
+    jmx-management-statistics-level: extended
+    consumer-template-cache-size: 7000
+    producer-template-cache-size: 7000
+    backlog-tracing: true
+  dataformat:
+    json-jackson:
+      pretty-print: true
+      auto-discover-object-mapper: true
+
+
+hawtio:
+  authenticationEnabled: false
+management:
+  metrics:
+  distribution:
+    percentiles-histogram:
+      "[http.server.requests]": true
+    sla:
+      "[http.server.requests]": 10ms, 100ms
+    percentiles:
+      "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      base-path: /actuators/person-api
+      exposure:
+        include: '*'
+

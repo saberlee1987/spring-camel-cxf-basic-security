@@ -1,0 +1,4 @@
+#### this is ok for create jks file
+keytool -genkeypair -keyalg RSA -keysize 2048 -alias saber66 -dname "CN=saber66,OU=tehran,O=tehran,C=ir" -ext "SAN:c=DNS:localhost,IP:127.0.0.1" -validity 3650 -keystore person_api.jks -storepass saber@123 -keypass saber@123 -deststoretype pkcs12
+
+https://stackoverflow.com/questions/50928061/certificate-for-localhost-doesnt-match-any-of-the-subject-alternative-names
