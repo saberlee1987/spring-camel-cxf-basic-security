@@ -1,6 +1,8 @@
 package com.saber.spring_camel_service_provider.soap.dto;
 
 import lombok.Data;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -49,4 +51,16 @@ public class PersonSoapDto {
     @Size(min = 1, max = 11, message = "mobile must be > 1 and < 11 digits")
     @Pattern(regexp = "09[0-9]{9}", message = "mobile is not valid")
     private String mobile;
+
+    @Override
+    public String toString() {
+        return  new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .append("firstname", firstName)
+                .append("lastname", lastName)
+                .append("nationalCode", nationalCode)
+                .append("age", age)
+                .append("email", email)
+                .append("mobile", mobile)
+                .toString();
+    }
 }
