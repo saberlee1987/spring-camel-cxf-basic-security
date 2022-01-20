@@ -3,6 +3,7 @@ package com.saber.spring_camel_service_provider.config;
 
 import com.saber.spring_camel_service_provider.authentication.CustomBasicAuthenticationEntryPoint;
 import com.saber.spring_camel_service_provider.authentication.CustomBasicUserDetailsService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,8 @@ public class HttpBasicSpringSecurityConfig extends WebSecurityConfigurerAdapter 
 
     private final CustomBasicUserDetailsService basicUserDetailsService;
     private final CustomBasicAuthenticationEntryPoint basicAuthenticationEntryPoint;
+    @Value(value = "${service.swagger.path}")
+    private String apiDocsPath;
 
     public HttpBasicSpringSecurityConfig(CustomBasicUserDetailsService basicUserDetailsService, CustomBasicAuthenticationEntryPoint basicAuthenticationEntryPoint) {
         this.basicUserDetailsService = basicUserDetailsService;
@@ -53,8 +56,8 @@ public class HttpBasicSpringSecurityConfig extends WebSecurityConfigurerAdapter 
                 .cors()
                 .and()
                 .authorizeRequests()
-//                .mvcMatchers("/swagger-ui/**").permitAll()
-//                .mvcMatchers("/services/person-docs/v2/api-docs/**").permitAll()
+                .mvcMatchers("/swagger-ui/**").permitAll()
+                .mvcMatchers(String.format("%s/**",apiDocsPath)).permitAll()
                 .anyRequest().authenticated().and();
     }
 }

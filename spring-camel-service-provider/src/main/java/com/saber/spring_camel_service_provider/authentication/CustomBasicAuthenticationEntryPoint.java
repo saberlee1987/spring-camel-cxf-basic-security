@@ -60,7 +60,7 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 
     @Override
     public void afterPropertiesSet() {
-        setRealmName("saber");
+        setRealmName("saber66");
         super.afterPropertiesSet();
     }
 }

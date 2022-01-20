@@ -34,7 +34,7 @@ service:
   swagger:
     path: '/services/person-docs/v2/api-docs'
     title: 'Person Service APi'
-    version: 'version1.3-1400/10/23'
+    version: 'version1.3-1400/11/01'
     description: 'This is person api for test'
     packageController: 'com.saber.person.soap.api.controllers'
 
@@ -50,12 +50,23 @@ springdoc:
     persist-authorization: true
     operations-sorter: method
     oauth:
-      use-basic-authentication-with-access-code-grant: true
-      realm: saber
+      realm: saber66
+      clientId: saberClient
+      clientSecret: cccf8261-9276-4751-834b-48958e8f1660
+      use-pkce-with-authorization-code-grant: true
+      scopes:
+        - "openid"
+        - "read"
+        - "write"
+    oauth2-redirect-url:  https://localhost:9090/swagger-ui/index.html#/
   api-docs:
     groups:
       enabled: true
     path: ${service.swagger.path}
+  oAuthFlow:
+    authorizationUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/auth
+    tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
+    use-pkce-with-authorization-code-grant: true
 
 cxf:
   path: /soapServices
