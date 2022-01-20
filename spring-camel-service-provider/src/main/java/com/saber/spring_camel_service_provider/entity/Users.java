@@ -1,12 +1,14 @@
 package com.saber.spring_camel_service_provider.entity;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.LongSerializationPolicy;
+import com.google.gson.ToNumberPolicy;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
@@ -32,16 +34,7 @@ public class Users implements UserDetails {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"))
 	private List<UserAuthority> userEntityAuthorities;
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-				.append("username", username)
-				.append("password", password)
-				.append("accountNonExpired", accountNonExpired)
-				.append("accountNonLocked", accountNonLocked)
-				.append("accountNonExpired", accountNonExpired)
-				.toString();
-	}
+
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,5 +59,16 @@ public class Users implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.enabled;
+	}
+
+	@Override
+	public String toString() {
+		return new GsonBuilder()
+				.setLenient()
+				.setPrettyPrinting()
+				.enableComplexMapKeySerialization()
+				.setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
+				.setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+				.create().toJson(this, Users.class);
 	}
 }

@@ -54,17 +54,10 @@ public class PersonController {
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})
     })
     public ResponseEntity<PersonEntity> addPerson(@RequestBody @Valid PersonDto personDto) {
-        try {
-            log.info("Request for addPerson  ====> {}", mapper.writeValueAsString(personDto));
-        } catch (Exception ex) {
-            log.info("Request for addPerson  ====> {}", personDto);
-        }
+        log.info("Request for addPerson  ====> {}", personDto);
+
         PersonEntity response = this.personService.addPerson(personDto);
-        try {
-            log.info("Response for addPerson  ====> {}", mapper.writeValueAsString(response));
-        } catch (Exception ex) {
-            log.info("Response for addPerson  ====> {}", response);
-        }
+        log.info("Response for addPerson  ====> {}", response);
         return ResponseEntity.ok(response);
     }
 
@@ -90,11 +83,7 @@ public class PersonController {
         log.info("Request for findByNationalCode  ====> {}", nationalCode);
 
         PersonEntity response = this.personService.findByNationalCode(nationalCode);
-        try {
-            log.info("Response for findByNationalCode  ====> {}", mapper.writeValueAsString(response));
-        } catch (Exception ex) {
-            log.info("Response for findByNationalCode  ====> {}", response);
-        }
+        log.info("Response for findByNationalCode  ====> {}", response);
         return ResponseEntity.ok(response);
     }
 
@@ -111,11 +100,7 @@ public class PersonController {
     })
     public ResponseEntity<PersonResponse> findAllPerson() {
         PersonResponse response = this.personService.findAll();
-        try {
-            log.info("Response for findAllPerson  ====> {}", mapper.writeValueAsString(response));
-        } catch (Exception ex) {
-            log.info("Response for findAllPerson  ====> {}", response);
-        }
+        log.info("Response for findAllPerson  ====> {}", response);
         return ResponseEntity.ok(response);
     }
 
@@ -143,18 +128,10 @@ public class PersonController {
                                                                            String nationalCode,
                                                                    @RequestBody @Valid
                                                                            PersonDto dto) {
-        try {
-            log.info("Request for updatePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, mapper.writeValueAsString(dto));
-        } catch (Exception ex) {
-            log.info("Request for updatePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, dto);
-        }
-        PersonEntity response = this.personService.updatePersonByNationalCode(nationalCode, dto);
-        try {
-            log.info("Response for updatePersonByNationalCode by nationalCode {}  ====> {}", nationalCode, mapper.writeValueAsString(response));
-        } catch (Exception ex) {
-            log.info("Response for updatePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, response);
-        }
+        log.info("Request for updatePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, dto);
 
+        PersonEntity response = this.personService.updatePersonByNationalCode(nationalCode, dto);
+        log.info("Response for updatePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, response);
         return ResponseEntity.ok(response);
     }
 
@@ -179,12 +156,7 @@ public class PersonController {
         log.info("Request for deletePersonByNationalCode by  nationalCode {} ", nationalCode);
 
         DeletePersonDto response = this.personService.deletePersonByNationalCode(nationalCode);
-        try {
-            log.info("Response for deletePersonByNationalCode by nationalCode {}  ====> {}", nationalCode, mapper.writeValueAsString(response));
-        } catch (Exception ex) {
-            log.info("Response for deletePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, response);
-        }
-
+        log.info("Response for deletePersonByNationalCode by  nationalCode {} ====> {}", nationalCode, response);
         return ResponseEntity.ok(response);
     }
 }

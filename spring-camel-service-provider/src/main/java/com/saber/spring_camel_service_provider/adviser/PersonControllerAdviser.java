@@ -41,11 +41,7 @@ public class PersonControllerAdviser extends ResponseEntityExceptionHandler {
         errorResponse.setMessage(HttpStatus.BAD_REQUEST.toString());
         errorResponse.setOriginalMessage(String.format("{\"code\":%d,\"message\":\"%s\"}",
                 HttpStatus.BAD_REQUEST.value(), exception.getMessage()));
-        try {
-            log.error("ResourceDuplicationException error ====> {}", mapper.writeValueAsString(errorResponse));
-        } catch (Exception ex) {
-            log.error("ResourceDuplicationException error ====> {}", errorResponse);
-        }
+        log.error("ResourceDuplicationException error ====> {}", errorResponse);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
@@ -57,11 +53,8 @@ public class PersonControllerAdviser extends ResponseEntityExceptionHandler {
         errorResponse.setMessage(HttpStatus.NOT_ACCEPTABLE.toString());
         errorResponse.setOriginalMessage(String.format("{\"code\":%d,\"message\":\"%s\"}",
                 HttpStatus.NOT_ACCEPTABLE.value(), exception.getMessage()));
-        try {
-            log.error("ResourceNotFoundException error ====> {}", mapper.writeValueAsString(errorResponse));
-        } catch (Exception ex) {
-            log.error("ResourceNotFoundException error ====> {}", errorResponse);
-        }
+        log.error("ResourceNotFoundException error ====> {}", errorResponse);
+
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(errorResponse);
     }
 
@@ -80,11 +73,7 @@ public class PersonControllerAdviser extends ResponseEntityExceptionHandler {
         validationDtoList.add(validationDto);
 
         errorResponse.setValidations(validationDtoList);
-        try {
-            log.error("handleMissingPathVariable error ====> {}", mapper.writeValueAsString(errorResponse));
-        } catch (Exception e) {
-            log.error("handleMissingPathVariable error ====> {}", errorResponse);
-        }
+        log.error("handleMissingPathVariable error ====> {}", errorResponse);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
@@ -105,11 +94,7 @@ public class PersonControllerAdviser extends ResponseEntityExceptionHandler {
             validationDtoList.add(validationDto);
         }
         errorResponse.setValidations(validationDtoList);
-        try {
-            log.error("handleBindException error ====> {}", mapper.writeValueAsString(errorResponse));
-        } catch (Exception e) {
-            log.error("handleBindException error ====> {}", errorResponse);
-        }
+        log.error("handleBindException error ====> {}", errorResponse);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
@@ -121,11 +106,7 @@ public class PersonControllerAdviser extends ResponseEntityExceptionHandler {
         errorResponse.setMessage(HttpStatus.BAD_REQUEST.toString());
         errorResponse.setOriginalMessage(String.format("{\"code\":%d,\"message\":\"%s\"}",
                 HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
-        try {
-            log.error("handleMissingServletRequestParameter error ====> {}", mapper.writeValueAsString(errorResponse));
-        } catch (Exception e) {
-            log.error("handleMissingServletRequestParameter error ====> {}", errorResponse);
-        }
+        log.error("handleMissingServletRequestParameter error ====> {}", errorResponse);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
@@ -145,11 +126,7 @@ public class PersonControllerAdviser extends ResponseEntityExceptionHandler {
             validationDtoList.add(validationDto);
         }
         errorResponse.setValidations(validationDtoList);
-        try {
-            log.error("handleMethodArgumentNotValid error ====> {}", mapper.writeValueAsString(errorResponse));
-        } catch (Exception e) {
-            log.error("handleMethodArgumentNotValid error ====> {}", errorResponse);
-        }
+        log.error("handleMethodArgumentNotValid error ====> {}", errorResponse);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
@@ -172,11 +149,7 @@ public class PersonControllerAdviser extends ResponseEntityExceptionHandler {
         }
 
         errorResponse.setValidations(validationDtoList);
-        try {
-            log.error("handleMissingPathVariable error ====> {}", mapper.writeValueAsString(errorResponse));
-        } catch (Exception e) {
-            log.error("handleMissingPathVariable error ====> {}", errorResponse);
-        }
+        log.error("handleMissingPathVariable error ====> {}", errorResponse);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

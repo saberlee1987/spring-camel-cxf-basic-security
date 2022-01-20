@@ -1,9 +1,10 @@
 package com.saber.spring_camel_service_provider.dto;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.LongSerializationPolicy;
+import com.google.gson.ToNumberPolicy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 
@@ -16,9 +17,12 @@ public class DeletePersonDto {
 
     @Override
     public String toString() {
-        return  new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .append("code", code)
-                .append("text", text)
-                .toString();
+        return new GsonBuilder()
+                .setLenient()
+                .setPrettyPrinting()
+                .enableComplexMapKeySerialization()
+                .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
+                .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+                .create().toJson(this, DeletePersonDto.class);
     }
 }

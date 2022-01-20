@@ -1,8 +1,9 @@
 package com.saber.spring_camel_service_provider.dto;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.LongSerializationPolicy;
+import com.google.gson.ToNumberPolicy;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Data
 public class ValidationDto implements Cloneable {
@@ -19,9 +20,12 @@ public class ValidationDto implements Cloneable {
     }
     @Override
     public String toString() {
-        return  new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
-                .append("fieldName", fieldName)
-                .append("detailMessage", detailMessage)
-                .toString();
+        return new GsonBuilder()
+                .setLenient()
+                .setPrettyPrinting()
+                .enableComplexMapKeySerialization()
+                .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
+                .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+                .create().toJson(this, ValidationDto.class);
     }
 }

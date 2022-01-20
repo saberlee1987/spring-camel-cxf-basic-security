@@ -19,9 +19,11 @@ public class PersonSoapRoute extends RouteBuilder {
         this.personSoapService = personSoapService;
         this.mapper = mapper;
     }
+
     public void setUrl(String url) {
         this.url = url;
     }
+
     @Override
     public void configure() throws Exception {
 
@@ -30,20 +32,30 @@ public class PersonSoapRoute extends RouteBuilder {
                 .when(header(CxfConstants.OPERATION_NAME).isEqualTo("AddPerson"))
                 .removeHeaders("*")
                 .process(exchange -> {
-                    PersonSoapDto dto = exchange.getIn().getBody(PersonSoapDto.class);
-                    log.info("Request for addPerson ====> {}", mapper.writeValueAsString(dto));
+                    MessageContentsList messageContentsList = exchange.getIn().getBody(MessageContentsList.class);
+                    PersonSoapResponse response;
+                    if (messageContentsList.size() == 2) {
+                        AuthHeader authHeader = (AuthHeader) messageContentsList.get(0);
+                        PersonSoapDto dto = (PersonSoapDto) messageContentsList.get(1);
+                        log.info("Request for addPerson ====> {}", mapper.writeValueAsString(dto));
 
-                    PersonSoapResponse response = personSoapService.addPerson(dto);
-                    if (response.getResponse() != null) {
-                        log.info("Response  for addPerson with statusCode {} ====> {}"
-                                , HttpStatus.OK.value()
-                                , mapper.writeValueAsString(response));
+                        response = personSoapService.addPerson(authHeader, dto);
+                        if (response.getResponse() != null) {
+                            log.info("Response  for addPerson with statusCode {} ====> {}"
+                                    , HttpStatus.OK.value()
+                                    , mapper.writeValueAsString(response));
 
+                        } else {
+                            log.error("Error  for addPerson with statusCode {} ====> {}"
+                                    , response.getError().getCode()
+                                    , mapper.writeValueAsString(response.getError()));
+                        }
                     } else {
-                        log.error("Error  for addPerson with statusCode {} ====> {}"
-                                , response.getError().getCode()
-                                , mapper.writeValueAsString(response.getError()));
+                        response = new PersonSoapResponse(new ErrorSoapResponse(
+                                400, "BAD_REQUEST", "Please send 2 parameters for AddPerson", null
+                        ));
                     }
+
                     exchange.getMessage().setBody(response);
                 })
                 .when(header(CxfConstants.OPERATION_NAME).isEqualTo("UpdatePersonByNationalCode"))
@@ -51,12 +63,13 @@ public class PersonSoapRoute extends RouteBuilder {
                 .process(exchange -> {
                     MessageContentsList messageContentsList = exchange.getIn().getBody(MessageContentsList.class);
                     PersonSoapResponse response;
-                    if (messageContentsList.size() == 2) {
-                        String nationalCode = (String) messageContentsList.get(0);
-                        PersonSoapDto dto = (PersonSoapDto) messageContentsList.get(1);
+                    if (messageContentsList.size() == 3) {
+                        AuthHeader authHeader = (AuthHeader) messageContentsList.get(0);
+                        String nationalCode = (String) messageContentsList.get(1);
+                        PersonSoapDto dto = (PersonSoapDto) messageContentsList.get(2);
                         log.info("Request for addPerson ====> {}", mapper.writeValueAsString(dto));
 
-                        response = personSoapService.updatePersonByNationalCode(nationalCode, dto);
+                        response = personSoapService.updatePersonByNationalCode(authHeader, nationalCode, dto);
                         if (response.getResponse() != null) {
                             log.info("Response  for addPerson with statusCode {} ====> {}"
                                     , HttpStatus.OK.value()
@@ -70,7 +83,7 @@ public class PersonSoapRoute extends RouteBuilder {
 
                     } else {
                         response = new PersonSoapResponse(new ErrorSoapResponse(
-                                400, "BAD_REQUEST", "Please send 2 parameters for updatePerson", null
+                                400, "BAD_REQUEST", "Please send 3 parameters for updatePerson", null
                         ));
                     }
                     exchange.getMessage().setBody(response);
@@ -78,43 +91,64 @@ public class PersonSoapRoute extends RouteBuilder {
                 .when(header(CxfConstants.OPERATION_NAME).isEqualTo("FindByNationalCode"))
                 .removeHeaders("*")
                 .process(exchange -> {
-                    String nationalCode = exchange.getIn().getBody(String.class);
-                    log.info("Request for FindByNationalCode ====> {}", nationalCode);
-                    PersonSoapResponse response = personSoapService.findByNationalCode(nationalCode);
-                    if (response.getResponse() != null) {
-                        log.info("Response  for FindByNationalCode with statusCode {} ====> {}"
-                                , HttpStatus.OK.value()
-                                , mapper.writeValueAsString(response));
+                    MessageContentsList messageContentsList = exchange.getIn().getBody(MessageContentsList.class);
+                    PersonSoapResponse response;
+                    if (messageContentsList.size() == 2) {
+                        AuthHeader authHeader = (AuthHeader) messageContentsList.get(0);
+                        String nationalCode = (String) messageContentsList.get(1);
+                        log.info("Request for FindByNationalCode ====> {}", nationalCode);
+                        response = personSoapService.findByNationalCode(authHeader, nationalCode);
+                        if (response.getResponse() != null) {
+                            log.info("Response  for FindByNationalCode with statusCode {} ====> {}"
+                                    , HttpStatus.OK.value()
+                                    , mapper.writeValueAsString(response));
 
+                        } else {
+                            log.error("Error  for FindByNationalCode with statusCode {} ====> {}"
+                                    , response.getError().getCode()
+                                    , mapper.writeValueAsString(response));
+                        }
                     } else {
-                        log.error("Error  for FindByNationalCode with statusCode {} ====> {}"
-                                , response.getError().getCode()
-                                , mapper.writeValueAsString(response));
+                        response = new PersonSoapResponse(new ErrorSoapResponse(
+                                400, "BAD_REQUEST", "Please send 2 parameters for AddPerson", null
+                        ));
                     }
+
                     exchange.getMessage().setBody(response);
                 })
                 .when(header(CxfConstants.OPERATION_NAME).isEqualTo("DeletePersonByNationalCode"))
                 .removeHeaders("*")
                 .process(exchange -> {
-                    String nationalCode = exchange.getIn().getBody(String.class);
-                    log.info("Request for DeletePersonByNationalCode ====> {}", nationalCode);
-                    DeletePersonResponse response = personSoapService.deletePersonByNationalCode(nationalCode);
-                    if (response.getResponse() != null) {
-                        log.info("Response  for DeletePersonByNationalCode with statusCode {} ====> {}"
-                                , HttpStatus.OK.value()
-                                , mapper.writeValueAsString(response));
+                    MessageContentsList messageContentsList = exchange.getIn().getBody(MessageContentsList.class);
+                    DeletePersonResponse response;
+                    if (messageContentsList.size() == 2) {
+                        AuthHeader authHeader = (AuthHeader) messageContentsList.get(0);
+                        String nationalCode = (String) messageContentsList.get(1);
+                        log.info("Request for DeletePersonByNationalCode ====> {}", nationalCode);
+                        response = personSoapService.deletePersonByNationalCode(authHeader, nationalCode);
+                        if (response.getResponse() != null) {
+                            log.info("Response  for DeletePersonByNationalCode with statusCode {} ====> {}"
+                                    , HttpStatus.OK.value()
+                                    , mapper.writeValueAsString(response));
 
+                        } else {
+                            log.error("Error  for DeletePersonByNationalCode with statusCode {} ====> {}"
+                                    , response.getError().getCode()
+                                    , mapper.writeValueAsString(response));
+                        }
                     } else {
-                        log.error("Error  for DeletePersonByNationalCode with statusCode {} ====> {}"
-                                , response.getError().getCode()
-                                , mapper.writeValueAsString(response));
+                        response = new DeletePersonResponse(new ErrorSoapResponse(
+                                400, "BAD_REQUEST", "Please send 2 parameters for DeletePerson", null
+                        ));
                     }
+
                     exchange.getMessage().setBody(response);
                 })
                 .when(header(CxfConstants.OPERATION_NAME).isEqualTo("FindAll"))
                 .removeHeaders("*")
                 .process(exchange -> {
-                    FindAllPersonsResponse response = this.personSoapService.findAll();
+                    AuthHeader authHeader = exchange.getIn(AuthHeader.class);
+                    FindAllPersonsResponse response = this.personSoapService.findAll(authHeader);
                     log.info("Response  for FindAll with statusCode {} ====> {}"
                             , HttpStatus.OK.value()
                             , mapper.writeValueAsString(response));

@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.LongSerializationPolicy;
+import com.google.gson.ToNumberPolicy;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory;
@@ -18,10 +22,7 @@ import java.beans.PropertyVetoException;
 
 @Configuration
 public class AppConfig {
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String AUTHORIZATION_HEADER = "header";
     private final ComboPoolDataSourceConfig comboConfig;
-
     public AppConfig(ComboPoolDataSourceConfig comboConfig) {
         this.comboConfig = comboConfig;
     }
@@ -61,9 +62,25 @@ public class AppConfig {
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+
+        mapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT,true);
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY,true);
+        mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,true);
+        mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT,true);
+
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         return mapper;
+    }
+    @Bean
+    public Gson gson(){
+        return new GsonBuilder()
+                .setLenient()
+                .setPrettyPrinting()
+                .enableComplexMapKeySerialization()
+                .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
+                .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+                .create();
     }
 
     @Bean
