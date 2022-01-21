@@ -147,7 +147,7 @@ public class PersonSoapRoute extends RouteBuilder {
                 .when(header(CxfConstants.OPERATION_NAME).isEqualTo("FindAll"))
                 .removeHeaders("*")
                 .process(exchange -> {
-                    AuthHeader authHeader = exchange.getIn(AuthHeader.class);
+                    AuthHeader authHeader = exchange.getIn().getBody(AuthHeader.class);
                     FindAllPersonsResponse response = this.personSoapService.findAll(authHeader);
                     log.info("Response  for FindAll with statusCode {} ====> {}"
                             , HttpStatus.OK.value()

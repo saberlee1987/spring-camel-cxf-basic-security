@@ -36,7 +36,6 @@ service:
     title: 'Person Service APi'
     version: 'version1.3-1400/11/01'
     description: 'This is person api for test'
-    packageController: 'com.saber.person.soap.api.controllers'
 
 
 springdoc:

@@ -16,5 +16,6 @@
 
     <modules>
         <module>spring-camel-service-provider</module>
+        <module>spring-camel-cxf-client</module>
     </modules>
 </project>

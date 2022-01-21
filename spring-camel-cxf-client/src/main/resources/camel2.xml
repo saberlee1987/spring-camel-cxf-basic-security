@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:http="http://cxf.apache.org/transports/http/configuration"
+       xmlns:sec="http://cxf.apache.org/configuration/security"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://cxf.apache.org/transports/http/configuration
+       http://cxf.apache.org/schemas/configuration/http-conf.xsd
+       http://camel.apache.org/schema/cxf
+       http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/configuration/security
+       http://cxf.apache.org/schemas/configuration/security.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <http:conduit name="*.http-conduit">
+        <http:authorization>
+            <sec:UserName>"${service.person-api.username}"</sec:UserName>
+            <sec:Password>"${service.person-api.password}"</sec:Password>
+            <sec:AuthorizationType>Basic</sec:AuthorizationType>
+        </http:authorization>
+        <http:tlsClientParameters disableCNCheck="${service.person-api.disableHostnameCheck}">
+            <sec:keyManagers keyPassword="${service.person-api.jksPassword}">
+                <sec:keyStore type="JKS" password="${service.person-api.jksPassword}"
+                              file="${service.person-api.jksFile}"/>
+            </sec:keyManagers>
+            <sec:trustManagers>
+                <sec:keyStore type="JKS" password="${service.person-api.jksPassword}"
+                              file="${service.person-api.jksFile}"/>
+            </sec:trustManagers>
+            <sec:cipherSuitesFilter>
+                <!-- these filters ensure that a ciphersuite with
+                     export-suitable or null encryption is used,
+                     but exclude anonymous Diffie-Hellman key change as
+                     this is vulnerable to man-in-the-middle attacks -->
+                <sec:include>.*_EXPORT_.*</sec:include>
+                <sec:include>.*_EXPORT1024_.*</sec:include>
+                <sec:include>.*_WITH_DES_.*</sec:include>
+                <sec:include>.*_WITH_AES_.*</sec:include>
+                <sec:include>.*_WITH_NULL_.*</sec:include>
+                <sec:exclude>.*_DH_anon_.*</sec:exclude>
+            </sec:cipherSuitesFilter>
+        </http:tlsClientParameters>
+
+        <http:client AutoRedirect="true" Connection="Keep-Alive"
+                     ReceiveTimeout="${service.person-api.connectTimeout}"
+                     ConnectionTimeout="${service.person-api.readTimeout}"/>
+    </http:conduit>
+    <bean id="loggingInInterceptor" class="org.apache.cxf.ext.logging.LoggingInInterceptor"/>
+    <bean id="loggingOutInterceptor" class="org.apache.cxf.ext.logging.LoggingOutInterceptor"/>
+
+    <cxf:cxfEndpoint id="personSoapClient" address="${service.person-api.serviceUrl}"
+                     serviceClass="com.saber.spring_camel_cxf_client.dto.soap.PersonSoapService">
+        <cxf:inInterceptors>
+            <ref bean="loggingInInterceptor"/>
+        </cxf:inInterceptors>
+
+        <cxf:inFaultInterceptors>
+            <ref bean="loggingInInterceptor"/>
+        </cxf:inFaultInterceptors>
+
+        <cxf:outInterceptors>
+            <ref bean="loggingOutInterceptor"/>
+        </cxf:outInterceptors>
+
+        <cxf:outFaultInterceptors>
+            <ref bean="loggingOutInterceptor"/>
+        </cxf:outFaultInterceptors>
+
+    </cxf:cxfEndpoint>
+
+</beans>

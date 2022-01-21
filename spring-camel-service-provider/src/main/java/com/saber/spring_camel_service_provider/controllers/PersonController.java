@@ -1,6 +1,5 @@
 package com.saber.spring_camel_service_provider.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saber.spring_camel_service_provider.dto.DeletePersonDto;
 import com.saber.spring_camel_service_provider.dto.ErrorResponse;
 import com.saber.spring_camel_service_provider.dto.PersonDto;
@@ -36,7 +35,6 @@ import javax.validation.constraints.Size;
 @RequestMapping(value = "${service.api.path}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PersonController {
     private final PersonService personService;
-    private final ObjectMapper mapper;
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(tags = {"addPerson"}, summary = "addPerson", description = "addPerson api", method = "POST",
