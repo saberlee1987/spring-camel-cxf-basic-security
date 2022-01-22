@@ -73,7 +73,6 @@ public class AddPersonResponse {
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
-                .toJson(this, PersonSoapResponse.class);
-
+                .toJson(this, AddPersonResponse.class);
     }
 }

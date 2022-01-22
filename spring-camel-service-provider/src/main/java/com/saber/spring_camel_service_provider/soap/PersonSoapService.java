@@ -16,22 +16,22 @@ public interface PersonSoapService {
 
     @WebMethod(operationName = "AddPerson",action = "AddPerson")
     @WebResult(name = "PersonSoapResponse")
-    PersonSoapResponse addPerson(@WebParam(name = "AuthHeader",header = true) @XmlElement(required = true) AuthHeader authHeader, @WebParam(name = "personDto") @XmlElement(required = true) PersonSoapDto dto);
+    PersonSoapResponse addPerson(@WebParam(name = "AuthHeader") @XmlElement(required = true) AuthHeader authHeader, @WebParam(name = "PersonSoapDto") @XmlElement(required = true) PersonSoapDto dto);
 
     @WebMethod(operationName = "FindByNationalCode",action = "FindByNationalCode")
     @WebResult(name = "PersonSoapResponse")
-    PersonSoapResponse findByNationalCode(@WebParam(name = "AuthHeader",header = true) @XmlElement(required = true) AuthHeader authHeader,@WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "") String nationalCode);
+    PersonSoapResponse findByNationalCode(@WebParam(name = "AuthHeader") @XmlElement(required = true) AuthHeader authHeader, @WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "") String nationalCode);
 
 
     @WebMethod(operationName = "FindAll",action = "FindAll")
     @WebResult(name = "FindAllPersonsResponse")
-    FindAllPersonsResponse findAll(@WebParam(name = "AuthHeader",header = true) @XmlElement(required = true) AuthHeader authHeader);
+    FindAllPersonsResponse findAll(@WebParam(name = "AuthHeader") @XmlElement(required = true) AuthHeader authHeader);
 
     @WebMethod(operationName = "UpdatePersonByNationalCode",action = "UpdatePersonByNationalCode")
     @WebResult(name = "PersonSoapResponse")
-    PersonSoapResponse updatePersonByNationalCode(@WebParam(name = "AuthHeader",header = true) @XmlElement(required = true) AuthHeader authHeader,@WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "")String nationalCode,@WebParam(name = "personDto") @XmlElement(required = true) PersonSoapDto dto);
+    PersonSoapResponse updatePersonByNationalCode(@WebParam(name = "AuthHeader") @XmlElement(required = true) AuthHeader authHeader, @WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "")String nationalCode,@WebParam(name = "personDto") @XmlElement(required = true) PersonSoapDto dto);
 
     @WebMethod(operationName = "DeletePersonByNationalCode",action = "DeletePersonByNationalCode")
     @WebResult(name = "DeletePersonResponse")
-    DeletePersonResponse deletePersonByNationalCode(@WebParam(name = "AuthHeader",header = true) @XmlElement(required = true) AuthHeader authHeader,@WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "")String nationalCode);
+    DeletePersonResponse deletePersonByNationalCode(@WebParam(name = "AuthHeader") @XmlElement(required = true) AuthHeader authHeader, @WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "")String nationalCode);
 }

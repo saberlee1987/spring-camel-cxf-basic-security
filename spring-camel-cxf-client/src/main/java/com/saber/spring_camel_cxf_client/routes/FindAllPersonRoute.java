@@ -1,7 +1,6 @@
 package com.saber.spring_camel_cxf_client.routes;
 
 import com.saber.spring_camel_cxf_client.dto.soap.AuthHeader;
-import com.saber.spring_camel_cxf_client.dto.soap.FindAll;
 import com.saber.spring_camel_cxf_client.dto.soap.FindAllPersonsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -41,8 +40,6 @@ public class FindAllPersonRoute extends AbstractRestRouteBuilder {
                     AuthHeader authHeader = new AuthHeader();
                     authHeader.setUsername(username);
                     authHeader.setPassword(password);
-                    FindAll findAll = new FindAll();
-                    params.add(findAll);
                     params.add(authHeader);
                     exchange.getIn().setBody(params);
                 })

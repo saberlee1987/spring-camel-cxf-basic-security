@@ -34,7 +34,6 @@ public class ObjectFactory {
     private final static QName _FindByNationalCodeResponse_QNAME = new QName("http://soap.spring_camel_service_provider.saber.com/", "FindByNationalCodeResponse");
     private final static QName _UpdatePersonByNationalCode_QNAME = new QName("http://soap.spring_camel_service_provider.saber.com/", "UpdatePersonByNationalCode");
     private final static QName _UpdatePersonByNationalCodeResponse_QNAME = new QName("http://soap.spring_camel_service_provider.saber.com/", "UpdatePersonByNationalCodeResponse");
-    private final static QName _AuthHeader_QNAME = new QName("http://soap.spring_camel_service_provider.saber.com/", "AuthHeader");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.saber.spring_camel_cxf_client.dto.soap
@@ -323,19 +322,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soap.spring_camel_service_provider.saber.com/", name = "UpdatePersonByNationalCodeResponse")
     public JAXBElement<UpdatePersonByNationalCodeResponse> createUpdatePersonByNationalCodeResponse(UpdatePersonByNationalCodeResponse value) {
         return new JAXBElement<UpdatePersonByNationalCodeResponse>(_UpdatePersonByNationalCodeResponse_QNAME, UpdatePersonByNationalCodeResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AuthHeader }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link AuthHeader }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://soap.spring_camel_service_provider.saber.com/", name = "AuthHeader")
-    public JAXBElement<AuthHeader> createAuthHeader(AuthHeader value) {
-        return new JAXBElement<AuthHeader>(_AuthHeader_QNAME, AuthHeader.class, null, value);
     }
 
 }

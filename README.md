@@ -12,7 +12,8 @@ For further reference, please consider the following sections:
 * [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.6.2/reference/htmlsingle/#production-ready)
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.2/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 * [Prometheus](https://docs.spring.io/spring-boot/docs/2.6.2/reference/html/production-ready-features.html#production-ready-metrics-export-prometheus)
-* [CXF] (https://cxf.apache.org/)
+* [CXF](https://cxf.apache.org/)
+* [intelij idea classpath config](https://stackoverflow.com/questions/6381213/idea-10-5-command-line-is-too-long)
 ### Guides
 
 The following guides illustrate how to use some features concretely:
