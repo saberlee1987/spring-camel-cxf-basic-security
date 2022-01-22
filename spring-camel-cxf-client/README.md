@@ -13,6 +13,7 @@ For further reference, please consider the following sections:
 * [apache CXF](https://cxf.apache.org/)
 * [apache Camel](https://camel.apache.org/)
 * [openapi spring documentation](https://springdoc.org/)
+* [camel components documents](https://people.apache.org/~dkulp/camel/components.html)
 ### Guides
 
 The following guides illustrate how to use some features concretely:
