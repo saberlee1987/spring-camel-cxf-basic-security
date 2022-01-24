@@ -15,7 +15,8 @@
     </properties>
 
     <modules>
-        <module>spring-camel-service-provider</module>
+        <module>spring-rest-service-provider</module>
         <module>spring-camel-cxf-client</module>
+        <module>spring-camel-cxf-soap-provider</module>
     </modules>
 </project>
