@@ -13,8 +13,8 @@ import javax.xml.bind.annotation.XmlElement;
 public interface PersonSoapService {
 
     @WebMethod(operationName = "AddPerson",action = "AddPerson")
-    @WebResult(name = "PersonSoapResponse")
-    PersonSoapResponse addPerson( @WebParam(name = "PersonSoapDto") @XmlElement(required = true) PersonSoapDto dto);
+    @WebResult(name = "AddPersonResponse")
+    AddPersonResponse addPerson( @WebParam(name = "PersonSoapDto") @XmlElement(required = true) PersonSoapDto dto);
 
     @WebMethod(operationName = "FindByNationalCode",action = "FindByNationalCode")
     @WebResult(name = "PersonSoapResponse")

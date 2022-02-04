@@ -42,10 +42,10 @@ spring:
     url: jdbc:mysql://localhost:3306/test2
     username: saber66
     password: AdminSaber66
-    minPoolSize: 40
-    maxPoolSize: 100
-    initialPoolSize: 50
-    acquireIncrement: 10
+    minPoolSize: 10
+    maxPoolSize: 30
+    initialPoolSize: 10
+    acquireIncrement: 4
     acquireRetryDelay: 600
     checkTimeout: 10000
     maxConnectionAge: 30
@@ -71,6 +71,11 @@ spring:
 
 
 camel:
+  threadpool:
+    pool-size: 10000
+    max-pool-size: 30000
+    max-queue-size: 5000
+    rejected-policy: discardoldest
   springboot:
     route-controller-thread-pool-size: 30000
     jmx-management-statistics-level: extended

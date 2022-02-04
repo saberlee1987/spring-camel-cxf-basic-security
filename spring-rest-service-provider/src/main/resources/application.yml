@@ -4,7 +4,7 @@ server:
     session:
       cookie:
         http-only: true
-      timeout: 15
+      timeout: 20
     encoding:
       force: true
       charset: UTF-8
@@ -14,9 +14,7 @@ server:
     threads:
       max: 4000
       min: 400
-      acceptors: 400
-      selectors: 400
-      max-queue-capacity: 2000
+      max-queue-capacity: 5000
     max-http-form-post-size: 10
   max-http-header-size: 512000
 
@@ -75,10 +73,10 @@ spring:
     url: jdbc:mysql://localhost:3306/test2
     username: saber66
     password: AdminSaber66
-    minPoolSize: 40
-    maxPoolSize: 100
-    initialPoolSize: 50
-    acquireIncrement: 10
+    minPoolSize: 10
+    maxPoolSize: 30
+    initialPoolSize: 10
+    acquireIncrement: 5
     acquireRetryDelay: 600
     checkTimeout: 10000
     maxConnectionAge: 30

@@ -1,6 +1,5 @@
 package com.saber.spring_camel_cxf_soap_provider.repositoreis.routes;
 
-import com.saber.spring_camel_cxf_soap_provider.exceptions.TimeoutException;
 import com.saber.spring_camel_cxf_soap_provider.soap.services.FindAllPersonsResponse;
 import com.saber.spring_camel_cxf_soap_provider.soap.services.PersonSoapDto;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ public class FindAllPersonRoutes extends AbstractRestRouteBuilder {
 		from(String.format("direct:%s", Routes.FIND_ALL_PERSON_ROUTE_GATEWAY_OUT))
 				.routeId(Routes.FIND_ALL_PERSON_ROUTE_GATEWAY_OUT)
 				.routeGroup(Routes.FIND_ALL_PERSON_ROUTE_GROUP)
-				.circuitBreaker()
 					.to("sql:select * from persons?outputClass=" + PersonSoapDto.class.getName())
 					.log("Response for find All persons ===> ${in.body}")
 					.process(exchange -> {
@@ -35,11 +33,7 @@ public class FindAllPersonRoutes extends AbstractRestRouteBuilder {
 					})
 					.log("Response for find All persons ===> ${in.body}")
 					.unmarshal().json(JsonLibrary.Jackson, FindAllPersonsResponse.class)
-					.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
-				.onFallbackViaNetwork()
-					.log("Error can not connect to DataBase ")
-					.throwException(new TimeoutException("Can not connect to dataBase"))
-				.endCircuitBreaker()
-				.end();
+					.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))	;
+
 	}
 }
