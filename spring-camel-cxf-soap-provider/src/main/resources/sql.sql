@@ -1,3 +1,7 @@
+CREATE USER 'saber66'@'localhost' IDENTIFIED BY 'AdminSaber66';
+
+GRANT ALL PRIVILEGES ON * . * TO 'saber66'@'localhost';
+
 create table persons
 (
     id           int auto_increment

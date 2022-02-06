@@ -76,6 +76,52 @@ public class PersonSoapRoute extends RouteBuilder {
  					log.info("Response for AddPerson  ===> {}",addPersonResponse);
 					exchange.getIn().setBody(addPersonResponse);
 				})
+				
+				.when(header(CxfConstants.OPERATION_NAME).isEqualTo("UpdatePersonByNationalCode"))
+				.removeHeaders("*")
+				.process(exchange -> {
+					MessageContentsList messageContentsList = exchange.getIn().getBody(MessageContentsList.class);
+					String nationalCode = (String) messageContentsList.get(0);
+					PersonSoapDto personSoapDto = (PersonSoapDto) messageContentsList.get(1);
+					exchange.getIn().setHeader(Headers.nationalCode,nationalCode);
+					exchange.getIn().setBody(personSoapDto);
+				})
+				.to(String.format("direct:%s", Routes.UPDATE_PERSON_ROUTE_GATEWAY))
+				.process(exchange -> {
+					int statusCode = exchange.getIn().getHeader(Exchange.HTTP_RESPONSE_CODE, Integer.class);
+					UpdatePersonResponse updatePersonResponse = new UpdatePersonResponse();
+					if (statusCode != HttpStatus.OK.value()) {
+						ErrorSoapResponse errorSoapResponse = exchange.getIn().getBody(ErrorSoapResponse.class);
+						updatePersonResponse.setError(errorSoapResponse);
+						log.error("Error with statusCode {} , with errorSoapResponse {}",statusCode,errorSoapResponse);
+					} else {
+						updatePersonResponse = exchange.getIn().getBody(UpdatePersonResponse.class);
+					}
+					log.info("Response for update Person ===> {}",updatePersonResponse);
+					exchange.getIn().setBody(updatePersonResponse);
+				})
+				
+				.when(header(CxfConstants.OPERATION_NAME).isEqualTo("DeletePersonByNationalCode"))
+				.removeHeaders("*")
+				.process(exchange -> {
+					MessageContentsList messageContentsList = exchange.getIn().getBody(MessageContentsList.class);
+					String nationalCode = (String) messageContentsList.get(0);
+					exchange.getIn().setHeader(Headers.nationalCode,nationalCode);
+				})
+				.to(String.format("direct:%s", Routes.DELETE_PERSON_ROUTE_GATEWAY))
+				.process(exchange -> {
+					int statusCode = exchange.getIn().getHeader(Exchange.HTTP_RESPONSE_CODE, Integer.class);
+					DeletePersonResponse deletePersonResponse = new DeletePersonResponse();
+					if (statusCode != HttpStatus.OK.value()) {
+						ErrorSoapResponse errorSoapResponse = exchange.getIn().getBody(ErrorSoapResponse.class);
+						deletePersonResponse.setError(errorSoapResponse);
+						log.error("Error with statusCode {} , with errorSoapResponse {}",statusCode,errorSoapResponse);
+					} else {
+						deletePersonResponse = exchange.getIn().getBody(DeletePersonResponse.class);
+					}
+					log.info("Response for delete Person ===> {}",deletePersonResponse);
+					exchange.getIn().setBody(deletePersonResponse);
+				})
 				.endChoice()
 				.end()
 				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))

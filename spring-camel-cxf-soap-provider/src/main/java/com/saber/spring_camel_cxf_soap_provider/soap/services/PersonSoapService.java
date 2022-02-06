@@ -26,8 +26,8 @@ public interface PersonSoapService {
     FindAllPersonsResponse findAll();
 
     @WebMethod(operationName = "UpdatePersonByNationalCode",action = "UpdatePersonByNationalCode")
-    @WebResult(name = "PersonSoapResponse")
-    PersonSoapResponse updatePersonByNationalCode(@WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "")String nationalCode,@WebParam(name = "personDto") @XmlElement(required = true) PersonSoapDto dto);
+    @WebResult(name = "UpdatePersonResponse")
+    UpdatePersonResponse updatePersonByNationalCode(@WebParam(name = "nationalCode") @XmlElement(required = true,defaultValue = "")String nationalCode,@WebParam(name = "personDto") @XmlElement(required = true) PersonSoapDto dto);
 
     @WebMethod(operationName = "DeletePersonByNationalCode",action = "DeletePersonByNationalCode")
     @WebResult(name = "DeletePersonResponse")

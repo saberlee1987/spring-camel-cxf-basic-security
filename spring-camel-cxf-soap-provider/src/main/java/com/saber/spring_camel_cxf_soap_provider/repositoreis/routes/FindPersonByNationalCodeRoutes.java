@@ -1,5 +1,6 @@
 package com.saber.spring_camel_cxf_soap_provider.repositoreis.routes;
 
+import com.saber.spring_camel_cxf_soap_provider.soap.services.ErrorSoapResponse;
 import com.saber.spring_camel_cxf_soap_provider.soap.services.PersonSoapDto;
 import com.saber.spring_camel_cxf_soap_provider.soap.services.PersonSoapResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +28,16 @@ public class FindPersonByNationalCodeRoutes extends AbstractRestRouteBuilder {
         from(String.format("direct:%s", Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY_OUT))
                 .routeId(Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY_OUT)
                 .routeGroup(Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GROUP)
+                .to(String.format("direct:%s", Routes.CHECK_BEAN_VALIDATION_ROUTE))
+                .choice()
+                .when(body().isInstanceOf(ErrorSoapResponse.class))
+                .log("bean validation exception with error body ===> ${in.body}")
+                .to(String.format("direct:%s", Routes.BEAN_VALIDATION_ROUTE))
+                .otherwise()
                 .process(exchange -> {
                     String nationalCode = exchange.getIn().getHeader(Headers.nationalCode, String.class);
                     Map<String, Object> parameters = new HashMap<>();
-                    parameters.put("nationalCode", nationalCode);
+                    parameters.put(Headers.nationalCode, nationalCode);
                     exchange.getIn().setBody(parameters);
                 })
                 .to("sql:select * from persons where nationalCode=:#nationalCode?outputType=selectOne&outputClass=" + PersonSoapDto.class.getName())

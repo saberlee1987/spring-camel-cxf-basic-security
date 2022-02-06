@@ -71,6 +71,7 @@ public class PersonServiceImpl implements PersonService {
         personEntity.setLastName(dto.getLastName());
         personEntity.setAge(dto.getAge());
         personEntity.setEmail(dto.getEmail());
+        personEntity.setNationalCode(dto.getNationalCode());
         return this.personRepository.save(personEntity);
     }
 
