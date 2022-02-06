@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-public class SpringCamelServiceProviderApplicationTests {
+public class SpringRestServiceProviderApplicationTests {
 	
 	@Autowired
 	private UserRepository userRepository;
