@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.saber</groupId>
-    <artifactId>spring-camel-service-provider</artifactId>
+    <artifactId>spring-rest-service-provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-camel-service-provider</name>
     <description>spring-rest-service-provider</description>
