@@ -1,6 +1,6 @@
 package com.saber.spring_camel_cxf_soap_provider.repositoreis.routes;
 
-import com.saber.spring_camel_cxf_soap_provider.soap.services.AddPersonResponse;
+import com.saber.spring_camel_cxf_soap_provider.soap.services.AddPersonResponseDto;
 import com.saber.spring_camel_cxf_soap_provider.soap.services.AddPersonSoapResponseDto;
 import com.saber.spring_camel_cxf_soap_provider.soap.services.ErrorSoapResponse;
 import com.saber.spring_camel_cxf_soap_provider.soap.services.PersonSoapDto;
@@ -60,12 +60,12 @@ public class AddPersonRoute extends AbstractRestRouteBuilder {
                 .to("sql:insert into persons (firstname,lastname,nationalCode,age,email,mobile) values (:#firstname,:#lastname,:#nationalCode,:#age,:#email,:#mobile)")
                 .log("Response for find person by nationalCode  : ${in.header.nationalCode} with body  ===> ${in.body}")
                 .process(exchange -> {
-                    AddPersonResponse addPersonResponse = new AddPersonResponse();
+                    AddPersonResponseDto addPersonResponseDto = new AddPersonResponseDto();
                     AddPersonSoapResponseDto addPersonSoapResponseDto = new AddPersonSoapResponseDto();
                     addPersonSoapResponseDto.setCode(0);
                     addPersonSoapResponseDto.setText("your data saved successfully");
-                    addPersonResponse.setResponse(addPersonSoapResponseDto);
-                    exchange.getIn().setBody(addPersonResponse);
+                    addPersonResponseDto.setResponse(addPersonSoapResponseDto);
+                    exchange.getIn().setBody(addPersonResponseDto);
                 })
                 .setHeader(Exchange.HTTP_RESPONSE_CODE,constant(200))
                 .end();

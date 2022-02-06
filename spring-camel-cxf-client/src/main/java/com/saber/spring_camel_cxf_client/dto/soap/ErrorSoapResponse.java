@@ -24,10 +24,10 @@ import java.util.List;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0" form="unqualified"/&gt;
- *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0" form="unqualified"/&gt;
- *         &lt;element name="originalMessage" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0" form="unqualified"/&gt;
- *         &lt;element name="validations" type="{http://soap.spring_camel_service_provider.saber.com/}ValidationSoapDto" maxOccurs="unbounded" minOccurs="0" form="unqualified"/&gt;
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="message" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="originalMessage" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="validations" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}ValidationSoapDto" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -152,6 +152,7 @@ public class ErrorSoapResponse {
         }
         return this.validations;
     }
+    
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -162,7 +163,6 @@ public class ErrorSoapResponse {
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
                 .toJson(this, ErrorSoapResponse.class);
-
     }
 
 }

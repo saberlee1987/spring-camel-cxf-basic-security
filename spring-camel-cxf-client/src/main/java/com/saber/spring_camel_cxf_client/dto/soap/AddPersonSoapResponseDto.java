@@ -12,17 +12,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for DeletePersonResponse complex type.
+ * <p>Java class for AddPersonSoapResponseDto complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="DeletePersonResponse"&gt;
+ * &lt;complexType name="AddPersonSoapResponseDto"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="response" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}DeleteSoapPersonDto" minOccurs="0"/&gt;
- *         &lt;element name="error" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}ErrorSoapResponse" minOccurs="0"/&gt;
+ *         &lt;element name="code" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
+ *         &lt;element name="text" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,62 +32,62 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DeletePersonResponse", propOrder = {
-    "response",
-    "error"
+@XmlType(name = "AddPersonSoapResponseDto", propOrder = {
+    "code",
+    "text"
 })
 @EqualsAndHashCode
-public class DeletePersonResponse {
+public class AddPersonSoapResponseDto {
 
-    protected DeleteSoapPersonDto response;
-    protected ErrorSoapResponse error;
+    protected Integer code;
+    protected String text;
 
     /**
-     * Gets the value of the response property.
+     * Gets the value of the code property.
      * 
      * @return
      *     possible object is
-     *     {@link DeleteSoapPersonDto }
+     *     {@link Integer }
      *     
      */
-    public DeleteSoapPersonDto getResponse() {
-        return response;
+    public Integer getCode() {
+        return code;
     }
 
     /**
-     * Sets the value of the response property.
+     * Sets the value of the code property.
      * 
      * @param value
      *     allowed object is
-     *     {@link DeleteSoapPersonDto }
+     *     {@link Integer }
      *     
      */
-    public void setResponse(DeleteSoapPersonDto value) {
-        this.response = value;
+    public void setCode(Integer value) {
+        this.code = value;
     }
 
     /**
-     * Gets the value of the error property.
+     * Gets the value of the text property.
      * 
      * @return
      *     possible object is
-     *     {@link ErrorSoapResponse }
+     *     {@link String }
      *     
      */
-    public ErrorSoapResponse getError() {
-        return error;
+    public String getText() {
+        return text;
     }
 
     /**
-     * Sets the value of the error property.
+     * Sets the value of the text property.
      * 
      * @param value
      *     allowed object is
-     *     {@link ErrorSoapResponse }
+     *     {@link String }
      *     
      */
-    public void setError(ErrorSoapResponse value) {
-        this.error = value;
+    public void setText(String value) {
+        this.text = value;
     }
     
     @Override
@@ -99,6 +99,6 @@ public class DeletePersonResponse {
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
-                .toJson(this, DeletePersonResponse.class);
+                .toJson(this, AddPersonSoapResponseDto.class);
     }
 }

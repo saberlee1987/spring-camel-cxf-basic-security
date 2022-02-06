@@ -12,16 +12,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for DeletePersonResponse complex type.
+ * <p>Java class for UpdatePersonResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="DeletePersonResponse"&gt;
+ * &lt;complexType name="UpdatePersonResponse"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="response" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}DeleteSoapPersonDto" minOccurs="0"/&gt;
+ *         &lt;element name="response" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}UpdatePersonSoapResponseDto" minOccurs="0"/&gt;
  *         &lt;element name="error" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}ErrorSoapResponse" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
@@ -32,14 +32,14 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DeletePersonResponse", propOrder = {
+@XmlType(name = "UpdatePersonResponse", propOrder = {
     "response",
     "error"
 })
 @EqualsAndHashCode
-public class DeletePersonResponse {
+public class UpdatePersonResponse {
 
-    protected DeleteSoapPersonDto response;
+    protected UpdatePersonSoapResponseDto response;
     protected ErrorSoapResponse error;
 
     /**
@@ -47,10 +47,10 @@ public class DeletePersonResponse {
      * 
      * @return
      *     possible object is
-     *     {@link DeleteSoapPersonDto }
+     *     {@link UpdatePersonSoapResponseDto }
      *     
      */
-    public DeleteSoapPersonDto getResponse() {
+    public UpdatePersonSoapResponseDto getResponse() {
         return response;
     }
 
@@ -59,10 +59,10 @@ public class DeletePersonResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link DeleteSoapPersonDto }
+     *     {@link UpdatePersonSoapResponseDto }
      *     
      */
-    public void setResponse(DeleteSoapPersonDto value) {
+    public void setResponse(UpdatePersonSoapResponseDto value) {
         this.response = value;
     }
 
@@ -99,6 +99,6 @@ public class DeletePersonResponse {
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
-                .toJson(this, DeletePersonResponse.class);
+                .toJson(this, UpdatePersonResponse.class);
     }
 }

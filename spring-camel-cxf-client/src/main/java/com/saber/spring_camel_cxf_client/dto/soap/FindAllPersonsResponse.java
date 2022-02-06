@@ -24,8 +24,8 @@ import java.util.List;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="response" type="{http://soap.spring_camel_service_provider.saber.com/}PersonSoapEntity" maxOccurs="unbounded" minOccurs="0" form="unqualified"/&gt;
- *         &lt;element name="error" type="{http://soap.spring_camel_service_provider.saber.com/}ErrorSoapResponse" minOccurs="0" form="unqualified"/&gt;
+ *         &lt;element name="response" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}PersonSoapDto" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="error" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}ErrorSoapResponse" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -43,7 +43,7 @@ import java.util.List;
 public class FindAllPersonsResponse {
 
     @XmlElement(nillable = true)
-    protected List<PersonSoapEntity> response;
+    protected List<PersonSoapDto> response;
     protected ErrorSoapResponse error;
 
     /**
@@ -64,13 +64,13 @@ public class FindAllPersonsResponse {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link PersonSoapEntity }
+     * {@link PersonSoapDto }
      * 
      * 
      */
-    public List<PersonSoapEntity> getResponse() {
+    public List<PersonSoapDto> getResponse() {
         if (response == null) {
-            response = new ArrayList<PersonSoapEntity>();
+            response = new ArrayList<PersonSoapDto>();
         }
         return this.response;
     }
@@ -98,7 +98,7 @@ public class FindAllPersonsResponse {
     public void setError(ErrorSoapResponse value) {
         this.error = value;
     }
-
+    
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -109,7 +109,5 @@ public class FindAllPersonsResponse {
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
                 .toJson(this, FindAllPersonsResponse.class);
-
     }
-
 }

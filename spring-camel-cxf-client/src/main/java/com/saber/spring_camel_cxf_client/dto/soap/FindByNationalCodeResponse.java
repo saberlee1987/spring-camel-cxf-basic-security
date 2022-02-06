@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="PersonSoapResponse" type="{http://soap.spring_camel_service_provider.saber.com/}PersonSoapResponse" minOccurs="0"/&gt;
+ *         &lt;element name="PersonSoapResponse" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}PersonSoapResponse" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,13 +32,13 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FindByNationalCodeResponse", propOrder = {
+@XmlType(name = "FindByNationalCodeResponse", namespace = "http://services.soap.spring_camel_cxf_soap_provider.saber.com/", propOrder = {
     "personSoapResponse"
 })
 @EqualsAndHashCode
 public class FindByNationalCodeResponse {
 
-    @XmlElement(name = "PersonSoapResponse", namespace = "http://soap.spring_camel_service_provider.saber.com/")
+    @XmlElement(name = "PersonSoapResponse")
     protected PersonSoapResponse personSoapResponse;
 
     /**
@@ -64,7 +64,7 @@ public class FindByNationalCodeResponse {
     public void setPersonSoapResponse(PersonSoapResponse value) {
         this.personSoapResponse = value;
     }
-
+    
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -75,6 +75,5 @@ public class FindByNationalCodeResponse {
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
                 .toJson(this, FindByNationalCodeResponse.class);
-
     }
 }

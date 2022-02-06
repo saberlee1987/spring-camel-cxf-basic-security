@@ -65,16 +65,16 @@ public class PersonSoapRoute extends RouteBuilder {
 				.to(String.format("direct:%s", Routes.ADD_PERSON_ROUTE_GATEWAY))
 				.process(exchange -> {
 					int statusCode = exchange.getIn().getHeader(Exchange.HTTP_RESPONSE_CODE, Integer.class);
-					AddPersonResponse addPersonResponse = new AddPersonResponse();
+					AddPersonResponseDto addPersonResponseDto = new AddPersonResponseDto();
 					if (statusCode != HttpStatus.OK.value()) {
 						ErrorSoapResponse errorSoapResponse = exchange.getIn().getBody(ErrorSoapResponse.class);
-						addPersonResponse.setError(errorSoapResponse);
+						addPersonResponseDto.setError(errorSoapResponse);
 						log.error("Error with statusCode {} , with errorSoapResponse {}",statusCode,errorSoapResponse);
 					} else {
-						addPersonResponse = exchange.getIn().getBody(AddPersonResponse.class);
+						addPersonResponseDto = exchange.getIn().getBody(AddPersonResponseDto.class);
 					}
- 					log.info("Response for AddPerson  ===> {}",addPersonResponse);
-					exchange.getIn().setBody(addPersonResponse);
+ 					log.info("Response for AddPerson  ===> {}", addPersonResponseDto);
+					exchange.getIn().setBody(addPersonResponseDto);
 				})
 				
 				.when(header(CxfConstants.OPERATION_NAME).isEqualTo("UpdatePersonByNationalCode"))

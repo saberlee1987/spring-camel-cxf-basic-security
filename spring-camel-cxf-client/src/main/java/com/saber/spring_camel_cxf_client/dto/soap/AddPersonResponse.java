@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="PersonSoapResponse" type="{http://soap.spring_camel_service_provider.saber.com/}PersonSoapResponse" minOccurs="0"/&gt;
+ *         &lt;element name="AddPersonResponseDto" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}AddPersonResponseDto" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,38 +32,39 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AddPersonResponse", propOrder = {
-    "personSoapResponse"
+@XmlType(name = "AddPersonResponse", namespace = "http://services.soap.spring_camel_cxf_soap_provider.saber.com/", propOrder = {
+    "addPersonResponseDto"
 })
 @EqualsAndHashCode
 public class AddPersonResponse {
 
-    @XmlElement(name = "PersonSoapResponse", namespace = "http://soap.spring_camel_service_provider.saber.com/")
-    protected PersonSoapResponse personSoapResponse;
+    @XmlElement(name = "AddPersonResponseDto")
+    protected AddPersonResponseDto addPersonResponseDto;
 
     /**
-     * Gets the value of the personSoapResponse property.
+     * Gets the value of the addPersonResponseDto property.
      * 
      * @return
      *     possible object is
-     *     {@link PersonSoapResponse }
+     *     {@link AddPersonResponseDto }
      *     
      */
-    public PersonSoapResponse getPersonSoapResponse() {
-        return personSoapResponse;
+    public AddPersonResponseDto getAddPersonResponseDto() {
+        return addPersonResponseDto;
     }
 
     /**
-     * Sets the value of the personSoapResponse property.
+     * Sets the value of the addPersonResponseDto property.
      * 
      * @param value
      *     allowed object is
-     *     {@link PersonSoapResponse }
+     *     {@link AddPersonResponseDto }
      *     
      */
-    public void setPersonSoapResponse(PersonSoapResponse value) {
-        this.personSoapResponse = value;
+    public void setAddPersonResponseDto(AddPersonResponseDto value) {
+        this.addPersonResponseDto = value;
     }
+    
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -75,4 +76,5 @@ public class AddPersonResponse {
                 .create()
                 .toJson(this, AddPersonResponse.class);
     }
+
 }

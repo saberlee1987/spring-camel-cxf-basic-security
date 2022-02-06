@@ -14,8 +14,6 @@ server:
     threads:
       max: 4000
       min: 400
-      acceptors: 400
-      selectors: 400
       max-queue-capacity: 2000
     max-http-form-post-size: 10
   max-http-header-size: 512000
@@ -27,11 +25,11 @@ service:
   swagger:
     path: '/services/person-client-docs/v2/api-docs'
     title: 'Person Client Service APi'
-    version: 'version1.3-1400/11/01'
+    version: 'version1.3-1400/11/17'
     description: 'This is person client api for test'
 
   person-api:
-    serviceUrl: https://localhost:9090/soapServices/personSoap
+    serviceUrl: https://localhost:9091/soapServices/personSoap
     disableHostnameCheck: true
     connectTimeout: 30000
     readTimeout: 30000
@@ -39,6 +37,7 @@ service:
     jksPassword: saber@123
     username: saber66
     password: saber@123
+
 
 springdoc:
   swagger-ui:

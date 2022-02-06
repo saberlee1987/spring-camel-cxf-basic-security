@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="FindAllPersonsResponse" type="{http://soap.spring_camel_service_provider.saber.com/}FindAllPersonsResponse" minOccurs="0"/&gt;
+ *         &lt;element name="FindAllPersonsResponse" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}FindAllPersonsResponse" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,13 +32,13 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "FindAllResponse", propOrder = {
+@XmlType(name = "FindAllResponse", namespace = "http://services.soap.spring_camel_cxf_soap_provider.saber.com/", propOrder = {
     "findAllPersonsResponse"
 })
 @EqualsAndHashCode
 public class FindAllResponse {
 
-    @XmlElement(name = "FindAllPersonsResponse", namespace = "http://soap.spring_camel_service_provider.saber.com/")
+    @XmlElement(name = "FindAllPersonsResponse")
     protected FindAllPersonsResponse findAllPersonsResponse;
 
     /**
@@ -64,6 +64,7 @@ public class FindAllResponse {
     public void setFindAllPersonsResponse(FindAllPersonsResponse value) {
         this.findAllPersonsResponse = value;
     }
+    
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -74,7 +75,5 @@ public class FindAllResponse {
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
                 .toJson(this, FindAllResponse.class);
-
     }
-
 }

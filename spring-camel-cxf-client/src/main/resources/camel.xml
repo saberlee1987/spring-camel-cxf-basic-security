@@ -56,9 +56,21 @@
     <bean id="loggingInInterceptor" class="org.apache.cxf.ext.logging.LoggingInInterceptor"/>
     <bean id="loggingOutInterceptor" class="org.apache.cxf.ext.logging.LoggingOutInterceptor"/>
 
+    <bean id="wss4JOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="UsernameToken"/>
+                <entry key="user" value="${service.person-api.username}"/>
+                <entry key="passwordType" value="PasswordText"/>
+                <entry key="passwordCallbackClass" value="com.saber.spring_camel_cxf_client.callbacks.PasswordCallBackHandler"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
      <cxf:cxfEndpoint id="personSoapClient" address="${service.person-api.serviceUrl}"
                      serviceClass="com.saber.spring_camel_cxf_client.dto.soap.PersonSoapService">
         <cxf:outInterceptors>
+             <ref bean="wss4JOutInterceptor"/>
               <ref bean="loggingOutInterceptor"/>
         </cxf:outInterceptors>
 

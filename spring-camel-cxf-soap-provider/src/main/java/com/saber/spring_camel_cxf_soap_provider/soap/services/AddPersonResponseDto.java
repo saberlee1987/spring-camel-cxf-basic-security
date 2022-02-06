@@ -10,28 +10,28 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AddPersonResponse",propOrder = {
+@XmlType(name = "AddPersonResponseDto",propOrder = {
         "response",
         "error",
 
 })
 @Data
-public class AddPersonResponse {
+public class AddPersonResponseDto {
     private AddPersonSoapResponseDto response;
     private ErrorSoapResponse error;
 
-    public AddPersonResponse() {
+    public AddPersonResponseDto() {
     }
 
-    public AddPersonResponse(AddPersonSoapResponseDto response) {
+    public AddPersonResponseDto(AddPersonSoapResponseDto response) {
         this.response = response;
     }
 
-    public AddPersonResponse(ErrorSoapResponse error) {
+    public AddPersonResponseDto(ErrorSoapResponse error) {
         this.error = error;
     }
 
-    public AddPersonResponse(AddPersonSoapResponseDto response, ErrorSoapResponse error) {
+    public AddPersonResponseDto(AddPersonSoapResponseDto response, ErrorSoapResponse error) {
         this.response = response;
         this.error = error;
     }
@@ -43,6 +43,6 @@ public class AddPersonResponse {
                 .enableComplexMapKeySerialization()
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                .create().toJson(this, AddPersonResponse.class);
+                .create().toJson(this, AddPersonResponseDto.class);
     }
 }

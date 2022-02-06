@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="PersonSoapResponse" type="{http://soap.spring_camel_service_provider.saber.com/}PersonSoapResponse" minOccurs="0"/&gt;
+ *         &lt;element name="UpdatePersonResponse" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}UpdatePersonResponse" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,38 +32,39 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UpdatePersonByNationalCodeResponse", propOrder = {
-    "personSoapResponse"
+@XmlType(name = "UpdatePersonByNationalCodeResponse", namespace = "http://services.soap.spring_camel_cxf_soap_provider.saber.com/", propOrder = {
+    "updatePersonResponse"
 })
 @EqualsAndHashCode
 public class UpdatePersonByNationalCodeResponse {
 
-    @XmlElement(name = "PersonSoapResponse", namespace = "http://soap.spring_camel_service_provider.saber.com/")
-    protected PersonSoapResponse personSoapResponse;
+    @XmlElement(name = "UpdatePersonResponse")
+    protected UpdatePersonResponse updatePersonResponse;
 
     /**
-     * Gets the value of the personSoapResponse property.
+     * Gets the value of the updatePersonResponse property.
      * 
      * @return
      *     possible object is
-     *     {@link PersonSoapResponse }
+     *     {@link UpdatePersonResponse }
      *     
      */
-    public PersonSoapResponse getPersonSoapResponse() {
-        return personSoapResponse;
+    public UpdatePersonResponse getUpdatePersonResponse() {
+        return updatePersonResponse;
     }
 
     /**
-     * Sets the value of the personSoapResponse property.
+     * Sets the value of the updatePersonResponse property.
      * 
      * @param value
      *     allowed object is
-     *     {@link PersonSoapResponse }
+     *     {@link UpdatePersonResponse }
      *     
      */
-    public void setPersonSoapResponse(PersonSoapResponse value) {
-        this.personSoapResponse = value;
+    public void setUpdatePersonResponse(UpdatePersonResponse value) {
+        this.updatePersonResponse = value;
     }
+    
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -74,6 +75,5 @@ public class UpdatePersonByNationalCodeResponse {
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
                 .toJson(this, UpdatePersonByNationalCodeResponse.class);
-
     }
 }

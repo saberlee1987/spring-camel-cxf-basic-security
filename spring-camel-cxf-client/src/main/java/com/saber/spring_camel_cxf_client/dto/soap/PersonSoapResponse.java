@@ -21,8 +21,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="response" type="{http://soap.spring_camel_service_provider.saber.com/}PersonSoapEntity" minOccurs="0" form="unqualified"/&gt;
- *         &lt;element name="error" type="{http://soap.spring_camel_service_provider.saber.com/}ErrorSoapResponse" minOccurs="0" form="unqualified"/&gt;
+ *         &lt;element name="response" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}PersonSoapDto" minOccurs="0"/&gt;
+ *         &lt;element name="error" type="{http://com.saber.spring_camel_cxf_soap_provider.soap.services/}ErrorSoapResponse" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlType;
 @EqualsAndHashCode
 public class PersonSoapResponse {
 
-    protected PersonSoapEntity response;
+    protected PersonSoapDto response;
     protected ErrorSoapResponse error;
 
     /**
@@ -47,10 +47,10 @@ public class PersonSoapResponse {
      * 
      * @return
      *     possible object is
-     *     {@link PersonSoapEntity }
+     *     {@link PersonSoapDto }
      *     
      */
-    public PersonSoapEntity getResponse() {
+    public PersonSoapDto getResponse() {
         return response;
     }
 
@@ -59,10 +59,10 @@ public class PersonSoapResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link PersonSoapEntity }
+     *     {@link PersonSoapDto }
      *     
      */
-    public void setResponse(PersonSoapEntity value) {
+    public void setResponse(PersonSoapDto value) {
         this.response = value;
     }
 
@@ -89,6 +89,7 @@ public class PersonSoapResponse {
     public void setError(ErrorSoapResponse value) {
         this.error = value;
     }
+    
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -99,6 +100,5 @@ public class PersonSoapResponse {
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
                 .toJson(this, PersonSoapResponse.class);
-
     }
 }
