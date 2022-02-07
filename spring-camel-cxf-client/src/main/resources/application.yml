@@ -15,7 +15,9 @@ server:
       max: 4000
       min: 400
       max-queue-capacity: 2000
+      idle-timeout: 30000
     max-http-form-post-size: 10
+    connection-idle-timeout: 30000
   max-http-header-size: 512000
 
 
@@ -25,7 +27,7 @@ service:
   swagger:
     path: '/services/person-client-docs/v2/api-docs'
     title: 'Person Client Service APi'
-    version: 'version1.3-1400/11/17'
+    version: 'version1.3-1400/11/18'
     description: 'This is person client api for test'
 
   person-api:
@@ -59,10 +61,8 @@ spring:
 
 camel:
   springboot:
-    route-controller-thread-pool-size: 30000
     jmx-management-statistics-level: extended
-    consumer-template-cache-size: 15000
-    producer-template-cache-size: 15000
+    producer-template-cache-size: 3000
     backlog-tracing: true
   dataformat:
     json-jackson:
