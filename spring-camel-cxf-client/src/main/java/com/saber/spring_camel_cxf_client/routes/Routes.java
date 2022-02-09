@@ -9,5 +9,7 @@ public interface Routes {
     String ADD_TOKEN_ROUTE = "add-token-route";
 
     String PERSON_CLIENT_ROUTE_GROUP = "person-client-route-group";
-
+	
+	String TIME_OUT_EXCEPTION_ROUTE = "timeout-exception-route" ;
+	String EXCEPTION_ROUTE_GROUP = "exception-route-group" ;
 }
