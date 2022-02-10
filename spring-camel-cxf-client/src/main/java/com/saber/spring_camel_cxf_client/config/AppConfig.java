@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.LongSerializationPolicy;
-import com.google.gson.ToNumberPolicy;
 import org.apache.camel.CamelContext;
 import org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory;
 import org.apache.camel.component.micrometer.messagehistory.MicrometerMessageHistoryFactory;
@@ -22,8 +18,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ImportResource(value ={"classpath*:camel.xml"})
 @EnableWebMvc
 public class AppConfig {
+
     @Bean
     public ObjectMapper mapper() {
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -41,17 +39,8 @@ public class AppConfig {
 
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
         return mapper;
-    }
-    @Bean
-    public Gson gson(){
-        return new GsonBuilder()
-                .setLenient()
-                .setPrettyPrinting()
-                .enableComplexMapKeySerialization()
-                .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
-                .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                .create();
     }
 
     @Bean
