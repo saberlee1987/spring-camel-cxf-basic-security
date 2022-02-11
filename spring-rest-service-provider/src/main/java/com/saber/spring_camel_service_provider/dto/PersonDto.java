@@ -11,12 +11,12 @@ import javax.validation.constraints.*;
 @Data
 public class PersonDto {
 
-    @NotBlank(message = "firstName is Required")
-    private String firstName;
+    @NotBlank(message = "firstname is Required")
+    private String firstname;
 
-    @NotBlank(message = "lastName is Required")
-    @Schema(title = "lastName",example = "Azizi",required = true)
-    private String lastName;
+    @NotBlank(message = "lastname is Required")
+    @Schema(title = "lastname",example = "Azizi",required = true)
+    private String lastname;
 
     @NotBlank(message = "nationalCode is Required")
     @Size(min = 10,max = 10,message = "nationalCode must be 10 digit")

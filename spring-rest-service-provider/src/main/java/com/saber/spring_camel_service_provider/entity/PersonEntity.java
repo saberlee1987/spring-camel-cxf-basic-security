@@ -18,9 +18,9 @@ public class PersonEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "firstname",length = 70)
-    private String firstName;
+    private String firstname;
     @Column(name = "lastname",length = 90)
-    private String lastName;
+    private String lastname;
     @Column(name = "nationalCode",length = 10,unique = true)
     private String nationalCode;
     @Column(name = "age")
@@ -36,12 +36,12 @@ public class PersonEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonEntity that = (PersonEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(nationalCode, that.nationalCode) && Objects.equals(age, that.age) && Objects.equals(email, that.email) && Objects.equals(mobile, that.mobile);
+        return Objects.equals(id, that.id) && Objects.equals(firstname, that.firstname) && Objects.equals(lastname, that.lastname) && Objects.equals(nationalCode, that.nationalCode) && Objects.equals(age, that.age) && Objects.equals(email, that.email) && Objects.equals(mobile, that.mobile);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, nationalCode, age, email, mobile);
+        return Objects.hash(id, firstname, lastname, nationalCode, age, email, mobile);
     }
     @Override
     public String toString() {

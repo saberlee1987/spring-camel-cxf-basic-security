@@ -22,8 +22,8 @@ import javax.xml.bind.annotation.XmlType;
         "mobile",
 })
 public class PersonSoapDto {
-    @NotBlank(message = "firstName is Required")
-    @XmlElement(name = "firstName",defaultValue = "")
+    @NotBlank(message = "firstname is Required")
+    @XmlElement(name = "firstname",defaultValue = "")
     private String firstname;
 
     @XmlElement(name = "lastname",defaultValue = "")

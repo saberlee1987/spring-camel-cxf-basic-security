@@ -10,6 +10,11 @@ public interface Routes {
     String FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY_OUT = "find-person-by-nationalCode-route-gateway-out";
     String FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GROUP = "find-person-by-nationalCode-route-group";
 
+    String ADD_PERSON_ROUTE_GATEWAY = "add-person-route-gateway";
+    String ADD_PERSON_ROUTE_GATEWAY_OUT = "add-person-route-gateway-out";
+    String ADD_PERSON_ROUTE_GROUP = "add-person-route-group";
+
+
     String ADD_TOKEN_ROUTE = "add-token-route";
 
     String PERSON_CLIENT_ROUTE_GROUP = "person-client-route-group";

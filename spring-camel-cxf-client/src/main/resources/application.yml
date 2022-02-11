@@ -27,7 +27,7 @@ service:
   swagger:
     path: '/services/person-client-docs/v2/api-docs'
     title: 'Person Client Service APi'
-    version: 'version1.3-1400/11/18'
+    version: 'version1.3-1400/11/22'
     description: 'This is person client api for test'
 
   person-api:

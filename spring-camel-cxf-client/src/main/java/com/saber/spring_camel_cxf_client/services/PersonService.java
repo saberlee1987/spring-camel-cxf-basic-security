@@ -1,9 +1,11 @@
 package com.saber.spring_camel_cxf_client.services;
 
-import com.saber.spring_camel_cxf_client.dto.soap.FindAllPersonsResponse;
-import com.saber.spring_camel_cxf_client.dto.soap.PersonSoapResponse;
+import com.saber.spring_camel_cxf_client.dto.FindAllResponseDto;
+import com.saber.spring_camel_cxf_client.dto.soap.AddPersonSoapResponseDto;
+import com.saber.spring_camel_cxf_client.dto.soap.PersonSoapDto;
 
 public interface PersonService {
-    FindAllPersonsResponse findAll();
-    PersonSoapResponse findPersonByNationalCode(String nationalCode);
+    FindAllResponseDto findAll();
+    PersonSoapDto findPersonByNationalCode(String nationalCode);
+    AddPersonSoapResponseDto addPerson(PersonSoapDto personSoapDto);
 }
