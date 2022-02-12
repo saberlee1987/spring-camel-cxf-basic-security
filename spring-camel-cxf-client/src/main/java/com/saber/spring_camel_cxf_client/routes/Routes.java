@@ -13,8 +13,17 @@ public interface Routes {
     String ADD_PERSON_ROUTE_GATEWAY = "add-person-route-gateway";
     String ADD_PERSON_ROUTE_GATEWAY_OUT = "add-person-route-gateway-out";
     String ADD_PERSON_ROUTE_GROUP = "add-person-route-group";
-
-
+    
+    String UPDATE_PERSON_ROUTE_GATEWAY = "update-person-route-gateway";
+    String UPDATE_PERSON_ROUTE_GATEWAY_OUT = "update-person-route-gateway-out";
+    String UPDATE_PERSON_ROUTE_GROUP = "update-person-route-group";
+    
+    
+    String DELETE_PERSON_ROUTE_GATEWAY = "delete-person-route-gateway";
+    String DELETE_PERSON_ROUTE_GATEWAY_OUT = "delete-person-route-gateway-out";
+    String DELETE_PERSON_ROUTE_GROUP = "delete-person-route-group";
+    
+    
     String ADD_TOKEN_ROUTE = "add-token-route";
 
     String PERSON_CLIENT_ROUTE_GROUP = "person-client-route-group";
