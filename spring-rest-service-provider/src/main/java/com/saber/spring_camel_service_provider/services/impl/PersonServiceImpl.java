@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,13 +39,17 @@ public class PersonServiceImpl implements PersonService {
     public PersonResponse findAll() {
         List<PersonEntity> persons = this.personRepository.findAll();
         PersonResponse personResponse = new PersonResponse();
-        personResponse.setPersons(persons);
+        List<PersonDto> personDtoList = new ArrayList<>();
+        for (PersonEntity entity : persons) {
+            personDtoList.add(createPersonDto(entity));
+        }
+        personResponse.setPersons(personDtoList);
         return personResponse;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public PersonEntity findByNationalCode(String nationalCode) {
+    public PersonDto findByNationalCode(String nationalCode) {
         if (nationalCode!=null)
             nationalCode = nationalCode.replaceAll("\\s+","");
 
@@ -52,11 +58,11 @@ public class PersonServiceImpl implements PersonService {
             throw new ResourceNotFoundException(String.format("Person with nationalCode %s does not exist"
                     , nationalCode));
         }
-        return optionalPersonEntity.get();
+        return createPersonDto(optionalPersonEntity.get());
     }
 
     @Override
-    public PersonEntity updatePersonByNationalCode(String nationalCode, PersonDto dto) {
+    public PersonDto updatePersonByNationalCode(String nationalCode, PersonDto dto) {
         if (nationalCode!=null)
             nationalCode = nationalCode.replaceAll("\\s+","");
 
@@ -72,7 +78,7 @@ public class PersonServiceImpl implements PersonService {
         personEntity.setAge(dto.getAge());
         personEntity.setEmail(dto.getEmail());
         personEntity.setNationalCode(dto.getNationalCode());
-        return this.personRepository.save(personEntity);
+        return createPersonDto(this.personRepository.save(personEntity));
     }
 
     @Override
@@ -99,6 +105,16 @@ public class PersonServiceImpl implements PersonService {
         entity.setAge(dto.getAge());
         return entity;
     }
+    private PersonDto createPersonDto(PersonEntity entity) {
+        PersonDto personDto = new PersonDto();
+        personDto.setFirstname(entity.getFirstname());
+        personDto.setLastname(entity.getLastname());
+        personDto.setEmail(entity.getEmail());
+        personDto.setNationalCode(entity.getNationalCode().replaceAll("\\s+",""));
+        personDto.setAge(entity.getAge());
+        return personDto;
+    }
+    
 
     private void removeWhiteSpace(PersonDto dto){
         dto.setFirstname(StringUtils.deleteWhitespace(dto.getFirstname()));

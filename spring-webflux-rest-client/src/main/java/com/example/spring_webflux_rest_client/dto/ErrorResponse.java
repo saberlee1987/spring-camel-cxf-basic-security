@@ -1,5 +1,4 @@
-package com.saber.spring_camel_service_provider.dto;
-
+package com.example.spring_webflux_rest_client.dto;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
@@ -9,10 +8,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PersonResponse {
-    private List<PersonDto> persons ;
-
-
+public class ErrorResponse {
+    private Integer code;
+    private String message;
+    private Object originalMessage;
+    private List<ValidationDto> validations;
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -21,6 +21,6 @@ public class PersonResponse {
                 .enableComplexMapKeySerialization()
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                .create().toJson(this, PersonResponse.class);
+                .create().toJson(this, ErrorResponse.class);
     }
 }

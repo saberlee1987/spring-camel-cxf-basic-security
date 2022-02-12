@@ -57,6 +57,7 @@ public class HttpBasicSpringSecurityConfig extends WebSecurityConfigurerAdapter 
                 .and()
                 .authorizeRequests()
                 .mvcMatchers("/swagger-ui/**").permitAll()
+                .mvcMatchers("/swagger-ui**").permitAll()
                 .mvcMatchers(String.format("%s/**",apiDocsPath)).permitAll()
                 .anyRequest().authenticated().and();
     }

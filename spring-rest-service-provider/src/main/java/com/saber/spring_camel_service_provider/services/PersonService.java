@@ -9,7 +9,7 @@ import com.saber.spring_camel_service_provider.entity.PersonEntity;
 public interface PersonService {
     PersonEntity addPerson(PersonDto dto);
     PersonResponse findAll();
-    PersonEntity findByNationalCode(String nationalCode);
-    PersonEntity updatePersonByNationalCode(String nationalCode,PersonDto dto);
+    PersonDto findByNationalCode(String nationalCode);
+    PersonDto updatePersonByNationalCode(String nationalCode,PersonDto dto);
     DeletePersonDto deletePersonByNationalCode(String nationalCode);
 }

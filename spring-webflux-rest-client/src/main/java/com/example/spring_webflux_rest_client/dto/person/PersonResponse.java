@@ -1,4 +1,4 @@
-package com.saber.spring_camel_service_provider.dto;
+package com.example.spring_webflux_rest_client.dto.person;
 
 
 import com.google.gson.GsonBuilder;
@@ -11,7 +11,6 @@ import java.util.List;
 @Data
 public class PersonResponse {
     private List<PersonDto> persons ;
-
 
     @Override
     public String toString() {
