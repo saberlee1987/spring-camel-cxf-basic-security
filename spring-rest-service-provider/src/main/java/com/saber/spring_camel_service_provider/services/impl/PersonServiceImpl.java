@@ -67,8 +67,8 @@ public class PersonServiceImpl implements PersonService {
         }
         removeWhiteSpace(dto);
         PersonEntity personEntity = optionalPersonEntity.get();
-        personEntity.setFirstName(dto.getFirstName());
-        personEntity.setLastName(dto.getLastName());
+        personEntity.setFirstname(dto.getFirstname());
+        personEntity.setLastname(dto.getLastname());
         personEntity.setAge(dto.getAge());
         personEntity.setEmail(dto.getEmail());
         personEntity.setNationalCode(dto.getNationalCode());
@@ -92,8 +92,8 @@ public class PersonServiceImpl implements PersonService {
 
     private PersonEntity creatEntity(PersonDto dto) {
         PersonEntity entity = new PersonEntity();
-        entity.setFirstName(dto.getFirstName());
-        entity.setLastName(dto.getLastName());
+        entity.setFirstname(dto.getFirstname());
+        entity.setLastname(dto.getLastname());
         entity.setEmail(dto.getEmail());
         entity.setNationalCode(dto.getNationalCode().replaceAll("\\s+",""));
         entity.setAge(dto.getAge());
@@ -101,8 +101,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private void removeWhiteSpace(PersonDto dto){
-        dto.setFirstName(StringUtils.deleteWhitespace(dto.getFirstName()));
-        dto.setLastName(StringUtils.deleteWhitespace(dto.getLastName()));
+        dto.setFirstname(StringUtils.deleteWhitespace(dto.getFirstname()));
+        dto.setLastname(StringUtils.deleteWhitespace(dto.getLastname()));
         dto.setEmail(StringUtils.deleteWhitespace(dto.getEmail()));
     }
 }
