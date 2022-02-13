@@ -23,11 +23,11 @@ server:
 
 service:
   api:
-    path: /services/person-client
+    path: /services/person-soap-client
   swagger:
-    path: '/services/person-client-docs/v2/api-docs'
+    path: '/services/person-soap-client-docs/v2/api-docs'
     title: 'Person Client Service API'
-    version: 'version1.3-1400/11/23'
+    version: 'version1.3-1400/11/24'
     description: 'This is person client api for test'
 
   person-api:
@@ -57,7 +57,7 @@ springdoc:
 
 spring:
   application:
-    name: person-service
+    name: person-soap-client
 
 camel:
   springboot:

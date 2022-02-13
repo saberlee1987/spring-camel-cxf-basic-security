@@ -1,6 +1,7 @@
 package com.example.spring_webflux_rest_client.controllers;
 
 import com.example.spring_webflux_rest_client.dto.ErrorResponse;
+import com.example.spring_webflux_rest_client.dto.person.AddPersonResponseDto;
 import com.example.spring_webflux_rest_client.dto.person.PersonDto;
 import com.example.spring_webflux_rest_client.dto.person.PersonResponse;
 import com.example.spring_webflux_rest_client.services.PersonService;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,14 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -89,5 +89,29 @@ public class PersonController {
 	public Mono<PersonResponse> findAllPersons(){
 	
 		return this.personService.findAll();
+	}
+	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(tags = {"add person"}, summary = "add person", description = "add person", method = "POST",
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "add person",
+					content = @Content(mediaType = "application/json",
+							schema = @Schema(name = "addPerson", title = "addPerson", implementation = PersonDto.class)
+							, examples = @ExampleObject(name = "addPerson", summary = "addPerson",
+							value = "{\"firstname\": \"saber\",\"lastname\": \"Azizi\",\"nationalCode\": \"0079028748\",\"age\": 34,\"email\": \"saberazizi66@yahoo.com\",\"mobile\": \"09365627895\"}")
+					)
+			))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = AddPersonResponseDto.class))}),
+			@ApiResponse(responseCode = "400", description = "BAD_REQUEST",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+	})
+	public Mono<AddPersonResponseDto> addPerson(@RequestBody @NotNull(message = "body is Required") @Valid PersonDto personDto) {
+		return personService.addPerson(personDto);
 	}
 }

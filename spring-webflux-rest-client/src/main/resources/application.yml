@@ -14,15 +14,16 @@ service:
     baseUrl : /services/person
     findAll: /findAll
     findByNationalCode: /findByNationalCode
+    addPerson: /add
     timeout: 30000
     maxConnection: 500
   swagger:
     path: /services/person-client-docs/v3/api-docs
-    version: 'version1.0.0-1400/11/23'
+    version: 'version1.0.0-1400/11/24'
     title: 'person rest client webflux'
     description: 'person rest client webflux'
   keystore:
-    jksFile: keystore/person_api.jks
+    jksFile: 'keystore/person_api.jks'
     jksPassword: saber@123
   authorization:
     username: saber66

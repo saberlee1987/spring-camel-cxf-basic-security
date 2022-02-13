@@ -72,9 +72,9 @@ spring:
 
 camel:
   threadpool:
-    pool-size: 10000
-    max-pool-size: 30000
-    max-queue-size: 5000
+    pool-size: 1000
+    max-pool-size: 3000
+    max-queue-size: 2000
     rejected-policy: discardoldest
   springboot:
     jmx-management-statistics-level: extended
