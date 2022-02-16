@@ -111,11 +111,11 @@ public class PersonController {
 	}
 	
 	@PutMapping(value = "/update/{nationalCode}", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-	@Operation(tags = {"add person"}, summary = "update person", description = "update person", method = "PUT",
-			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "add person",
+	@Operation(tags = {"update person"}, summary = "update person", description = "update person", method = "PUT",
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "update person",
 					content = @Content(mediaType = "application/json",
 							schema = @Schema(name = "update person", title = "update person", implementation = PersonSoapDto.class)
-							, examples = @ExampleObject(name = "addPerson", summary = "addPerson",
+							, examples = @ExampleObject(name = "updatePerson", summary = "updatePerson",
 							value = "{\"firstname\": \"saber\",\"lastname\": \"Azizi\",\"nationalCode\": \"0079028748\",\"age\": 34,\"email\": \"saberazizi66@yahoo.com\",\"mobile\": \"09365627895\"}")
 					)
 			), parameters = {

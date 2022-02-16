@@ -1,9 +1,7 @@
 package com.example.spring_webflux_rest_client.services.impl;
 
 import com.example.spring_webflux_rest_client.dto.ErrorResponse;
-import com.example.spring_webflux_rest_client.dto.person.AddPersonResponseDto;
-import com.example.spring_webflux_rest_client.dto.person.PersonDto;
-import com.example.spring_webflux_rest_client.dto.person.PersonResponse;
+import com.example.spring_webflux_rest_client.dto.person.*;
 import com.example.spring_webflux_rest_client.exceptions.GatewayException;
 import com.example.spring_webflux_rest_client.services.PersonService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +26,10 @@ public class PersonServiceImpl implements PersonService {
 	private String personFindByNationalCodeUrl;
 	@Value(value = "${service.person.addPerson}")
 	private String addPersonUrl;
+	@Value(value = "${service.person.updatePerson}")
+	private String updatePersonUrl;
+	@Value(value = "${service.person.deletePerson}")
+	private String deletePersonUrl;
 	@Autowired
 	private WebClient webClient;
 	
@@ -37,22 +39,12 @@ public class PersonServiceImpl implements PersonService {
 		log.info("Request for findAll persons ");
 		ParameterizedTypeReference<PersonResponse> parameterizedTypeReference = new ParameterizedTypeReference<PersonResponse>() {
 		};
-		Mono<PersonResponse> responseResponseEntity = webClient.get()
-				.uri(url)
-				.retrieve()
-				.onStatus(HttpStatus::isError, clientResponse -> {
-					int statusCode = clientResponse.statusCode().value();
-					Mono<ErrorResponse> errorMessage = clientResponse.bodyToMono(ErrorResponse.class);
-					return errorMessage.flatMap(message -> {
-						return Mono.error(new GatewayException(statusCode, message));
-					});
-				})
-				.bodyToMono(parameterizedTypeReference);
+		Mono<PersonResponse> responseResponseEntity = sendGetRequest(url, parameterizedTypeReference);
 		
-		responseResponseEntity.subscribe(
-				response -> log.info("Response for find all  person  with body {}", response)
-		);
-		
+		responseResponseEntity = responseResponseEntity.flatMap(response -> {
+			log.info("Response for findAll persons with body {}", response);
+			return Mono.just(response);
+		});
 		return responseResponseEntity;
 		
 	}
@@ -64,21 +56,13 @@ public class PersonServiceImpl implements PersonService {
 		log.info("Request  for find person with nationalCode {} ", nationalCode);
 		ParameterizedTypeReference<PersonDto> parameterizedTypeReference = new ParameterizedTypeReference<PersonDto>() {
 		};
-		Mono<PersonDto> personDtoMono = webClient.get()
-				.uri(url)
-				.retrieve()
-				.onStatus(HttpStatus::isError, clientResponse -> {
-					int statusCode = clientResponse.statusCode().value();
-					Mono<ErrorResponse> errorMessage = clientResponse.bodyToMono(ErrorResponse.class);
-					return errorMessage.flatMap(message -> {
-						return Mono.error(new GatewayException(statusCode, message));
-					});
-				})
-				.bodyToMono(parameterizedTypeReference);
+		Mono<PersonDto> personDtoMono = sendGetRequest(url, parameterizedTypeReference);
 		
-		personDtoMono.subscribe(
-				response -> log.info("Response for find person with nationalCode {} with body {}", nationalCode, response)
-		);
+		personDtoMono = personDtoMono.flatMap(response -> {
+			log.info("Response for find person by nationalCode {} with body {}", nationalCode, response);
+			return Mono.just(response);
+		});
+		
 		return personDtoMono;
 		
 	}
@@ -103,10 +87,84 @@ public class PersonServiceImpl implements PersonService {
 					});
 				})
 				.bodyToMono(parameterizedTypeReference);
-		responseResponseEntity.subscribe(
-				response -> log.info("Response for find all  person  with body {}", response)
-		);
+		
+		responseResponseEntity = responseResponseEntity.flatMap(response -> {
+			log.info("Response for add person  with body {}", response);
+			return Mono.just(response);
+		});
+		
 		return responseResponseEntity;
+	}
+	
+	@Override
+	public Mono<UpdatePersonResponseDto> updatePersonByNationalCode(String nationalCode, PersonDto personDto) {
+		String url = String.format("%s%s/%s", personBaseUrl, updatePersonUrl, nationalCode);
+		log.info("Request for update person by nationalCode {} with body {} ", nationalCode, personDto);
+		ParameterizedTypeReference<UpdatePersonResponseDto> parameterizedTypeReference = new ParameterizedTypeReference<>() {
+		};
+		Mono<UpdatePersonResponseDto> responseResponseEntity = webClient.put()
+				.uri(url)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.body(Mono.just(personDto), PersonDto.class)
+				.retrieve()
+				.onStatus(HttpStatus::isError, clientResponse -> {
+					int statusCode = clientResponse.statusCode().value();
+					Mono<ErrorResponse> errorMessage = clientResponse.bodyToMono(ErrorResponse.class);
+					return errorMessage.flatMap(message -> {
+						return Mono.error(new GatewayException(statusCode, message));
+					});
+				})
+				.bodyToMono(parameterizedTypeReference);
+		
+		responseResponseEntity = responseResponseEntity.flatMap(response -> {
+			log.info("Response for update person by nationalCode {} with body {}",nationalCode, response);
+			return Mono.just(response);
+		});
+		
+		return responseResponseEntity;
+	}
+	
+	@Override
+	public Mono<DeletePersonDto> deletePersonByNationalCode(String nationalCode) {
+		String url = String.format("%s%s/%s", personBaseUrl, deletePersonUrl, nationalCode);
+		log.info("Request  for delete person with nationalCode {} ", nationalCode);
+		ParameterizedTypeReference<DeletePersonDto> parameterizedTypeReference = new ParameterizedTypeReference<>() {
+		};
+		Mono<DeletePersonDto> responseResponseEntity = webClient.delete()
+				.uri(url)
+				.accept(MediaType.APPLICATION_JSON)
+				.retrieve()
+				.onStatus(HttpStatus::isError, clientResponse -> {
+					int statusCode = clientResponse.statusCode().value();
+					Mono<ErrorResponse> errorMessage = clientResponse.bodyToMono(ErrorResponse.class);
+					return errorMessage.flatMap(message -> {
+						return Mono.error(new GatewayException(statusCode, message));
+					});
+				})
+				.bodyToMono(parameterizedTypeReference);
+		
+		responseResponseEntity = responseResponseEntity.flatMap(response -> {
+			log.info("Response for delete person with nationalCode {}  with body {}",nationalCode, response);
+			return Mono.just(response);
+		});
+		
+		return responseResponseEntity;
+	}
+	
+	
+	private <T> Mono<T> sendGetRequest(String url, ParameterizedTypeReference<T> parameterizedTypeReference) {
+		return webClient.get()
+				.uri(url)
+				.retrieve()
+				.onStatus(HttpStatus::isError, clientResponse -> {
+					int statusCode = clientResponse.statusCode().value();
+					Mono<ErrorResponse> errorMessage = clientResponse.bodyToMono(ErrorResponse.class);
+					return errorMessage.flatMap(message -> {
+						return Mono.error(new GatewayException(statusCode, message));
+					});
+				})
+				.bodyToMono(parameterizedTypeReference);
 	}
 	
 }

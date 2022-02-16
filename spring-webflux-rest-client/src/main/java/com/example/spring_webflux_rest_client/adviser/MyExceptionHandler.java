@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -50,8 +50,8 @@ public class MyExceptionHandler  {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	}
 	
-	@ExceptionHandler(value = MethodArgumentNotValidException.class)
-	public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
+	@ExceptionHandler(value = WebExchangeBindException.class)
+	public ResponseEntity<Object> handleWebExchangeBindException(WebExchangeBindException exception) {
 		
 		ErrorResponse errorResponse = new ErrorResponse();
 		errorResponse.setCode(ServiceErrorResponseEnum.INPUT_VALIDATION_EXCEPTION.getCode());
@@ -65,7 +65,7 @@ public class MyExceptionHandler  {
 		}
 		errorResponse.setValidations(validationDtoList);
 		
-		log.error("Error for handleMethodArgumentNotValid with body ===> {}",errorResponse);
+		log.error("Error for handleWebExchangeBindException with body ===> {}",errorResponse);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	}
 }

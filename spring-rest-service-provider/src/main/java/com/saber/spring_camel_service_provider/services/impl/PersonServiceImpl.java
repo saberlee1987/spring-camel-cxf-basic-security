@@ -9,29 +9,36 @@ import com.saber.spring_camel_service_provider.exceptions.ResourceNotFoundExcept
 import com.saber.spring_camel_service_provider.repositories.PersonRepository;
 import com.saber.spring_camel_service_provider.services.PersonService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public PersonEntity addPerson(PersonDto dto) {
-        if (this.personRepository.findByNationalCode(dto.getNationalCode()).isPresent()) {
-            throw new ResourceDuplicationException(String.format("Person with nationalCode %s exist"
+        log.info("Request for add person with body ===> {}",dto);
+        if (this.personRepository.personExist(dto.getNationalCode()).isPresent()) {
+            log.error("Person with nationalCode {} already exist ",dto.getNationalCode());
+            throw new ResourceDuplicationException(String.format("Person with nationalCode %s already exist"
                     , dto.getNationalCode()));
         }
         removeWhiteSpace(dto);
         PersonEntity entity = creatEntity(dto);
-        return this.personRepository.save(entity);
+        PersonEntity response = this.personRepository.save(entity);
+        log.info("Response for add person with body ===> {}",response);
+        
+        return response;
     }
 
     @Override
@@ -50,24 +57,32 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional(readOnly = true)
     public PersonDto findByNationalCode(String nationalCode) {
+        log.info("Request for findByNationalCode with nationalCode ===> {}",nationalCode);
         if (nationalCode!=null)
             nationalCode = nationalCode.replaceAll("\\s+","");
 
         Optional<PersonEntity> optionalPersonEntity = this.personRepository.findByNationalCode(nationalCode);
         if (optionalPersonEntity.isEmpty()) {
+            log.error("Person with nationalCode {} does not exist ",nationalCode);
             throw new ResourceNotFoundException(String.format("Person with nationalCode %s does not exist"
                     , nationalCode));
         }
-        return createPersonDto(optionalPersonEntity.get());
+        PersonDto personDto = createPersonDto(optionalPersonEntity.get());
+        log.info("Response for findByNationalCode with nationalCode {} ,  body ===> {}",nationalCode,personDto);
+        
+        return personDto;
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public PersonDto updatePersonByNationalCode(String nationalCode, PersonDto dto) {
+        log.info("Request for updatePersonByNationalCode with nationalCode ===> {} , body {}",nationalCode,dto);
         if (nationalCode!=null)
             nationalCode = nationalCode.replaceAll("\\s+","");
 
         Optional<PersonEntity> optionalPersonEntity = this.personRepository.findByNationalCode(nationalCode);
         if (optionalPersonEntity.isEmpty()) {
+            log.error("Person with nationalCode {} does not exist ",nationalCode);
             throw new ResourceNotFoundException(String.format("Person with nationalCode %s does not exist"
                     , nationalCode));
         }
@@ -78,31 +93,42 @@ public class PersonServiceImpl implements PersonService {
         personEntity.setAge(dto.getAge());
         personEntity.setEmail(dto.getEmail());
         personEntity.setNationalCode(dto.getNationalCode());
-        return createPersonDto(this.personRepository.save(personEntity));
+        PersonDto personDto = createPersonDto(this.personRepository.save(personEntity));
+        log.info("Response for updatePersonByNationalCode with nationalCode {} ,  body ===> {}",nationalCode,personDto);
+        return personDto;
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public DeletePersonDto deletePersonByNationalCode(String nationalCode) {
+        log.info("Request for deletePersonByNationalCode with nationalCode ===> {}",nationalCode);
+        
         if (nationalCode!=null)
             nationalCode = nationalCode.replaceAll("\\s+","");
 
-        Optional<PersonEntity> optionalPersonEntity = this.personRepository.findByNationalCode(nationalCode);
+        Optional<Boolean> optionalPersonEntity = this.personRepository.personExist(nationalCode);
         if (optionalPersonEntity.isEmpty()) {
+            log.error("Person with nationalCode {} does not exist ",nationalCode);
             throw new ResourceNotFoundException(String.format("Person with nationalCode %s does not exist"
                     , nationalCode));
         }
-        PersonEntity personEntity = optionalPersonEntity.get();
-        this.personRepository.delete(personEntity);
-       return new DeletePersonDto(0,"successfully");
+        Optional<Boolean> deleteResult = this.personRepository.deleteByNationalCode(nationalCode);
+        if (deleteResult.isPresent()){
+            log.info("Response for delete person by nationalCode {} ===> {}",nationalCode,deleteResult.get());
+        }else {
+            log.info("Error for delete person by nationalCode {} ",nationalCode);
+        }
+        return new DeletePersonDto(0,"successfully");
     }
 
     private PersonEntity creatEntity(PersonDto dto) {
         PersonEntity entity = new PersonEntity();
         entity.setFirstname(dto.getFirstname());
         entity.setLastname(dto.getLastname());
-        entity.setEmail(dto.getEmail());
         entity.setNationalCode(dto.getNationalCode().replaceAll("\\s+",""));
         entity.setAge(dto.getAge());
+        entity.setMobile(dto.getMobile());
+        entity.setEmail(dto.getEmail());
         return entity;
     }
     private PersonDto createPersonDto(PersonEntity entity) {
@@ -112,6 +138,7 @@ public class PersonServiceImpl implements PersonService {
         personDto.setEmail(entity.getEmail());
         personDto.setNationalCode(entity.getNationalCode().replaceAll("\\s+",""));
         personDto.setAge(entity.getAge());
+        personDto.setMobile(entity.getMobile());
         return personDto;
     }
     

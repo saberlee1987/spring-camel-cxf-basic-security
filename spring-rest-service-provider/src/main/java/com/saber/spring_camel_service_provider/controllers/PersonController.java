@@ -21,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -59,7 +58,7 @@ public class PersonController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@GetMapping(value = "/findByNationalCode/{nationalCode}")
+	@GetMapping(value = "/find/{nationalCode}")
 	@Operation(tags = {"findByNationalCode"}, summary = "findByNationalCode", description = "findByNationalCode api", method = "GET",
 			parameters = {
 					@Parameter(name = "nationalCode", in = ParameterIn.PATH, required = true, example = "0079028748", description = "nationalCode")
@@ -70,6 +69,10 @@ public class PersonController {
 			@ApiResponse(responseCode = "400", description = "BAD_REQUEST",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 			@ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})
 		
 	})
@@ -96,6 +99,10 @@ public class PersonController {
 			@ApiResponse(responseCode = "400", description = "BAD_REQUEST",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 			@ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})
 		
 	})
@@ -105,7 +112,7 @@ public class PersonController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@PutMapping(value = "/updateByNationalCode/{nationalCode}")
+	@PutMapping(value = "/update/{nationalCode}")
 	@Operation(tags = {"updateByNationalCode"}, summary = "updateByNationalCode", description = "updateByNationalCode api", method = "PUT"
 			, parameters = {
 			@Parameter(name = "nationalCode", in = ParameterIn.PATH, required = true, example = "0079028748", description = "nationalCode")
@@ -121,6 +128,10 @@ public class PersonController {
 			@ApiResponse(responseCode = "400", description = "BAD_REQUEST",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 			@ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})
 		
 	})
@@ -139,17 +150,21 @@ public class PersonController {
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping(value = "/deleteByNationalCode/{nationalCode}")
+	@DeleteMapping(value = "/delete/{nationalCode}")
 	@Operation(tags = {"deletePersonByNationalCode"}, summary = "deletePersonByNationalCode", description = "deletePersonByNationalCode api", method = "DELETE",
 			parameters = {
 					@Parameter(name = "nationalCode", in = ParameterIn.PATH, required = true, example = "0079028748", description = "nationalCode")
 			})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Success",
-					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PersonResponse.class))}),
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = DeletePersonDto.class))}),
 			@ApiResponse(responseCode = "400", description = "BAD_REQUEST",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 			@ApiResponse(responseCode = "406", description = "NOT_ACCEPTABLE",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR",
+					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
+			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))})
 		
 	})
