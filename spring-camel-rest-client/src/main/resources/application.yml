@@ -1,0 +1,89 @@
+server:
+  port: 9094
+  max-http-header-size: 512000
+  undertow:
+    threads:
+      io: 2000
+      worker: 200
+    accesslog:
+      enabled: true
+    max-headers: 1000
+    no-request-timeout: 30000
+  http2:
+    enabled: false
+
+service:
+  api:
+    base-path: /services/camel-rest-client
+    swagger-path: /v3/api-docs
+    swagger-title: 'spring camel rest client'
+    swagger-description: 'spring camel rest client'
+    swagger-version: 'version1.0.0-1400/12/01'
+  person:
+    url: https://localhost
+    port: 9090
+    baseUrl: /services/person
+    findAll: /findAll
+    findByNationalCode: /find
+    addPerson: /add
+    updatePerson: /update
+    deletePerson: /delete
+  keystore:
+    jksFile: 'keystore/person_api.jks'
+    jksPassword: saber@123
+  authorization:
+    username: saber66
+    password: saber@123
+
+spring:
+  application:
+    name: spring-camel-rest-client
+
+springdoc:
+  swagger-ui:
+    display-operation-id: true
+    display-request-duration: true
+    path: /swagger-ui.html
+    oauth:
+      client-secret: 73b6e1da-d0ef-474c-97ae-d1c4438a7535
+      realm: saber66
+      client-id: saber-client
+      app-name: saber-client
+    urls:
+      - url: ${service.api.base-path}${service.api.swagger-path}
+        name: 'camel rest client'
+    oauth2-redirect-url: http://localhost:${server.port}${springdoc.swagger-ui.path}
+  api-docs:
+    groups:
+      enabled: true
+
+  tokenUrl: http://localhost:8080/auth/realms/saber66/protocol/openid-connect/token
+
+camel:
+  springboot:
+    main-run-controller: true
+    jmx-management-statistics-level: extended
+    endpoint-runtime-statistics-enabled: true
+    jmx-enabled: true
+  servlet:
+    mapping:
+      context-path: ${service.api.base-path}/*
+  dataformat:
+    jackson:
+      pretty-print: true
+      auto-discover-object-mapper: true
+  component:
+    http:
+      connections-per-route: 300
+      max-total-connections: 3000
+      connect-timeout: 10000
+      connection-request-timeout: 30000
+      socket-timeout: 30000
+      connection-time-to-live: 30000
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
