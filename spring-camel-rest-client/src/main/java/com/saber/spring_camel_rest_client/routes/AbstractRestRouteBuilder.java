@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.bean.validator.BeanValidationException;
 import org.apache.camel.http.base.HttpOperationFailedException;
+import org.apache.camel.support.processor.PredicateValidationException;
+
 import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -49,6 +52,17 @@ public class AbstractRestRouteBuilder extends RouteBuilder {
 				.log(LoggingLevel.ERROR,"Error for JsonParseException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.JSON_EXCEPTION_HANDLER_ROUTE));
 		
+		onException(BeanValidationException.class)
+				.handled(true)
+				.maximumRedeliveries(0)
+				.log(LoggingLevel.ERROR,"Error for BeanValidationException with error "+exceptionMessage())
+				.to(String.format("direct:%s",Routes.BEAN_VALIDATION_EXCEPTION_HANDLER_ROUTE));
+		
+		onException(PredicateValidationException.class)
+				.handled(true)
+				.maximumRedeliveries(0)
+				.log(LoggingLevel.ERROR,"Error for PredicateValidationException with error "+exceptionMessage())
+				.to(String.format("direct:%s",Routes.PREDICATE_EXCEPTION_HANDLER_ROUTE));
 		
 		onException(HttpOperationFailedException.class)
 				.handled(true)

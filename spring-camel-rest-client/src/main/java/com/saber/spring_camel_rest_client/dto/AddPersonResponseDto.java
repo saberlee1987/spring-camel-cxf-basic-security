@@ -6,9 +6,15 @@ import com.google.gson.ToNumberPolicy;
 import lombok.Data;
 
 @Data
-public class DeletePersonDto {
-    private Integer code;
-    private String text;
+public class AddPersonResponseDto {
+    
+    private Integer id;
+    private String firstname;
+    private String lastname;
+    private String nationalCode;
+    private Integer age;
+    private String email;
+    private String mobile;
 
     @Override
     public String toString() {
@@ -18,6 +24,6 @@ public class DeletePersonDto {
                 .enableComplexMapKeySerialization()
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                .create().toJson(this, DeletePersonDto.class);
+                .create().toJson(this, AddPersonResponseDto.class);
     }
 }

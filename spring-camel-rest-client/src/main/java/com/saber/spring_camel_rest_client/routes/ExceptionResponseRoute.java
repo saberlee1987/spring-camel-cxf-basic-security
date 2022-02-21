@@ -7,10 +7,13 @@ import com.saber.spring_camel_rest_client.dto.ValidationDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.bean.validator.BeanValidationException;
 import org.apache.camel.http.base.HttpOperationFailedException;
+import org.apache.camel.support.processor.PredicateValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ConstraintViolation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,8 +77,59 @@ public class ExceptionResponseRoute extends RouteBuilder {
 					log.error("Error for json-exception statusCode {} ====> {}",HttpStatus.NOT_ACCEPTABLE.value(),errorResponse);
 					exchange.getIn().setBody(errorResponse);
 				});
-			
 		
+		
+		from(String.format("direct:%s",Routes.BEAN_VALIDATION_EXCEPTION_HANDLER_ROUTE))
+				.routeId(Routes.BEAN_VALIDATION_EXCEPTION_HANDLER_ROUTE)
+				.routeGroup(Routes.EXCEPTION_HANDLER_ROUTE_GROUP)
+				.setHeader(Exchange.HTTP_RESPONSE_CODE,constant(406))
+				.process(exchange -> {
+					BeanValidationException exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT,BeanValidationException.class);
+					ErrorResponse errorResponse = new ErrorResponse();
+					errorResponse.setCode(ServiceErrorResponseEnum.INPUT_VALIDATION_EXCEPTION.getCode());
+					errorResponse.setMessage(ServiceErrorResponseEnum.INPUT_VALIDATION_EXCEPTION.getMessage());
+					
+					List<ValidationDto> validationDtoList = new ArrayList<>();
+					for (ConstraintViolation<Object> constraintViolation : exception.getConstraintViolations()) {
+						ValidationDto validationDto = new ValidationDto();
+						validationDto.setFieldName(constraintViolation.getPropertyPath().toString());
+						validationDto.setDetailMessage(constraintViolation.getMessage());
+						
+						validationDtoList.add(validationDto);
+					}
+				
+					errorResponse.setValidations(validationDtoList);
+					
+					log.error("Error for bean-validation statusCode {} ====> {}",HttpStatus.NOT_ACCEPTABLE.value(),errorResponse);
+					
+					exchange.getIn().setBody(errorResponse);
+				});
+		
+		
+		from(String.format("direct:%s",Routes.PREDICATE_EXCEPTION_HANDLER_ROUTE))
+				.routeId(Routes.PREDICATE_EXCEPTION_HANDLER_ROUTE)
+				.routeGroup(Routes.EXCEPTION_HANDLER_ROUTE_GROUP)
+				.setHeader(Exchange.HTTP_RESPONSE_CODE,constant(406))
+				.process(exchange -> {
+					PredicateValidationException exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT,PredicateValidationException.class);
+					ErrorResponse errorResponse = new ErrorResponse();
+					errorResponse.setCode(ServiceErrorResponseEnum.INPUT_VALIDATION_EXCEPTION.getCode());
+					errorResponse.setMessage(ServiceErrorResponseEnum.INPUT_VALIDATION_EXCEPTION.getMessage());
+					
+					List<ValidationDto> validationDtoList = new ArrayList<>();
+				
+					ValidationDto validationDto = new ValidationDto();
+					validationDto.setFieldName(	exception.getPredicate().toString());
+					validationDto.setDetailMessage(exception.getLocalizedMessage());
+					
+					validationDtoList.add(validationDto);
+					
+					errorResponse.setValidations(validationDtoList);
+					
+					log.error("Error for predicate-exception statusCode {} ====> {}",HttpStatus.NOT_ACCEPTABLE.value(),errorResponse);
+					
+					exchange.getIn().setBody(errorResponse);
+				});
 		
 		from(String.format("direct:%s",Routes.HTTP_OPERATION_EXCEPTION_HANDLER_ROUTE))
 				.routeId(Routes.HTTP_OPERATION_EXCEPTION_HANDLER_ROUTE)

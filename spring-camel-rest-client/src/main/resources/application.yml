@@ -1,24 +1,21 @@
 server:
   port: 9094
   max-http-header-size: 512000
-  undertow:
+  jetty:
     threads:
-      io: 2000
-      worker: 200
+      max: 3000
+      min: 300
+      idle-timeout: 10000
+    connection-idle-timeout: 10000
     accesslog:
       enabled: true
-    max-headers: 1000
-    no-request-timeout: 30000
-  http2:
-    enabled: false
-
 service:
   api:
     base-path: /services/camel-rest-client
     swagger-path: /v3/api-docs
     swagger-title: 'spring camel rest client'
     swagger-description: 'spring camel rest client'
-    swagger-version: 'version1.0.0-1400/12/01'
+    swagger-version: 'version1.0.0-1400/12/02'
   person:
     url: https://localhost
     port: 9090
