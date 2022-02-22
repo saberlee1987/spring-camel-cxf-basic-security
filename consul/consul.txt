@@ -1,0 +1,5 @@
+consul agent -dev
+
+https://www.consul.io/
+
+https://www.consul.io/commands

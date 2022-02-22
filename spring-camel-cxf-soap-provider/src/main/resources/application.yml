@@ -79,6 +79,14 @@ camel:
   springboot:
     jmx-management-statistics-level: extended
     backlog-tracing: true
+  cloud:
+    consul:
+      service-host: localhost
+      url: http://localhost:8500
+      id: ${spring.application.name}
+      registrationScheduled: 30000
+    service-call:
+      default-load-balancer: true
   dataformat:
     json-jackson:
       pretty-print: true

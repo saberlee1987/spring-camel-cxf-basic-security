@@ -101,6 +101,22 @@ spring:
         format_sql: true
 
 
+camel:
+  springboot:
+    main-run-controller: true
+    jmx-management-statistics-level: extended
+    endpoint-runtime-statistics-enabled: true
+    jmx-enabled: true
+  cloud:
+    consul:
+      service-host: localhost
+      url: http://localhost:8500
+      id: ${spring.application.name}
+      registrationScheduled: 30000
+    service-call:
+      default-load-balancer: true
+
+
 hawtio:
   authenticationEnabled: false
 management:

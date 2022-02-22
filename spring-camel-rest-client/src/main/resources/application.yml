@@ -65,6 +65,14 @@ camel:
   servlet:
     mapping:
       context-path: ${service.api.base-path}/*
+  cloud:
+    consul:
+      service-host: localhost
+      url: http://localhost:8500
+      id: ${spring.application.name}
+      registrationScheduled: 30000
+    service-call:
+      default-load-balancer: true
   dataformat:
     jackson:
       pretty-print: true

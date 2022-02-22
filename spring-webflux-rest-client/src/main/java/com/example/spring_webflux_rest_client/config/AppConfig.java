@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
@@ -22,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.List;
 
 @Configuration
 @Slf4j
@@ -109,5 +113,20 @@ public class AppConfig {
 				.trustManager(trustManagerFactory)
 				.startTls(true)
 				.build();
+	}
+
+	@Bean
+	public CorsWebFilter corsWebFilter(){
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.setAllowedOrigins(List.of("*"));
+		corsConfig.setMaxAge(8000L);
+		corsConfig.addAllowedMethod("POST, GET, OPTIONS, PUT, DELETE");
+		corsConfig.addAllowedHeader("*");
+
+		UrlBasedCorsConfigurationSource source =
+				new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);
+
+		return new CorsWebFilter(source);
 	}
 }

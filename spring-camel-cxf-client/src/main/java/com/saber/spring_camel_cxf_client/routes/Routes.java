@@ -27,7 +27,11 @@ public interface Routes {
     String ADD_TOKEN_ROUTE = "add-token-route";
 
     String PERSON_CLIENT_ROUTE_GROUP = "person-client-route-group";
-	
+
+
+    String CONSUL_REGISTRATION_ROUTE = "consul-registration-route";
+    String CONSUL_REGISTRATION_ROUTE_GROUP = "consul-registration-route-group";
+
 	String TIME_OUT_EXCEPTION_ROUTE = "timeout-exception-route" ;
 	String EXCEPTION_ROUTE_GROUP = "exception-route-group" ;
 }

@@ -30,16 +30,17 @@ public interface Routes {
 	String DELETE_PERSON_BY_NATIONAL_CODE_ROUTE_GROUP = "delete-person-by-nationalCode-route-group";
 	String DELETE_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY = "delete-person-by-nationalCode-route-gateway";
 	String DELETE_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY_OUT = "delete-person-by-nationalCode-route-gateway-out";
-	
-	
-	
+
 	String HTTP_OPERATION_EXCEPTION_HANDLER_ROUTE = "http-operation-exception-handler-route";
 	String TIMEOUT_EXCEPTION_HANDLER_ROUTE = "timeout-exception-handler-route";
 	String JSON_EXCEPTION_HANDLER_ROUTE = "json-exception-handler-route";
 	String BEAN_VALIDATION_EXCEPTION_HANDLER_ROUTE = "bean-validation-exception-handler-route";
 	String PREDICATE_EXCEPTION_HANDLER_ROUTE = "predicate-exception-handler-route";
 	String EXCEPTION_HANDLER_ROUTE_GROUP = "exception-handler-route-group";
-	
+
+	String CONSUL_REGISTRATION_ROUTE = "consul-registration-route";
+	String CONSUL_REGISTRATION_ROUTE_GROUP = "consul-registration-route-group";
+
 	String ADD_TOKEN_ROUTE = "add-token-route";
 	String ADD_TOKEN_ROUTE_GROUP = "add-token-route-group";
 }
