@@ -1,21 +1,19 @@
-package com.saber.spring_camel_service_provider.dto;
+package com.saber.spring_webflux_camel_rest_client.dto.person;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.ToNumberPolicy;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@NotBlank
-public class DeletePersonDto {
-    private Integer code;
-    private String text;
+public class UpdatePersonResponseDto {
+    
+    private String firstname;
+    private String lastname;
+    private String nationalCode;
+    private Integer age;
+    private String email;
+    private String mobile;
 
     @Override
     public String toString() {
@@ -25,6 +23,6 @@ public class DeletePersonDto {
                 .enableComplexMapKeySerialization()
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                .create().toJson(this, DeletePersonDto.class);
+                .create().toJson(this, UpdatePersonResponseDto.class);
     }
 }

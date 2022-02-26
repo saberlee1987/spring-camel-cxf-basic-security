@@ -1,22 +1,23 @@
-package com.saber.spring_camel_service_provider.dto;
+package com.saber.spring_webflux_camel_rest_client.dto;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.ToNumberPolicy;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@NotBlank
-public class DeletePersonDto {
-    private Integer code;
-    private String text;
+public class ValidationDto implements Cloneable {
+    private String fieldName;
+    private String detailMessage;
 
+    @Override
+    public ValidationDto clone()  {
+        try{
+            return (ValidationDto) super.clone();
+        }catch (Exception ex){
+            return null;
+        }
+    }
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -25,6 +26,6 @@ public class DeletePersonDto {
                 .enableComplexMapKeySerialization()
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                .create().toJson(this, DeletePersonDto.class);
+                .create().toJson(this, ValidationDto.class);
     }
 }

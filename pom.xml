@@ -20,5 +20,6 @@
         <module>spring-camel-cxf-soap-provider</module>
         <module>spring-webflux-rest-client</module>
         <module>spring-camel-rest-client</module>
+        <module>spring-webflux-camel-rest-client</module>
     </modules>
 </project>

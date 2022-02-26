@@ -1,13 +1,13 @@
 server:
-  port: 9093
-  max-http-header-size: 512000
+  port: 9095
   netty:
     connection-timeout: 30000
     idle-timeout: 30000
     threads: 5000
+
 service:
   api:
-    base-path: /services/person-client
+    base-path: /services/webflux-camel-rest-client
   person:
     url: https://localhost
     port: 9090
@@ -17,13 +17,12 @@ service:
     addPerson: /add
     updatePerson: /update
     deletePerson: /delete
-    timeout: 30000
-    maxConnection: 500
+
   swagger:
-    path: /services/person-client-docs/v3/api-docs
+    path: /services/webflux-camel-rest-client/v3/api-docs
     version: 'version1.0.0-1400/11/27'
-    title: 'person rest client webflux'
-    description: 'person rest client webflux'
+    title: 'webflux-camel-rest-client'
+    description: 'webflux-camel-rest-client'
   keystore:
     jksFile: 'keystore/person_api.jks'
     jksPassword: saber@123
@@ -39,6 +38,7 @@ camel:
     jmx-management-statistics-level: extended
     endpoint-runtime-statistics-enabled: true
     jmx-enabled: true
+    producer-template-cache-size: 5000
   cloud:
     consul:
       service-host: localhost
@@ -47,11 +47,21 @@ camel:
       registrationScheduled: 30000
     service-call:
       default-load-balancer: true
-
+  component:
+    http:
+      connections-per-route: 300
+      max-total-connections: 3000
+      connect-timeout: 5000
+      socket-timeout: 30000
+      connection-time-to-live: 30000
+      connection-request-timeout: 30000
+  dataformat:
+    jackson:
+      auto-discover-object-mapper: true
 
 spring:
   application:
-    name: spring-webflux-rest-client
+    name: webflux-camel-rest-client
 
 springdoc:
   swagger-ui:
@@ -69,3 +79,4 @@ management:
     web:
       exposure:
         include: '*'
+

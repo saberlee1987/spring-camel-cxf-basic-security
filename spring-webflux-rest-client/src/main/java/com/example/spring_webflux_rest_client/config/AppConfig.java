@@ -8,6 +8,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -60,12 +61,7 @@ public class AppConfig {
 		
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
-		
-		mapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, true);
-		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
-		
+
 		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 		
@@ -128,5 +124,11 @@ public class AppConfig {
 		source.registerCorsConfiguration("/**", corsConfig);
 
 		return new CorsWebFilter(source);
+	}
+	@Bean
+	public NettyReactiveWebServerFactory nettyReactiveWebServerFactory(){
+		NettyReactiveWebServerFactory webServerFactory = new NettyReactiveWebServerFactory();
+		webServerFactory.addServerCustomizers(new EventLoopNettyCustomizer());
+		return webServerFactory;
 	}
 }
