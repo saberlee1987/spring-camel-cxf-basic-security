@@ -4,11 +4,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.netty.channel.DefaultSelectStrategyFactory;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SelectStrategyFactory;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
+import org.springframework.boot.web.embedded.netty.NettyServerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -22,11 +28,13 @@ import reactor.netty.resources.ConnectionProvider;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.FileInputStream;
+import java.nio.channels.spi.SelectorProvider;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @Configuration
 @Slf4j
@@ -48,6 +56,9 @@ public class AppConfig {
 	private Long timeout;
 	@Value(value = "${service.person.maxConnection}")
 	private Integer maxConnection;
+	
+	@Value(value = "${server.netty.threads}")
+	private Integer threads;
 	
 	@Bean
 	public ObjectMapper mapper() {
@@ -128,7 +139,18 @@ public class AppConfig {
 	@Bean
 	public NettyReactiveWebServerFactory nettyReactiveWebServerFactory(){
 		NettyReactiveWebServerFactory webServerFactory = new NettyReactiveWebServerFactory();
-		webServerFactory.addServerCustomizers(new EventLoopNettyCustomizer());
+		webServerFactory.addServerCustomizers(nettyServerCustomizer());
 		return webServerFactory;
+	}
+	
+	private NettyServerCustomizer nettyServerCustomizer(){
+		return httpServer -> {
+			SelectorProvider selectorProvider = SelectorProvider.provider();
+			SelectStrategyFactory selectStrategyFactory = DefaultSelectStrategyFactory.INSTANCE;
+			EventLoopGroup eventLoopGroup = new NioEventLoopGroup(threads, Executors.newCachedThreadPool(),selectorProvider,selectStrategyFactory);
+			NioServerSocketChannel nioServerSocketChannel = new NioServerSocketChannel();
+			eventLoopGroup.register(nioServerSocketChannel);
+			return httpServer.runOn(eventLoopGroup);
+		};
 	}
 }
