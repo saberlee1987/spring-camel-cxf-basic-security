@@ -15,9 +15,9 @@ server:
       max: 5000
       min: 500
       max-queue-capacity: 2000
-      idle-timeout: 30000
+      idle-timeout: 10000
     max-http-form-post-size: 10
-    connection-idle-timeout: 30000
+    connection-idle-timeout: 10000
   max-http-header-size: 512000
 
   ssl:

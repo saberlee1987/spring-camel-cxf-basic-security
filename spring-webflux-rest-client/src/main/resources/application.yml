@@ -7,7 +7,7 @@ server:
     threads: 5000
 service:
   api:
-    base-path: /services/person-client
+    base-path: /services/webflux-rest-client
   person:
     url: https://localhost
     port: 9090
@@ -20,10 +20,10 @@ service:
     timeout: 30000
     maxConnection: 500
   swagger:
-    path: /services/person-client-docs/v3/api-docs
-    version: 'version1.0.0-1400/11/27'
-    title: 'person rest client webflux'
-    description: 'person rest client webflux'
+    path: /services/webflux-rest-client-docs/v3/api-docs
+    version: 'version1.0.0-1400/12/08'
+    title: 'webflux-rest-client'
+    description: 'webflux-rest-client'
   keystore:
     jksFile: 'keystore/person_api.jks'
     jksPassword: saber@123
