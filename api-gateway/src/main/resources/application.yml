@@ -4,7 +4,7 @@ server:
   netty:
     connection-timeout: 10000
     idle-timeout: 10000
-
+    threads: 5000
 spring:
   application:
     name: api-gateway
@@ -41,6 +41,42 @@ spring:
           predicates:
             - Path=/services/person-soap-client-docs/v2/api-docs
 
+        - id: spring-camel-rest-client
+          uri: lb://spring-camel-rest-client
+          predicates:
+            - Path=/services/camel-rest-client/**
+            - Method=GET,POST,PUT,DELETE
+
+        - id: spring-camel-rest-client-docs
+          uri: lb://spring-camel-rest-client
+          predicates:
+            - Path=/services/camel-rest-client/v3/api-docs
+
+
+        - id: webflux-camel-rest-client
+          uri: lb://spring-camel-rest-client
+          predicates:
+            - Path=/services/webflux-camel-rest-client/**
+            - Method=GET,POST,PUT,DELETE
+
+        - id: webflux-camel-rest-client-docs
+          uri: lb://spring-camel-rest-client
+          predicates:
+            - Path=/services/webflux-camel-rest-client-docs/v3/api-docs
+
+
+        - id: spring-webflux-rest-client
+          uri: lb://spring-camel-rest-client
+          predicates:
+            - Path=/services/webflux-rest-client/**
+            - Method=GET,POST,PUT,DELETE
+
+        - id: spring-webflux-rest-client-docs
+          uri: lb://spring-camel-rest-client
+          predicates:
+            - Path=/services/webflux-rest-client-docs/v3/api-docs
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -49,18 +85,19 @@ springdoc:
     urls:
       - url: http://localhost:${server.port}/services/person-soap-client-docs/v2/api-docs
         name: 'spring camel rest client'
-
-
-
+      - url: http://localhost:${server.port}/services/camel-rest-client/v3/api-docs
+        name: 'camel-rest-client'
+      - url: http://localhost:${server.port}/services/webflux-camel-rest-client-docs/v3/api-docs
+        name: 'webflux-camel-rest-client'
+      - url: http://localhost:${server.port}/services/webflux-rest-client-docs/v3/api-docs
+        name: 'webflux-rest-client'
 
   api-docs:
     groups:
       enabled: true
-
 
 management:
   endpoints:
     web:
       exposure:
         include: '*'
-

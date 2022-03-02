@@ -126,7 +126,7 @@ public class AppConfig {
 	public CorsWebFilter corsWebFilter(){
 		CorsConfiguration corsConfig = new CorsConfiguration();
 		corsConfig.setAllowedOrigins(List.of("*"));
-		corsConfig.setMaxAge(8000L);
+		corsConfig.setMaxAge(30000L);
 		corsConfig.addAllowedMethod("POST, GET, OPTIONS, PUT, DELETE");
 		corsConfig.addAllowedHeader("*");
 

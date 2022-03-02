@@ -19,7 +19,7 @@ service:
     deletePerson: /delete
 
   swagger:
-    path: /services/webflux-camel-rest-client/v3/api-docs
+    path: /services/webflux-camel-rest-client-docs/v3/api-docs
     version: 'version1.0.0-1400/12/08'
     title: 'webflux-camel-rest-client'
     description: 'webflux-camel-rest-client'
@@ -58,8 +58,8 @@ camel:
       max-total-connections: 3000
       connect-timeout: 5000
       socket-timeout: 30000
-      connection-time-to-live: 30000
       connection-request-timeout: 30000
+      connection-time-to-live: 10000
   dataformat:
     jackson:
       auto-discover-object-mapper: true

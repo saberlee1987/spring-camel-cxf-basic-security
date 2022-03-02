@@ -21,7 +21,7 @@ service:
     maxConnection: 500
   swagger:
     path: /services/webflux-rest-client-docs/v3/api-docs
-    version: 'version1.0.0-1400/12/08'
+    version: 'version1.0.0-1400/12/11'
     title: 'webflux-rest-client'
     description: 'webflux-rest-client'
     host: 'localhost'

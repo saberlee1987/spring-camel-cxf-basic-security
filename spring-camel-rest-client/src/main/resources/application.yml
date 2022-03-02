@@ -84,7 +84,7 @@ camel:
       connect-timeout: 10000
       connection-request-timeout: 30000
       socket-timeout: 30000
-      connection-time-to-live: 30000
+      connection-time-to-live: 10000
 
 
 management:
