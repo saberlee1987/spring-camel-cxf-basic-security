@@ -54,13 +54,13 @@ spring:
 
 
         - id: webflux-camel-rest-client
-          uri: lb://spring-camel-rest-client
+          uri: lb://webflux-camel-rest-client
           predicates:
             - Path=/services/webflux-camel-rest-client/**
             - Method=GET,POST,PUT,DELETE
 
         - id: webflux-camel-rest-client-docs
-          uri: lb://spring-camel-rest-client
+          uri: lb://webflux-camel-rest-client
           predicates:
             - Path=/services/webflux-camel-rest-client-docs/v3/api-docs
 
