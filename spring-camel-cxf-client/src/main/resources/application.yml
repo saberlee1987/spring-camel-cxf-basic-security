@@ -27,8 +27,12 @@ service:
   swagger:
     path: '/services/person-soap-client-docs/v2/api-docs'
     title: 'Person Client Service API'
-    version: 'version1.3-1400/11/24'
+    version: 'version1.3-1400/12/11'
     description: 'This is person client api for test'
+    host: 'localhost'
+    api-gateway:
+       host: 'localhost'
+       port: 9096
 
   person-api:
     serviceUrl: https://localhost:9091/soapServices/personSoap

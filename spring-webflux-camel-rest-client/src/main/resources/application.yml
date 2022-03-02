@@ -23,6 +23,11 @@ service:
     version: 'version1.0.0-1400/12/08'
     title: 'webflux-camel-rest-client'
     description: 'webflux-camel-rest-client'
+    host: 'localhost'
+    api-gateway:
+      host: 'localhost'
+      port: 9096
+
   keystore:
     jksFile: 'keystore/person_api.jks'
     jksPassword: saber@123

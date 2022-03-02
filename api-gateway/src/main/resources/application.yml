@@ -1,0 +1,66 @@
+server:
+  port: 9096
+  max-http-header-size: 512000
+  netty:
+    connection-timeout: 10000
+    idle-timeout: 10000
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        health-check-path: /actuator/health
+        consistency-mode: consistent
+        service-name: ${spring.application.name}
+        hostname: localhost
+    gateway:
+      httpclient:
+        pool:
+          type: elastic
+          max-idle-time: 10000
+          max-connections: 5000
+          max-life-time: 10000
+        connect-timeout: 10000
+        response-timeout: 30000
+        max-header-size: 512000
+      metrics:
+        enabled: true
+      routes:
+        - id: person-soap-client
+          uri: lb://person-soap-client
+          predicates:
+            - Path=/services/person-soap-client/**
+            - Method=GET,POST,PUT,DELETE
+
+        - id: person-soap-client-docs
+          uri: lb://person-soap-client
+          predicates:
+            - Path=/services/person-soap-client-docs/v2/api-docs
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    display-operation-id: true
+    urls:
+      - url: http://localhost:${server.port}/services/person-soap-client-docs/v2/api-docs
+        name: 'spring camel rest client'
+
+
+
+
+  api-docs:
+    groups:
+      enabled: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
