@@ -84,7 +84,7 @@ springdoc:
     display-operation-id: true
     urls:
       - url: http://localhost:${server.port}/services/person-soap-client-docs/v2/api-docs
-        name: 'spring camel rest client'
+        name: 'spring camel soap client'
       - url: http://localhost:${server.port}/services/camel-rest-client/v3/api-docs
         name: 'camel-rest-client'
       - url: http://localhost:${server.port}/services/webflux-camel-rest-client-docs/v3/api-docs
