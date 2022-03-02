@@ -4,7 +4,7 @@ server:
   netty:
     connection-timeout: 10000
     idle-timeout: 10000
-    threads: 5000
+    threads: 3000
 spring:
   application:
     name: api-gateway
@@ -66,13 +66,13 @@ spring:
 
 
         - id: spring-webflux-rest-client
-          uri: lb://spring-camel-rest-client
+          uri: lb://spring-webflux-rest-client
           predicates:
             - Path=/services/webflux-rest-client/**
             - Method=GET,POST,PUT,DELETE
 
         - id: spring-webflux-rest-client-docs
-          uri: lb://spring-camel-rest-client
+          uri: lb://spring-webflux-rest-client
           predicates:
             - Path=/services/webflux-rest-client-docs/v3/api-docs
 

@@ -2,9 +2,9 @@ server:
   port: 9093
   max-http-header-size: 512000
   netty:
-    connection-timeout: 30000
-    idle-timeout: 30000
-    threads: 5000
+    connection-timeout: 10000
+    idle-timeout: 10000
+    threads: 3000
 service:
   api:
     base-path: /services/webflux-rest-client

@@ -145,9 +145,7 @@ public class AppConfig {
 	
 	private NettyServerCustomizer nettyServerCustomizer(){
 		return httpServer -> {
-			SelectorProvider selectorProvider = SelectorProvider.provider();
-			SelectStrategyFactory selectStrategyFactory = DefaultSelectStrategyFactory.INSTANCE;
-			EventLoopGroup eventLoopGroup = new NioEventLoopGroup(threads, Executors.newCachedThreadPool(),selectorProvider,selectStrategyFactory);
+			EventLoopGroup eventLoopGroup = new NioEventLoopGroup(threads, Executors.newCachedThreadPool());
 			NioServerSocketChannel nioServerSocketChannel = new NioServerSocketChannel();
 			eventLoopGroup.register(nioServerSocketChannel);
 			return httpServer.runOn(eventLoopGroup);

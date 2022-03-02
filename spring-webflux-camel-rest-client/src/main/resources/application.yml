@@ -1,9 +1,9 @@
 server:
   port: 9095
   netty:
-    connection-timeout: 30000
-    idle-timeout: 30000
-    threads: 5000
+    connection-timeout: 10000
+    idle-timeout: 10000
+    threads: 3000
 
 service:
   api:
