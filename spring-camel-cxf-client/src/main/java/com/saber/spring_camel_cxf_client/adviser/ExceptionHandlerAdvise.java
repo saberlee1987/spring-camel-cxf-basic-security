@@ -32,7 +32,9 @@ public class ExceptionHandlerAdvise extends ResponseEntityExceptionHandler {
 		int statusCode = gatewayException.getStatusCode();
 		ErrorResponse errorResponse = gatewayException.getErrorResponse();
 		
-		log.error("Error for GatewayException with statusCode {} , body {} ", statusCode, errorResponse);
+		log.error("Error for  correlation : {} , GatewayException with statusCode {} , body {} "
+				,gatewayException.getCorrelation()
+				, statusCode, errorResponse);
 		return ResponseEntity.status(statusCode).body(errorResponse);
 	}
 
@@ -56,7 +58,9 @@ public class ExceptionHandlerAdvise extends ResponseEntityExceptionHandler {
 			}
 		}
 		errorResponse.setValidations(validationDtoList);
-		log.error("Error for GatewayException with statusCode {} , body {} ", statusCode, errorResponse);
+		log.error("Error for  correlation : {} , GatewayException with statusCode {} , body {} "
+				,personSoapException.getCorrelation()
+				, statusCode, errorResponse);
 		return ResponseEntity.status(statusCode).body(errorResponse);
 	}
 	@ExceptionHandler(value = ConstraintViolationException.class)

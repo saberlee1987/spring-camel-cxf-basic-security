@@ -28,7 +28,7 @@ public class UpdatePersonRoute extends AbstractRestRouteBuilder {
         from(String.format("direct:%s", Routes.UPDATE_PERSON_ROUTE_GATEWAY_OUT))
                 .routeId(Routes.UPDATE_PERSON_ROUTE_GATEWAY_OUT)
                 .routeGroup(Routes.UPDATE_PERSON_ROUTE_GROUP)
-                .log("Request for update person with nationalCode ${in.header.nationalCode} with body =====>  ${in.body}")
+                .log("Request for correlation : ${in.header.correlation} , update person with nationalCode ${in.header.nationalCode} with body =====>  ${in.body}")
                 .process(exchange -> {
                     String nationalCode = exchange.getIn().getHeader(Headers.nationalCode,String.class);
                     PersonSoapDto personSoapDto = exchange.getIn().getBody(PersonSoapDto.class);
@@ -42,7 +42,9 @@ public class UpdatePersonRoute extends AbstractRestRouteBuilder {
                 .process(exchange -> {
                     String nationalCode = exchange.getIn().getHeader(Headers.nationalCode,String.class);
                     UpdatePersonResponse response = (UpdatePersonResponse) exchange.getIn().getBody(MessageContentsList.class).get(0);
-                    log.info("Response for add person with nationalCode {}  with body ===> {}",nationalCode,  response);
+                    log.info("Response for correlation : {} , add person with nationalCode {}  with body ===> {}"
+                            ,exchange.getIn().getHeader(Headers.correlation)
+                            ,nationalCode,  response);
                     exchange.getIn().setBody(response);
                 })
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200 ));

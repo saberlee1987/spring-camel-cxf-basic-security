@@ -25,6 +25,6 @@ public class TokenRoute extends AbstractRestRouteBuilder {
                  String authorization = String.format("Basic %s", Base64.getEncoder().encodeToString( String.format("%s:%s",username,password).getBytes(StandardCharsets.UTF_8)    ));
                  exchange.getIn().setHeader("Authorization",authorization);
                 })
-                .log("Add token to header");
+                .log("Add token for correlation : ${in.header.correlation} , to header");
     }
 }

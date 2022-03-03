@@ -29,12 +29,18 @@ spring:
         max-header-size: 512000
       metrics:
         enabled: true
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       routes:
         - id: person-soap-client
           uri: lb://person-soap-client
           predicates:
             - Path=/services/person-soap-client/**
-            - Method=GET,POST,PUT,DELETE
+            - Method=GET,POST,PUT,DELETE,OPTIONS,PATCH,HEAD,TRACE
 
         - id: person-soap-client-docs
           uri: lb://person-soap-client
@@ -45,7 +51,7 @@ spring:
           uri: lb://spring-camel-rest-client
           predicates:
             - Path=/services/camel-rest-client/**
-            - Method=GET,POST,PUT,DELETE
+            - Method=GET,POST,PUT,DELETE,OPTIONS,PATCH,HEAD,TRACE
 
         - id: spring-camel-rest-client-docs
           uri: lb://spring-camel-rest-client
@@ -57,7 +63,7 @@ spring:
           uri: lb://webflux-camel-rest-client
           predicates:
             - Path=/services/webflux-camel-rest-client/**
-            - Method=GET,POST,PUT,DELETE
+            - Method=GET,POST,PUT,DELETE,OPTIONS,PATCH,HEAD,TRACE
 
         - id: webflux-camel-rest-client-docs
           uri: lb://webflux-camel-rest-client
@@ -69,12 +75,23 @@ spring:
           uri: lb://spring-webflux-rest-client
           predicates:
             - Path=/services/webflux-rest-client/**
-            - Method=GET,POST,PUT,DELETE
+            - Method=GET,POST,PUT,DELETE,OPTIONS,PATCH,HEAD,TRACE
 
         - id: spring-webflux-rest-client-docs
           uri: lb://spring-webflux-rest-client
           predicates:
             - Path=/services/webflux-rest-client-docs/v3/api-docs
+
+        - id: webflux-camel-soap-client
+          uri: lb://webflux-camel-soap-client
+          predicates:
+            - Path=/services/webflux-camel-soap-client/**
+            - Method=GET,POST,PUT,DELETE,OPTIONS,PATCH,HEAD,TRACE
+
+        - id: webflux-camel-soap-client-docs
+          uri: lb://webflux-camel-soap-client
+          predicates:
+            - Path=/services/webflux-camel-soap-client-docs/v3/api-docs
 
 
 springdoc:
@@ -91,6 +108,8 @@ springdoc:
         name: 'webflux-camel-rest-client'
       - url: http://localhost:${server.port}/services/webflux-rest-client-docs/v3/api-docs
         name: 'webflux-rest-client'
+      - url: http://localhost:${server.port}/services/webflux-camel-soap-client-docs/v3/api-docs
+        name: 'webflux-camel-soap-client'
 
   api-docs:
     groups:

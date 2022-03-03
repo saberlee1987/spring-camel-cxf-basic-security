@@ -16,7 +16,7 @@ public class AddPersonRoute extends AbstractRestRouteBuilder {
 		from(String.format("direct:%s", Routes.ADD_PERSON_ROUTE_GATEWAY))
 				.routeId(Routes.ADD_PERSON_ROUTE_GATEWAY)
 				.routeGroup(Routes.ADD_PERSON_ROUTE_GROUP)
-				.log("Request for add person with body ==> ${in.body}  to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.addPerson}} ")
+				.log("Request for correlation : ${in.header.correlation} , add person with body ==> ${in.body}  to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.addPerson}} ")
 				.to(String.format("direct:%s", Routes.ADD_TOKEN_ROUTE))
 				.to(String.format("direct:%s", Routes.ADD_PERSON_ROUTE_GATEWAY_OUT));
 		
@@ -27,7 +27,7 @@ public class AddPersonRoute extends AbstractRestRouteBuilder {
 				.setHeader(Exchange.HTTP_METHOD,constant("POST"))
 				.to("{{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.addPerson}}?bridgeEndpoint=true&sslContextParameters=#sslContextParameters")
 				.convertBodyTo(String.class)
-				.log("Response for add person  with body ===> ${in.body}")
+				.log("Response for correlation : ${in.header.correlation} , add person  with body ===> ${in.body}")
 				.unmarshal().json(JsonLibrary.Jackson, AddPersonResponseDto.class)
 				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 	}

@@ -17,7 +17,7 @@ public class UpdatePersonRoute extends AbstractRestRouteBuilder {
 		from(String.format("direct:%s", Routes.UPDATE_PERSON_ROUTE_GATEWAY))
 				.routeId(Routes.UPDATE_PERSON_ROUTE_GATEWAY)
 				.routeGroup(Routes.UPDATE_PERSON_ROUTE_GROUP)
-				.log("Request for update person by nationalCode ${in.header.nationalCode} with body ==> ${in.body}  to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.updatePerson}}/${in.header.nationalCode} ")
+				.log("Request for correlation : ${in.header.correlation} , update person by nationalCode ${in.header.nationalCode} with body ==> ${in.body}  to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.updatePerson}}/${in.header.nationalCode} ")
 				.to(String.format("direct:%s", Routes.ADD_TOKEN_ROUTE))
 				.to(String.format("direct:%s", Routes.UPDATE_PERSON_ROUTE_GATEWAY_OUT));
 		
@@ -28,7 +28,7 @@ public class UpdatePersonRoute extends AbstractRestRouteBuilder {
 				.setHeader(Exchange.HTTP_METHOD,constant("PUT"))
 				.toD("{{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.updatePerson}}/${in.header.nationalCode}?bridgeEndpoint=true&sslContextParameters=#sslContextParameters")
 				.convertBodyTo(String.class)
-				.log("Response for update person by nationalCode ${in.header.nationalCode}  with body ===> ${in.body}")
+				.log("Response for correlation : ${in.header.correlation} , update person by nationalCode ${in.header.nationalCode}  with body ===> ${in.body}")
 				.unmarshal().json(JsonLibrary.Jackson, UpdatePersonResponseDto.class)
 				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 	}

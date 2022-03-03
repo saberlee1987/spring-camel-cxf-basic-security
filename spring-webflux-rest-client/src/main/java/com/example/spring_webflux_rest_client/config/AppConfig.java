@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import io.netty.channel.DefaultSelectStrategyFactory;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.SelectStrategyFactory;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.ssl.SslContext;
@@ -19,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,7 +27,6 @@ import reactor.netty.resources.ConnectionProvider;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.FileInputStream;
-import java.nio.channels.spi.SelectorProvider;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.time.Duration;
@@ -127,7 +125,7 @@ public class AppConfig {
 		CorsConfiguration corsConfig = new CorsConfiguration();
 		corsConfig.setAllowedOrigins(List.of("*"));
 		corsConfig.setMaxAge(30000L);
-		corsConfig.addAllowedMethod("POST, GET, OPTIONS, PUT, DELETE");
+		corsConfig.addAllowedMethod("*");
 		corsConfig.addAllowedHeader("*");
 
 		UrlBasedCorsConfigurationSource source =
@@ -135,6 +133,18 @@ public class AppConfig {
 		source.registerCorsConfiguration("/**", corsConfig);
 
 		return new CorsWebFilter(source);
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(List.of("*"));
+		configuration.setAllowedMethods(List.of("*"));
+		configuration.setAllowedHeaders(List.of("*"));
+		configuration.setAllowCredentials(true);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 	@Bean
 	public NettyReactiveWebServerFactory nettyReactiveWebServerFactory(){
@@ -147,6 +157,8 @@ public class AppConfig {
 		return httpServer -> {
 			EventLoopGroup eventLoopGroup = new NioEventLoopGroup(threads, Executors.newCachedThreadPool());
 			NioServerSocketChannel nioServerSocketChannel = new NioServerSocketChannel();
+			httpServer.accessLog(true);
+			httpServer.wiretap(true);
 			eventLoopGroup.register(nioServerSocketChannel);
 			return httpServer.runOn(eventLoopGroup);
 		};

@@ -15,7 +15,7 @@ public class FindAllPersonRoutes extends AbstractRestRouteBuilder {
 		from(String.format("direct:%s", Routes.FIND_ALL_PERSON_ROUTE_GATEWAY))
 				.routeId(Routes.FIND_ALL_PERSON_ROUTE_GATEWAY)
 				.routeGroup(Routes.FIND_ALL_PERSON_ROUTE_GROUP)
-				.log("Request for find person find all to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.findAll}} ")
+				.log("Request for correlation : ${in.header.correlation} , find person find all to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.findAll}} ")
 				.to(String.format("direct:%s", Routes.ADD_TOKEN_ROUTE))
 				.to(String.format("direct:%s", Routes.FIND_ALL_PERSON_ROUTE_GATEWAY_OUT));
 		
@@ -25,7 +25,7 @@ public class FindAllPersonRoutes extends AbstractRestRouteBuilder {
 				.setHeader(Exchange.HTTP_METHOD,constant("GET"))
 				.to("{{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.findAll}}?bridgeEndpoint=true&sslContextParameters=#sslContextParameters")
 				.convertBodyTo(String.class)
-				.log("Response for find all person with body ===> ${in.body}")
+				.log("Response for correlation : ${in.header.correlation} , find all person with body ===> ${in.body}")
 				.unmarshal().json(JsonLibrary.Jackson, PersonResponse.class)
 				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 	}

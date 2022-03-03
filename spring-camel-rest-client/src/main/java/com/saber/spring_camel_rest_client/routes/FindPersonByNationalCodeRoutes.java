@@ -43,7 +43,7 @@ public class FindPersonByNationalCodeRoutes extends AbstractRestRouteBuilder {
 		from(String.format("direct:%s", Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY))
 				.routeId(Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY)
 				.routeGroup(Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GROUP)
-				.log("Request for find person by nationalCode ${in.header.nationalCode} to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.findByNationalCode}}/${in.header.nationalCode} ")
+				.log("Request for correlation : ${in.header.correlation} , find person by nationalCode ${in.header.nationalCode} to url {{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.findByNationalCode}}/${in.header.nationalCode} ")
 				.to(String.format("direct:%s", Routes.ADD_TOKEN_ROUTE))
 				.to(String.format("direct:%s", Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY_OUT));
 		
@@ -52,7 +52,7 @@ public class FindPersonByNationalCodeRoutes extends AbstractRestRouteBuilder {
 				.routeGroup(Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GROUP)
 				.toD("{{service.person.url}}:{{service.person.port}}{{service.person.baseUrl}}{{service.person.findByNationalCode}}/${in.header.nationalCode}?bridgeEndpoint=true&sslContextParameters=#sslContextParameters")
 				.convertBodyTo(String.class)
-				.log("Response for find person by nationalCode ${in.header.nationalCode} with body ===> ${in.body}")
+				.log("Response for correlation : ${in.header.correlation} , find person by nationalCode ${in.header.nationalCode} with body ===> ${in.body}")
 				.unmarshal().json(JsonLibrary.Jackson, PersonDto.class)
 				.setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 	}

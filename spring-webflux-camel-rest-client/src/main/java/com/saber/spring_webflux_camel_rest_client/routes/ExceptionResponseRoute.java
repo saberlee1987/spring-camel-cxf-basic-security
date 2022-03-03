@@ -34,7 +34,9 @@ public class ExceptionResponseRoute extends RouteBuilder {
 					errorResponse.setMessage(ServiceErrorResponseEnum.TIMEOUT_EXCEPTION.getMessage());
 					errorResponse.setOriginalMessage(String.format("{\"code\":%d,\"text\":\"%s\"}", HttpStatus.GATEWAY_TIMEOUT.value(),exceptionMessage));
 				
-					log.error("Error for timeout-exception statusCode {} ====> {}",HttpStatus.GATEWAY_TIMEOUT.value(),errorResponse);
+					log.error("Error for correlation : {} , timeout-exception statusCode {} ====> {}"
+							,exchange.getIn().getHeader(Headers.correlation)
+							,HttpStatus.GATEWAY_TIMEOUT.value(),errorResponse);
 					exchange.getIn().setBody(errorResponse);
 				});
 		
@@ -54,8 +56,12 @@ public class ExceptionResponseRoute extends RouteBuilder {
 					ValidationDto validationError=new ValidationDto();
 					if (exception!=null){
 						String exceptionMessage =exception.getMessage();
-						log.error("Error Exception Message  correlation ===> {} error =======> {}",exchange.getIn().getHeader("correlation"), exceptionMessage );
-						log.error("Error json-exception correlation ===> {} error =======> {} ",exchange.getIn().getHeader("correlation"), exceptionMessage );
+						log.error("Error for correlation : {} , Exception Message  correlation ===> {} error =======> {}"
+								,exchange.getIn().getHeader(Headers.correlation)
+								,exchange.getIn().getHeader("correlation"), exceptionMessage );
+						log.error("Error for correlation : {} , json-exception correlation ===> {} error =======> {} "
+								,exchange.getIn().getHeader(Headers.correlation)
+								,exchange.getIn().getHeader("correlation"), exceptionMessage );
 						validationError.setFieldName(exception.getPropertyName());
 						validationError.setDetailMessage(exception.getOriginalMessage());
 						validationErrors.add(validationError);
@@ -63,15 +69,21 @@ public class ExceptionResponseRoute extends RouteBuilder {
 					}else{
 						Exception ex=exchange.getProperty(Exchange.EXCEPTION_CAUGHT,Exception.class);
 						String exceptionMessage =ex.getMessage();
-						log.error("Error Exception Message correlation ===> {} error =======> {}",exchange.getIn().getHeader("correlation"), exceptionMessage );
-						log.error("Error json-exception correlation ===> {} error =======> {} ",exchange.getIn().getHeader("correlation"), exceptionMessage );
+						log.error("Error for correlation : {} , Exception Message correlation ===> {} error =======> {}"
+								,exchange.getIn().getHeader(Headers.correlation)
+								,exchange.getIn().getHeader("correlation"), exceptionMessage );
+						log.error("Error  for correlation : {} , json-exception correlation ===> {} error =======> {} "
+								,exchange.getIn().getHeader(Headers.correlation)
+								,exchange.getIn().getHeader("correlation"), exceptionMessage );
 						validationError.setDetailMessage(exceptionMessage);
 						validationErrors.add(validationError);
 						errorResponse.setOriginalMessage(String.format("{\"code\":%d,\"text\":\"%s\"}", HttpStatus.NOT_ACCEPTABLE.value(),exceptionMessage));
 					}
 					errorResponse.setValidations(validationErrors);
 					
-					log.error("Error for json-exception statusCode {} ====> {}",HttpStatus.NOT_ACCEPTABLE.value(),errorResponse);
+					log.error("Error for correlation : {} , json-exception statusCode {} ====> {}"
+							,exchange.getIn().getHeader(Headers.correlation)
+							,HttpStatus.NOT_ACCEPTABLE.value(),errorResponse);
 					exchange.getIn().setBody(errorResponse);
 				});
 
@@ -93,7 +105,9 @@ public class ExceptionResponseRoute extends RouteBuilder {
 						errorResponse.setOriginalMessage(String.format("{\"code\":%d,\"text\":\"%s\"}",statusCode,statusCode));
 					}
 					
-					log.error("Error for httpOperationException statusCode {} ====> {}",statusCode,errorResponse);
+					log.error("Error for correlation : {} , httpOperationException statusCode {} ====> {}"
+							,exchange.getIn().getHeader(Headers.correlation)
+							,statusCode,errorResponse);
 					exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE,statusCode);
 					exchange.getIn().setBody(errorResponse);
 				});

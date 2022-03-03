@@ -3,6 +3,7 @@ package com.saber.spring_webflux_camel_rest_client.controllers;
 
 import com.saber.spring_webflux_camel_rest_client.dto.ErrorResponse;
 import com.saber.spring_webflux_camel_rest_client.dto.person.*;
+import com.saber.spring_webflux_camel_rest_client.routes.Headers;
 import com.saber.spring_webflux_camel_rest_client.services.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,9 +16,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -25,6 +29,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Validated
@@ -56,16 +62,16 @@ public class PersonController {
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 		
 	})
-	public Mono<PersonDto> findPersonByNationalCode(@PathVariable(name = "nationalCode")
+	public ResponseEntity<Mono<PersonDto>> findPersonByNationalCode(@PathVariable(name = "nationalCode")
 													@NotBlank(message = "nationalCode is Required")
 													@Size(min = 10, max = 10, message = "nationalCode must be 10 digit")
 													@Pattern(regexp = "\\d+", message = "Please Enter correct nationalCode")
 													@Valid
 													@Parameter(name = "nationalCode", in = ParameterIn.PATH, example = "0079028748", required = true)
-															String nationalCode) {
+															String nationalCode,ServerWebExchange exchange) {
+		String correlation = getCorrelation(exchange);
 		
-		
-		return this.personService.findPersonByNationalCode(nationalCode);
+		return ResponseEntity.ok(this.personService.findPersonByNationalCode(nationalCode,correlation));
 	}
 	
 	@GetMapping(value = "/findAll")
@@ -85,9 +91,9 @@ public class PersonController {
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 		
 	})
-	public Mono<PersonResponse> findAllPersons() {
-		
-		return this.personService.findAll();
+	public ResponseEntity<Mono<PersonResponse>> findAllPersons(ServerWebExchange exchange) {
+		String correlation = getCorrelation(exchange);
+		return ResponseEntity.ok(this.personService.findAll(correlation));
 	}
 	
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -111,8 +117,9 @@ public class PersonController {
 			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 	})
-	public Mono<AddPersonResponseDto> addPerson(@RequestBody @NotNull(message = "body is Required") @Valid PersonDto personDto) {
-		return personService.addPerson(personDto);
+	public ResponseEntity<Mono<AddPersonResponseDto>> addPerson(@RequestBody @NotNull(message = "body is Required") @Valid PersonDto personDto,ServerWebExchange exchange) {
+		String correlation = getCorrelation(exchange);
+		return ResponseEntity.ok(personService.addPerson(personDto,correlation));
 	}
 	
 	@PutMapping(value = "/update/{nationalCode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -139,15 +146,16 @@ public class PersonController {
 			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 	})
-	public Mono<UpdatePersonResponseDto> updatePerson(@RequestBody
+	public ResponseEntity<Mono<UpdatePersonResponseDto>> updatePerson(@RequestBody
 													  @NotNull(message = "body is Required") @Valid
 															  PersonDto personDto,
-													  @PathVariable(name = "nationalCode")
+																	  @PathVariable(name = "nationalCode")
 													  @NotBlank(message = "nationalCode is Required")
 													  @Size(min = 10, max = 10, message = "nationalCode must be 10 digit")
 													  @Pattern(regexp = "\\d+", message = "please enter valid nationalCode")
-															  String nationalCode) {
-		return personService.updatePersonByNationalCode(nationalCode, personDto);
+															  String nationalCode,ServerWebExchange exchange) {
+		String correlation = getCorrelation(exchange);
+		return ResponseEntity.ok(personService.updatePersonByNationalCode(nationalCode, personDto,correlation));
 	}
 	
 	@DeleteMapping(value = "/delete/{nationalCode}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -167,11 +175,24 @@ public class PersonController {
 			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 	})
-	public Mono<DeletePersonDto> deletePersonByNationalCode(@PathVariable(name = "nationalCode")
+	public ResponseEntity<Mono<DeletePersonDto>> deletePersonByNationalCode(@PathVariable(name = "nationalCode")
 																		  @NotBlank(message = "nationalCode is Required")
 																		  @Size(min = 10, max = 10, message = "nationalCode must be 10 digit")
 																		  @Pattern(regexp = "\\d+", message = "please enter valid nationalCode")
-																				  String nationalCode) {
-		return personService.deletePersonByNationalCode(nationalCode);
+																				  String nationalCode,ServerWebExchange exchange) {
+		String correlation = getCorrelation(exchange);
+		return ResponseEntity.ok(personService.deletePersonByNationalCode(nationalCode,correlation));
+	}
+
+	private String getCorrelation(ServerWebExchange exchange){
+		String correlation = "";
+		HttpHeaders headers = exchange.getRequest().getHeaders();
+		List<String> correlations = headers.get(Headers.correlation);
+		if(correlations!=null && !correlations.isEmpty()){
+			correlation = correlations.get(0);
+		}else{
+			correlation = UUID.randomUUID().toString();
+		}
+		return correlation;
 	}
 }

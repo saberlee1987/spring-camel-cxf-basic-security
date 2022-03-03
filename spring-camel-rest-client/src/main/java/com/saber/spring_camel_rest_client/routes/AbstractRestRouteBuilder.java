@@ -22,20 +22,20 @@ public class AbstractRestRouteBuilder extends RouteBuilder {
 		onException(ConnectException.class)
 				.handled(true)
 				.maximumRedeliveries(0)
-				.log(LoggingLevel.ERROR,"Error for ConnectException with error "+exceptionMessage())
+				.log(LoggingLevel.ERROR,"Error for correlation : ${in.header.correlation} , ConnectException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.TIMEOUT_EXCEPTION_HANDLER_ROUTE));
 		
 		
 		onException(SocketException.class)
 				.handled(true)
 				.maximumRedeliveries(0)
-				.log(LoggingLevel.ERROR,"Error for SocketException with error "+exceptionMessage())
+				.log(LoggingLevel.ERROR,"Error for correlation : ${in.header.correlation} , SocketException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.TIMEOUT_EXCEPTION_HANDLER_ROUTE));
 		
 		onException(SocketTimeoutException.class)
 				.handled(true)
 				.maximumRedeliveries(0)
-				.log(LoggingLevel.ERROR,"Error for SocketTimeoutException with error "+exceptionMessage())
+				.log(LoggingLevel.ERROR,"Error for correlation : ${in.header.correlation} , SocketTimeoutException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.TIMEOUT_EXCEPTION_HANDLER_ROUTE));
 		
 		
@@ -49,25 +49,25 @@ public class AbstractRestRouteBuilder extends RouteBuilder {
 		onException(JsonParseException.class)
 				.handled(true)
 				.maximumRedeliveries(0)
-				.log(LoggingLevel.ERROR,"Error for JsonParseException with error "+exceptionMessage())
+				.log(LoggingLevel.ERROR,"Error for correlation : ${in.header.correlation} , JsonParseException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.JSON_EXCEPTION_HANDLER_ROUTE));
 		
 		onException(BeanValidationException.class)
 				.handled(true)
 				.maximumRedeliveries(0)
-				.log(LoggingLevel.ERROR,"Error for BeanValidationException with error "+exceptionMessage())
+				.log(LoggingLevel.ERROR,"Error for correlation : ${in.header.correlation} , BeanValidationException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.BEAN_VALIDATION_EXCEPTION_HANDLER_ROUTE));
 		
 		onException(PredicateValidationException.class)
 				.handled(true)
 				.maximumRedeliveries(0)
-				.log(LoggingLevel.ERROR,"Error for PredicateValidationException with error "+exceptionMessage())
+				.log(LoggingLevel.ERROR,"Error for correlation : ${in.header.correlation} , PredicateValidationException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.PREDICATE_EXCEPTION_HANDLER_ROUTE));
 		
 		onException(HttpOperationFailedException.class)
 				.handled(true)
 				.maximumRedeliveries(0)
-				.log(LoggingLevel.ERROR,"Error for HttpOperationFailedException with error "+exceptionMessage())
+				.log(LoggingLevel.ERROR,"Error for correlation : ${in.header.correlation} , HttpOperationFailedException with error "+exceptionMessage())
 				.to(String.format("direct:%s",Routes.HTTP_OPERATION_EXCEPTION_HANDLER_ROUTE));
 				
 	}

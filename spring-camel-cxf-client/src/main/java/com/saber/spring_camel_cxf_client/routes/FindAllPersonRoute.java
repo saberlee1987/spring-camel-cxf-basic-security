@@ -21,7 +21,7 @@ public class FindAllPersonRoute extends AbstractRestRouteBuilder {
         from(String.format("direct:%s", Routes.FIND_ALL_PERSONS_ROUTE_GATEWAY))
                 .routeId(Routes.FIND_ALL_PERSONS_ROUTE_GATEWAY)
                 .routeGroup(Routes.FIND_ALL_PERSONS_ROUTE_GROUP)
-                .log("Request for find All persons")
+                .log("Request for correlation : ${in.header.correlation} , find All persons")
                 .to(String.format("direct:%s", Routes.ADD_TOKEN_ROUTE))
                 .to(String.format("direct:%s", Routes.FIND_ALL_PERSONS_ROUTE_GATEWAY_OUT));
 
@@ -36,7 +36,9 @@ public class FindAllPersonRoute extends AbstractRestRouteBuilder {
                 .to("cxf:bean:personSoapClient")
                 .process(exchange -> {
                     FindAllPersonsResponse response = (FindAllPersonsResponse) exchange.getIn().getBody(MessageContentsList.class).get(0);
-                    log.info("Response for find All Persons with body ===> {}",  response);
+                    log.info("Response for correlation : {} , find All Persons with body ===> {}"
+                            ,exchange.getIn().getHeader(Headers.correlation)
+                            ,  response);
                     exchange.getIn().setBody(response);
                 })
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200 ));

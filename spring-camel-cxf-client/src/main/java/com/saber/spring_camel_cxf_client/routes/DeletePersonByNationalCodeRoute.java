@@ -21,7 +21,7 @@ public class DeletePersonByNationalCodeRoute extends AbstractRestRouteBuilder {
         from(String.format("direct:%s", Routes.DELETE_PERSON_ROUTE_GATEWAY))
                 .routeId(Routes.DELETE_PERSON_ROUTE_GATEWAY)
                 .routeGroup(Routes.DELETE_PERSON_ROUTE_GROUP)
-                .log("Request for delete person by nationalCode")
+                .log("Request for correlation : ${in.header.correlation} , delete person by nationalCode")
                 .to(String.format("direct:%s", Routes.ADD_TOKEN_ROUTE))
                 .to(String.format("direct:%s", Routes.DELETE_PERSON_ROUTE_GATEWAY_OUT));
 
@@ -39,7 +39,9 @@ public class DeletePersonByNationalCodeRoute extends AbstractRestRouteBuilder {
                 .process(exchange -> {
                     String nationalCode = exchange.getIn().getHeader(Headers.nationalCode, String.class);
                     DeletePersonResponse response = (DeletePersonResponse) exchange.getIn().getBody(MessageContentsList.class).get(0);
-                    log.info("Response for delete person by nationalCode {} ,  with body ===> {}",nationalCode,  response);
+                    log.info("Response for  correlation : {} , delete person by nationalCode {} ,  with body ===> {}"
+                            ,exchange.getIn().getHeader(Headers.correlation)
+                            ,nationalCode,  response);
                     exchange.getIn().setBody(response);
                 })
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));

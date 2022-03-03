@@ -21,69 +21,72 @@ public class PersonServiceImpl implements PersonService {
     private ProducerTemplate producerTemplate;
 
     @Override
-    public Mono<PersonResponse> findAll() {
+    public Mono<PersonResponse> findAll(String correlation) {
         Exchange responseExchange = this.producerTemplate.send(String.format("direct:%s", Routes.FIND_ALL_PERSON_ROUTE_GATEWAY), exchange -> {
-
+            exchange.getIn().setHeader(Headers.correlation,correlation);
         });
-        checkException("findAll",responseExchange);
+        checkException("findAll",responseExchange,correlation);
 
         PersonResponse personResponse = responseExchange.getIn().getBody(PersonResponse.class);
-        log.info("Response for find All Person ====> {}", personResponse);
+        log.info("Response for correlation : {} , find All Person ====> {}",correlation, personResponse);
         return Mono.just(personResponse);
     }
 
     @Override
-    public Mono<PersonDto> findPersonByNationalCode(String nationalCode) {
+    public Mono<PersonDto> findPersonByNationalCode(String nationalCode,String correlation) {
         Exchange responseExchange = this.producerTemplate.send(String.format("direct:%s", Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY), exchange -> {
             exchange.getIn().setHeader(Headers.nationalCode, nationalCode);
+            exchange.getIn().setHeader(Headers.correlation,correlation);
         });
-        checkException("findPersonByNationalCode",responseExchange);
+        checkException("findPersonByNationalCode",responseExchange,correlation);
         PersonDto personDto = responseExchange.getIn().getBody(PersonDto.class);
-        log.info("Response for findPersonByNationalCode ====> {}", personDto);
+        log.info("Response for correlation : {} , findPersonByNationalCode ====> {}",correlation, personDto);
         return Mono.just(personDto);
     }
 
     @Override
-    public Mono<AddPersonResponseDto> addPerson(PersonDto personDto) {
+    public Mono<AddPersonResponseDto> addPerson(PersonDto personDto,String correlation) {
         Exchange responseExchange = this.producerTemplate.send(String.format("direct:%s", Routes.ADD_PERSON_ROUTE_GATEWAY), exchange -> {
             exchange.getIn().setBody(personDto);
-
+            exchange.getIn().setHeader(Headers.correlation,correlation);
         });
-        checkException("addPerson",responseExchange);
+        checkException("addPerson",responseExchange,correlation);
         AddPersonResponseDto response = responseExchange.getIn().getBody(AddPersonResponseDto.class);
-        log.info("Response for addPerson ====> {}", response);
+        log.info("Response for correlation : {} , addPerson ====> {}",correlation, response);
         return Mono.just(response);
     }
 
     @Override
-    public Mono<UpdatePersonResponseDto> updatePersonByNationalCode(String nationalCode, PersonDto personDto) {
+    public Mono<UpdatePersonResponseDto> updatePersonByNationalCode(String nationalCode, PersonDto personDto,String correlation) {
         Exchange responseExchange = this.producerTemplate.send(String.format("direct:%s", Routes.UPDATE_PERSON_ROUTE_GATEWAY), exchange -> {
             exchange.getIn().setBody(personDto);
             exchange.getIn().setHeader(Headers.nationalCode, nationalCode);
+            exchange.getIn().setHeader(Headers.correlation,correlation);
         });
-        checkException("updatePersonByNationalCode",responseExchange);
+        checkException("updatePersonByNationalCode",responseExchange,correlation);
         UpdatePersonResponseDto response = responseExchange.getIn().getBody(UpdatePersonResponseDto.class);
-        log.info("Response for updatePersonByNationalCode  ====> {}", response);
+        log.info("Response for correlation : {} , updatePersonByNationalCode  ====> {}",correlation, response);
         return Mono.just(response);
     }
 
     @Override
-    public Mono<DeletePersonDto> deletePersonByNationalCode(String nationalCode) {
+    public Mono<DeletePersonDto> deletePersonByNationalCode(String nationalCode,String correlation) {
         Exchange responseExchange = this.producerTemplate.send(String.format("direct:%s", Routes.DELETE_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY), exchange -> {
             exchange.getIn().setHeader(Headers.nationalCode, nationalCode);
+            exchange.getIn().setHeader(Headers.correlation,correlation);
         });
-        checkException("deletePersonByNationalCode",responseExchange);
+        checkException("deletePersonByNationalCode",responseExchange,correlation);
         DeletePersonDto response = responseExchange.getIn().getBody(DeletePersonDto.class);
-        log.info("Response for deletePersonByNationalCode  ====> {}", response);
+        log.info("Response for correlation : {} , deletePersonByNationalCode  ====> {}",correlation, response);
         return Mono.just(response);
     }
 
-    private void checkException(String methodName, Exchange responseExchange) {
+    private void checkException(String methodName, Exchange responseExchange,String correlation) {
         int statusCode = responseExchange.getIn().getHeader(Exchange.HTTP_RESPONSE_CODE, Integer.class);
         if (statusCode != HttpStatus.OK.value()) {
             ErrorResponse errorResponse = responseExchange.getIn().getBody(ErrorResponse.class);
-            log.error("Error for {} , statusCode {} , with body {}", methodName, statusCode, errorResponse);
-            throw new GatewayException(statusCode, errorResponse);
+            log.error("Error for correlation : {} , {} , statusCode {} , with body {}",correlation, methodName, statusCode, errorResponse);
+            throw new GatewayException(statusCode, correlation, errorResponse);
         }
     }
 }

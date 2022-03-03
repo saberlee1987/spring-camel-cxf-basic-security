@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.UUID;
+
 @SpringBootTest
 class SpringCamelCxfClientApplicationTests {
 
@@ -14,7 +16,8 @@ class SpringCamelCxfClientApplicationTests {
 
     @Test
     void contextLoads() {
-        FindAllResponseDto response = personService.findAll();
+        String correlation = UUID.randomUUID().toString();
+        FindAllResponseDto response = personService.findAll(correlation);
 
         System.out.println(response);
     }

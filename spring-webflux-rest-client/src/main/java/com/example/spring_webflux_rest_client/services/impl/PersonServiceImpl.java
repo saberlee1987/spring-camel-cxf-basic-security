@@ -34,15 +34,15 @@ public class PersonServiceImpl implements PersonService {
 	private WebClient webClient;
 	
 	@Override
-	public Mono<PersonResponse> findAll() {
+	public Mono<PersonResponse> findAll(String correlation) {
 		String url = String.format("%s%s", personBaseUrl, personFindAllUrl);
-		log.info("Request for findAll persons ");
+		log.info("Request for correlation : {} , findAll persons ",correlation);
 		ParameterizedTypeReference<PersonResponse> parameterizedTypeReference = new ParameterizedTypeReference<PersonResponse>() {
 		};
 		Mono<PersonResponse> responseResponseEntity = sendGetRequest(url, parameterizedTypeReference);
 		
 		responseResponseEntity = responseResponseEntity.flatMap(response -> {
-			log.info("Response for findAll persons with body {}", response);
+			log.info("Response for correlation : {} , findAll persons with body {}",correlation, response);
 			return Mono.just(response);
 		});
 		return responseResponseEntity;
@@ -50,16 +50,16 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public Mono<PersonDto> findPersonByNationalCode(String nationalCode) {
+	public Mono<PersonDto> findPersonByNationalCode(String nationalCode,String correlation) {
 		
 		String url = String.format("%s%s/%s", personBaseUrl, personFindByNationalCodeUrl, nationalCode);
-		log.info("Request  for find person with nationalCode {} ", nationalCode);
+		log.info("Request  for correlation : {} , find person with nationalCode {} ",correlation, nationalCode);
 		ParameterizedTypeReference<PersonDto> parameterizedTypeReference = new ParameterizedTypeReference<PersonDto>() {
 		};
 		Mono<PersonDto> personDtoMono = sendGetRequest(url, parameterizedTypeReference);
 		
 		personDtoMono = personDtoMono.flatMap(response -> {
-			log.info("Response for find person by nationalCode {} with body {}", nationalCode, response);
+			log.info("Response for correlation : {} , find person by nationalCode {} with body {}",correlation, nationalCode, response);
 			return Mono.just(response);
 		});
 		
@@ -68,9 +68,9 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public Mono<AddPersonResponseDto> addPerson(PersonDto personDto) {
+	public Mono<AddPersonResponseDto> addPerson(PersonDto personDto,String correlation) {
 		String url = String.format("%s%s", personBaseUrl, addPersonUrl);
-		log.info("Request for add person with body {} ", personDto);
+		log.info("Request for correlation : {} , add person with body {} ",correlation, personDto);
 		ParameterizedTypeReference<AddPersonResponseDto> parameterizedTypeReference = new ParameterizedTypeReference<AddPersonResponseDto>() {
 		};
 		Mono<AddPersonResponseDto> responseResponseEntity = webClient.post()
@@ -89,7 +89,7 @@ public class PersonServiceImpl implements PersonService {
 				.bodyToMono(parameterizedTypeReference);
 		
 		responseResponseEntity = responseResponseEntity.flatMap(response -> {
-			log.info("Response for add person  with body {}", response);
+			log.info("Response for correlation : {} , add person  with body {}",correlation, response);
 			return Mono.just(response);
 		});
 		
@@ -97,9 +97,9 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public Mono<UpdatePersonResponseDto> updatePersonByNationalCode(String nationalCode, PersonDto personDto) {
+	public Mono<UpdatePersonResponseDto> updatePersonByNationalCode(String nationalCode, PersonDto personDto,String correlation) {
 		String url = String.format("%s%s/%s", personBaseUrl, updatePersonUrl, nationalCode);
-		log.info("Request for update person by nationalCode {} with body {} ", nationalCode, personDto);
+		log.info("Request for correlation : {} , update person by nationalCode {} with body {} ",correlation, nationalCode, personDto);
 		ParameterizedTypeReference<UpdatePersonResponseDto> parameterizedTypeReference = new ParameterizedTypeReference<>() {
 		};
 		Mono<UpdatePersonResponseDto> responseResponseEntity = webClient.put()
@@ -118,7 +118,7 @@ public class PersonServiceImpl implements PersonService {
 				.bodyToMono(parameterizedTypeReference);
 		
 		responseResponseEntity = responseResponseEntity.flatMap(response -> {
-			log.info("Response for update person by nationalCode {} with body {}",nationalCode, response);
+			log.info("Response for correlation : {} , update person by nationalCode {} with body {}",correlation,nationalCode, response);
 			return Mono.just(response);
 		});
 		
@@ -126,9 +126,9 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public Mono<DeletePersonDto> deletePersonByNationalCode(String nationalCode) {
+	public Mono<DeletePersonDto> deletePersonByNationalCode(String nationalCode,String correlation) {
 		String url = String.format("%s%s/%s", personBaseUrl, deletePersonUrl, nationalCode);
-		log.info("Request  for delete person with nationalCode {} ", nationalCode);
+		log.info("Request  for correlation : {} , delete person with nationalCode {} ",correlation, nationalCode);
 		ParameterizedTypeReference<DeletePersonDto> parameterizedTypeReference = new ParameterizedTypeReference<>() {
 		};
 		Mono<DeletePersonDto> responseResponseEntity = webClient.delete()
@@ -145,7 +145,7 @@ public class PersonServiceImpl implements PersonService {
 				.bodyToMono(parameterizedTypeReference);
 		
 		responseResponseEntity = responseResponseEntity.flatMap(response -> {
-			log.info("Response for delete person with nationalCode {}  with body {}",nationalCode, response);
+			log.info("Response for correlation : {} , delete person with nationalCode {}  with body {}",correlation,nationalCode, response);
 			return Mono.just(response);
 		});
 		

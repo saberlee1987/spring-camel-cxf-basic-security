@@ -28,7 +28,7 @@ public class AddPersonRoute extends AbstractRestRouteBuilder {
         from(String.format("direct:%s", Routes.ADD_PERSON_ROUTE_GATEWAY_OUT))
                 .routeId(Routes.ADD_PERSON_ROUTE_GATEWAY_OUT)
                 .routeGroup(Routes.ADD_PERSON_ROUTE_GROUP)
-                .log("Request for add person with body =====>  ${in.body}")
+                .log("Request for correlation : ${in.header.correlation} , add person with body =====>  ${in.body}")
                 .process(exchange -> {
                     PersonSoapDto personSoapDto = exchange.getIn().getBody(PersonSoapDto.class);
                     List<Object> params = new ArrayList<>();
@@ -39,7 +39,9 @@ public class AddPersonRoute extends AbstractRestRouteBuilder {
                 .to("cxf:bean:personSoapClient")
                 .process(exchange -> {
                     AddPersonResponseDto response = (AddPersonResponseDto) exchange.getIn().getBody(MessageContentsList.class).get(0);
-                    log.info("Response for add person  with body ===> {}",  response);
+                    log.info("Response for correlation : {} , add person  with body ===> {}"
+                            ,exchange.getIn().getHeader(Headers.correlation)
+                            ,  response);
                     exchange.getIn().setBody(response);
                 })
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200 ));

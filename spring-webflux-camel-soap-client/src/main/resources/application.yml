@@ -1,0 +1,89 @@
+server:
+  port: 9097
+  netty:
+    connection-timeout: 10000
+    idle-timeout: 10000
+    threads: 3000
+  max-http-header-size: 512000
+
+
+service:
+  api:
+    base-path: /services/webflux-camel-soap-client
+  swagger:
+    path: '/services/webflux-camel-soap-client-docs/v3/api-docs'
+    title: 'webflux-camel-soap-client'
+    version: 'version1.0.1-1400/12/12'
+    description: 'webflux-camel-soap-client'
+    host: 'localhost'
+    api-gateway:
+      host: 'localhost'
+      port: 9096
+
+  person-api:
+    serviceUrl: https://localhost:9091/soapServices/personSoap
+    disableHostnameCheck: true
+    connectTimeout: 30000
+    readTimeout: 30000
+    jksFile: person_api.jks
+    jksPassword: saber@123
+    username: saber66
+    password: saber@123
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    display-operation-id: true
+    persist-authorization: true
+    operations-sorter: method
+
+  api-docs:
+    groups:
+      enabled: true
+    path: ${service.swagger.path}
+
+
+spring:
+  application:
+    name: webflux-camel-soap-client
+
+camel:
+  springboot:
+    jmx-management-statistics-level: extended
+    producer-template-cache-size: 5000
+    backlog-tracing: true
+  cloud:
+    consul:
+      service-host: localhost
+      url: http://localhost:8500
+      id: ${spring.application.name}
+      registrationScheduled: 30000
+    service-call:
+      default-load-balancer: true
+  dataformat:
+    jackson:
+      pretty-print: true
+      auto-discover-object-mapper: true
+
+
+hawtio:
+  authenticationEnabled: false
+management:
+  metrics:
+  distribution:
+    percentiles-histogram:
+      "[http.server.requests]": true
+    sla:
+      "[http.server.requests]": 10ms, 100ms
+    percentiles:
+      "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      base-path: /actuators/webflux-camel-soap-client
+      exposure:
+        include: '*'
+

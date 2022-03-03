@@ -7,9 +7,9 @@ import com.saber.spring_camel_cxf_client.dto.soap.PersonSoapDto;
 import com.saber.spring_camel_cxf_client.dto.soap.UpdatePersonSoapResponseDto;
 
 public interface PersonService {
-    FindAllResponseDto findAll();
-    PersonSoapDto findPersonByNationalCode(String nationalCode);
-    AddPersonSoapResponseDto addPerson(PersonSoapDto personSoapDto);
-    UpdatePersonSoapResponseDto updatePersonByNationalCode(String nationalCode,PersonSoapDto personSoapDto);
-    DeleteSoapPersonDto deletePersonByNationalCode(String nationalCode);
+    FindAllResponseDto findAll(String correlation);
+    PersonSoapDto findPersonByNationalCode(String nationalCode,String correlation);
+    AddPersonSoapResponseDto addPerson(PersonSoapDto personSoapDto,String correlation);
+    UpdatePersonSoapResponseDto updatePersonByNationalCode(String nationalCode,PersonSoapDto personSoapDto,String correlation);
+    DeleteSoapPersonDto deletePersonByNationalCode(String nationalCode,String correlation);
 }

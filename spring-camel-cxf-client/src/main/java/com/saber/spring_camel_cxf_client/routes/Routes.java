@@ -33,5 +33,7 @@ public interface Routes {
     String CONSUL_REGISTRATION_ROUTE_GROUP = "consul-registration-route-group";
 
 	String TIME_OUT_EXCEPTION_ROUTE = "timeout-exception-route" ;
+    String SOAP_FAULT_EXCEPTION_ROUTE = "soap-fault-exception-route" ;
+    String SOAP_HTTP_EXCEPTION_ROUTE = "soap-http-exception-route" ;
 	String EXCEPTION_ROUTE_GROUP = "exception-route-group" ;
 }

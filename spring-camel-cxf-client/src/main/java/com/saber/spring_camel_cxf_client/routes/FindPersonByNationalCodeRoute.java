@@ -21,7 +21,7 @@ public class FindPersonByNationalCodeRoute extends AbstractRestRouteBuilder {
         from(String.format("direct:%s", Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY))
                 .routeId(Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY)
                 .routeGroup(Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GROUP)
-                .log("Request for find person by nationalCode")
+                .log("Request for correlation : ${in.header.correlation} , find person by nationalCode")
                 .to(String.format("direct:%s", Routes.ADD_TOKEN_ROUTE))
                 .to(String.format("direct:%s", Routes.FIND_PERSON_BY_NATIONAL_CODE_ROUTE_GATEWAY_OUT));
 
@@ -39,7 +39,9 @@ public class FindPersonByNationalCodeRoute extends AbstractRestRouteBuilder {
                 .process(exchange -> {
                     String nationalCode = exchange.getIn().getHeader(Headers.nationalCode, String.class);
                     PersonSoapResponse response = (PersonSoapResponse) exchange.getIn().getBody(MessageContentsList.class).get(0);
-                    log.info("Response for find person by nationalCode {} ,  with body ===> {}",nationalCode,  response);
+                    log.info("Response for correlation : {} , find person by nationalCode {} ,  with body ===> {}"
+                            ,exchange.getIn().getHeader(Headers.correlation)
+                            ,nationalCode,  response);
                     exchange.getIn().setBody(response);
                 })
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200 ));
