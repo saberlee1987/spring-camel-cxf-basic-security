@@ -153,6 +153,8 @@ public class AppConfig {
 	private NettyServerCustomizer nettyServerCustomizer(){
 		return httpServer -> {
 			EventLoopGroup eventLoopGroup = new NioEventLoopGroup(threads,Executors.newCachedThreadPool());
+			httpServer = httpServer.accessLog(true);
+			httpServer=httpServer.wiretap(true);
 			NioServerSocketChannel nioServerSocketChannel = new NioServerSocketChannel();
 			eventLoopGroup.register(nioServerSocketChannel);
 			return httpServer.runOn(eventLoopGroup);

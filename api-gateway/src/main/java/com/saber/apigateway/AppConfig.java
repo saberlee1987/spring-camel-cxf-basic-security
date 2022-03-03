@@ -58,6 +58,8 @@ public class AppConfig {
         return httpServer -> {
             EventLoopGroup eventLoopGroup = new NioEventLoopGroup(threads,Executors.newCachedThreadPool());
             NioServerSocketChannel nioServerSocketChannel = new NioServerSocketChannel();
+            httpServer = httpServer.accessLog(true);
+            httpServer=httpServer.wiretap(true);
             eventLoopGroup.register(nioServerSocketChannel);
             return httpServer.runOn(eventLoopGroup);
         };
