@@ -8,6 +8,8 @@ server:
 spring:
   application:
     name: api-gateway
+  main:
+    web-application-type: reactive
   cloud:
     consul:
       host: localhost
@@ -110,7 +112,16 @@ springdoc:
         name: 'webflux-rest-client'
       - url: http://localhost:${server.port}/services/webflux-camel-soap-client-docs/v3/api-docs
         name: 'webflux-camel-soap-client'
-
+    oauth:
+      app-name: saber-client
+      client-id: saber-client
+      realm: saber66
+      client-secret: 73b6e1da-d0ef-474c-97ae-d1c4438a7535
+      scopes:
+        - "openid"
+        - "read"
+        - "write"
+    oauth2-redirect-url: http://localhost:9096/swagger-ui.html
   api-docs:
     groups:
       enabled: true

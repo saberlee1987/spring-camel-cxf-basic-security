@@ -4,6 +4,7 @@ package com.saber.spring_webflux_camel_rest_client.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.*;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +31,15 @@ public class OpenApiConfig {
     private String apiGatewayHost;
     @Value(value = "${service.swagger.api-gateway.port}")
     private int apiGatewayPort;
-
+    
+    @Value(value = "${springdoc.oAuthFlow.authorizationUrl}")
+    private String authorizationUrl;
+    @Value(value = "${springdoc.oAuthFlow.tokenUrl}")
+    private String tokenUrl;
+    
     @Bean
     public OpenAPI springShopOpenAPI() {
+        String bearerSecuritySchema = "keycloak-authorize";
         List<Server> serverList = new ArrayList<>();
     
         Server serviceServer = new Server();
@@ -47,7 +54,21 @@ public class OpenApiConfig {
         serverList.add(serviceServer);
         serverList.add(apiGatewayServer);
         return new OpenAPI()
-                .components(new Components())
+                .addSecurityItem(new SecurityRequirement().addList(bearerSecuritySchema))
+                .components(new Components()
+                        .addSecuritySchemes(bearerSecuritySchema, new SecurityScheme()
+                                .name(bearerSecuritySchema)
+                                .type(SecurityScheme.Type.OAUTH2)
+                                .flows(new OAuthFlows().authorizationCode(
+                                        new OAuthFlow().authorizationUrl(authorizationUrl).tokenUrl(tokenUrl)
+                                                .scopes(new Scopes()
+                                                        .addString("openid", "openid")
+                                                        .addString("read", "read")
+                                                        .addString("write", "write")
+                                                )
+                                )))
+                
+                )
                 .servers(serverList)
                 .info(new Info().title(swaggerTitle)
                         .description(swaggerDescription)
