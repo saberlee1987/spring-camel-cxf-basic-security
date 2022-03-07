@@ -8,7 +8,6 @@ import org.springframework.cloud.gateway.route.Route;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -17,10 +16,13 @@ import java.time.LocalDateTime;
 
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR;
 
-@Component
+//@Component
 @Slf4j
 public class LoggingRequestFilter implements GlobalFilter, Ordered {
 	public static final String CORRELATION = "correlation";
+	
+	
+	
 	
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -39,6 +41,9 @@ public class LoggingRequestFilter implements GlobalFilter, Ordered {
 				.header(CORRELATION, correlation)
 				.header("startTime", String.valueOf(startTime))
 				.build();
+		
+		String bodyObject =exchange.getAttribute("cachedRequestBodyObject");
+		log.info("request body ========> {}",bodyObject);
 		
 		MultiValueMap<String, String> queryParams = request.getQueryParams();
 		HttpHeaders requestHeaders = request.getHeaders();

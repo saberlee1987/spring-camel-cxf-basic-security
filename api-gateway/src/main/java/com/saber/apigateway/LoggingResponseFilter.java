@@ -7,7 +7,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-@Component
+//@Component
 @Slf4j
 public class LoggingResponseFilter implements GlobalFilter, Ordered {
 	public static final String CORRELATION = "correlation";
@@ -28,13 +27,19 @@ public class LoggingResponseFilter implements GlobalFilter, Ordered {
 		String startTime = request.getHeaders().getFirst("startTime");
 		LocalDateTime endTime = LocalDateTime.now();
 		assert startTime != null;
-		LocalDateTime start = LocalDateTime.parse(startTime);
-		long duration = ChronoUnit.MILLIS.between(start,endTime);
+		long duration = 0;
+		if (startTime!=null){
+			LocalDateTime start = LocalDateTime.parse(startTime);
+			duration = ChronoUnit.MILLIS.between(start,endTime);
+			
+		}
 		exchange.getResponse().getHeaders().add(CORRELATION,correlation);
 		
 		
 		ServerHttpResponse response = exchange.getResponse();
 		
+		String bodyObject =exchange.getAttribute("cachedResponseBodyObject");
+		log.info("response body ========> {}",bodyObject);
 		
 		int statusCode = Objects.requireNonNull(response.getStatusCode()).value();
 		String url = request.getPath().value();

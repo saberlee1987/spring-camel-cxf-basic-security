@@ -96,6 +96,8 @@ spring:
             - Path=/services/webflux-camel-soap-client-docs/v3/api-docs
 
 
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
