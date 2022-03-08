@@ -83,9 +83,26 @@ springdoc:
     tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
     use-pkce-with-authorization-code-grant: true
 
+hawtio:
+  authenticationEnabled: false
 management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+      sla:
+        "[http.server.requests]": 10ms, 100ms
+      percentiles:
+        "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
+    tags:
+      application: ${spring.application.name}
+  #    export:
+  #      jmx:
+  #        domain: hawtio
   endpoints:
     web:
       exposure:
         include: '*'
-
+      base-path: /actuators/webflux-camel-rest-client
+  enabled: false
+  health: true

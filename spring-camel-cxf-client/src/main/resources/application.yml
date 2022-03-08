@@ -74,10 +74,9 @@ camel:
     service-call:
       default-load-balancer: true
   dataformat:
-    json-jackson:
+    jackson:
       pretty-print: true
       auto-discover-object-mapper: true
-
 
 hawtio:
   authenticationEnabled: false
@@ -94,7 +93,7 @@ management:
       application: ${spring.application.name}
   endpoints:
     web:
-      base-path: /actuators/person-client-api
+      base-path: /actuators/person-soap-client
       exposure:
         include: '*'
 
