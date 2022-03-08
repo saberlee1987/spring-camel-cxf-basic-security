@@ -4,6 +4,16 @@ server:
     encoding:
       force: true
       charset: UTF-8
+  tomcat:
+    threads:
+      min-spare: 300
+      max: 3000
+    connection-timeout: 10000
+    keep-alive-timeout: 10000
+    max-connections: 10000
+    accesslog:
+      enabled: true
+
   jetty:
     accesslog:
       enabled: true
