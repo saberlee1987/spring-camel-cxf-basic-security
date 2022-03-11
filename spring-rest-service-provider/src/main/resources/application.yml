@@ -41,9 +41,9 @@ springdoc:
     persist-authorization: true
     operations-sorter: method
     oauth:
-      realm: saber66
-      clientId: saberClient
-      clientSecret: cccf8261-9276-4751-834b-48958e8f1660
+      realm: keycloak
+      clientId: api_gateway
+      clientSecret: WlMI05my0j1PIHvBkNr03kUOkHsBrCZK
       use-pkce-with-authorization-code-grant: true
       scopes:
         - "openid"
@@ -55,8 +55,8 @@ springdoc:
       enabled: true
     path: ${service.swagger.path}
   oAuthFlow:
-    authorizationUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/auth
-    tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
+    authorizationUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/auth
+    tokenUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/token
     use-pkce-with-authorization-code-grant: true
 
 spring:

@@ -128,10 +128,10 @@ springdoc:
         name: 'spring-rest-client'
 
     oauth:
-      app-name: saber-client
-      client-id: saber-client
-      realm: saber66
-      client-secret: 73b6e1da-d0ef-474c-97ae-d1c4438a7535
+      app-name: api_gateway
+      client-id: api_gateway
+      realm: keycloak
+      client-secret: WlMI05my0j1PIHvBkNr03kUOkHsBrCZK
       scopes:
         - "openid"
         - "read"
