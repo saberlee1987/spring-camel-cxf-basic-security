@@ -14,7 +14,6 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -57,7 +56,11 @@ public class GatewayRouter {
 						route.path("/services/webflux-camel-soap-client/**")
 								.filters(this::getFilterSpec)
 								.uri("lb://webflux-camel-soap-client"))
-				
+
+				.route("spring-rest-client", route ->
+						route.path("/services/spring-rest-client/**")
+								.filters(this::getFilterSpec)
+								.uri("lb://spring-rest-client"))
 				.build();
 	}
 	
@@ -97,12 +100,8 @@ public class GatewayRouter {
 			correlation = generateCorrelationId();
 		}
 		LocalDateTime startTime = LocalDateTime.now();
-		request = exchange.getRequest()
-				.mutate()
-				.header(CORRELATION, correlation)
-				.header("startTime", String.valueOf(startTime))
-				.build();
-		
+		exchange.getAttributes().put(CORRELATION,correlation);
+		exchange.getAttributes().put("startTime",startTime.toString());
 		String bodyObject = exchange.getAttribute("cachedRequestBodyObject");
 		MultiValueMap<String, String> queryParams = request.getQueryParams();
 		HttpHeaders requestHeaders = request.getHeaders();
@@ -131,13 +130,14 @@ public class GatewayRouter {
 		
 		ServerHttpRequest request = exchange.getRequest();
 		
-		String correlation = request.getHeaders().getFirst(CORRELATION);
-		String startTime = request.getHeaders().getFirst("startTime");
+		String correlation = exchange.getAttribute(CORRELATION);
+		String startTime = exchange.getAttribute("startTime");
 		LocalDateTime endTime = LocalDateTime.now();
 		assert startTime != null;
 		long duration = 0;
 		LocalDateTime start = LocalDateTime.parse(startTime);
 		duration = ChronoUnit.MILLIS.between(start, endTime);
+
 		exchange.getResponse().getHeaders().add(CORRELATION, correlation);
 	
 		ServerHttpResponse response = exchange.getResponse();

@@ -47,8 +47,9 @@ public class PersonControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = HttpClientErrorException.class)
-    public ResponseEntity<Object> handleHttpClientException(HttpClientErrorException exception) {
+    public ResponseEntity<Object> handleHttpClientException(HttpClientErrorException exception,HttpServletRequest httpServletRequest) {
 
+        String correlation = getCorrelation(httpServletRequest);
         String responseBody = exception.getResponseBodyAsString();
         int statusCode = exception.getStatusCode().value();
         ErrorResponse errorResponse = new ErrorResponse();
@@ -59,12 +60,14 @@ public class PersonControllerAdvice extends ResponseEntityExceptionHandler {
         } else {
             errorResponse.setOriginalMessage(String.format("{\"code\":%d,\"text\":\"%s\"}", statusCode, responseBody));
         }
+
+        log.error("Error for correlation : {} , handleHttpClientException with body ===> {}", correlation, errorResponse);
         return ResponseEntity.status(statusCode).body(errorResponse);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        String correlation =getCorrelation(headers);
+        String correlation =getCorrelation(request);
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setCode(ServiceErrorResponseEnum.INPUT_VALIDATION_EXCEPTION.getCode());
         errorResponse.setMessage(ServiceErrorResponseEnum.INPUT_VALIDATION_EXCEPTION.getMessage());
@@ -81,20 +84,18 @@ public class PersonControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(errorResponse);
     }
 
-    private String getCorrelation(HttpHeaders headers) {
+    private String getCorrelation(HttpServletRequest httpServletRequest) {
         String correlation = "";
-        List<String> correlations = headers.get(Headers.correlation);
-        if (correlations == null || correlations.isEmpty()) {
+        correlation = httpServletRequest.getHeader(Headers.correlation);
+        if (correlation == null || correlation.isEmpty()) {
             correlation = UUID.randomUUID().toString();
-        }else{
-            correlation = correlations.get(0);
         }
         return correlation;
     }
 
-    private String getCorrelation(HttpServletRequest httpServletRequest) {
+    private String getCorrelation(WebRequest request) {
         String correlation = "";
-        correlation = httpServletRequest.getHeader(Headers.correlation);
+        correlation = request.getHeader(Headers.correlation);
         if (correlation == null || correlation.isEmpty()) {
             correlation = UUID.randomUUID().toString();
         }

@@ -17,14 +17,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import javax.net.ssl.*;
 import java.io.FileInputStream;
 import java.net.InetAddress;
@@ -33,7 +30,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -137,11 +133,12 @@ public class AppConfig {
                 .setConnectTimeout(Duration.ofMillis(connectTimeout))
                   .build();
 
-        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(httpComponent));
+        //restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(httpComponent));
+        restTemplate.setRequestFactory(httpComponent);
         // set interceptor to RestTemplate
-        List<ClientHttpRequestInterceptor> requestInterceptors = new ArrayList<>();
-        requestInterceptors.add(new LoggingRequestInterceptor());
-        restTemplate.setInterceptors(requestInterceptors);
+       // List<ClientHttpRequestInterceptor> requestInterceptors = new ArrayList<>();
+       // requestInterceptors.add(new LoggingRequestInterceptor());
+        //restTemplate.setInterceptors(requestInterceptors);
         return restTemplate;
     }
 

@@ -3,6 +3,7 @@ package com.saber.spring_rest_client.controllers;
 
 import com.saber.spring_rest_client.dto.ErrorResponse;
 import com.saber.spring_rest_client.dto.person.*;
+import com.saber.spring_rest_client.routes.Headers;
 import com.saber.spring_rest_client.services.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,12 +20,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @RestController
 @Validated
@@ -63,10 +66,10 @@ public class PersonController {
 													@Pattern(regexp = "\\d+", message = "Please Enter correct nationalCode")
 													@Valid
 													@Parameter(name = "nationalCode", in = ParameterIn.PATH, example = "0079028748", required = true)
-															String nationalCode) {
+															String nationalCode,HttpServletRequest httpServletRequest) {
 
-
-		return ResponseEntity.ok(this.personService.findPersonByNationalCode(nationalCode));
+		String correlation = getCorrelation(httpServletRequest);
+		return ResponseEntity.ok(this.personService.findPersonByNationalCode(nationalCode,correlation));
 	}
 
     @GetMapping(value = "/findAll")
@@ -87,8 +90,8 @@ public class PersonController {
 
     })
     public ResponseEntity<PersonResponse> findAllPersons(HttpServletRequest httpServletRequest) {
-
-        return ResponseEntity.ok(this.personService.findAll());
+		String correlation = getCorrelation(httpServletRequest);
+        return ResponseEntity.ok(this.personService.findAll(correlation));
     }
 
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -112,8 +115,10 @@ public class PersonController {
 			@ApiResponse(responseCode = "504", description = "GATEWAY_TIMEOUT",
 					content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
 	})
-	public ResponseEntity<AddPersonResponseDto> addPerson(@RequestBody @NotNull(message = "body is Required") @Valid PersonDto personDto) {
-		return ResponseEntity.ok(personService.addPerson(personDto));
+	public ResponseEntity<AddPersonResponseDto> addPerson(@RequestBody @NotNull(message = "body is Required") @Valid PersonDto personDto,HttpServletRequest httpServletRequest)
+	{
+		String correlation = getCorrelation(httpServletRequest);
+		return ResponseEntity.ok(personService.addPerson(personDto,correlation));
 	}
 
 	@PutMapping(value = "/update/{nationalCode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -147,8 +152,9 @@ public class PersonController {
 													  @NotBlank(message = "nationalCode is Required")
 													  @Size(min = 10, max = 10, message = "nationalCode must be 10 digit")
 													  @Pattern(regexp = "\\d+", message = "please enter valid nationalCode")
-															  String nationalCode) {
-		return ResponseEntity.ok(personService.updatePersonByNationalCode(nationalCode, personDto));
+															  String nationalCode,HttpServletRequest httpServletRequest) {
+		String correlation = getCorrelation(httpServletRequest);
+		return ResponseEntity.ok(personService.updatePersonByNationalCode(nationalCode, personDto,correlation));
 	}
 
 	@DeleteMapping(value = "/delete/{nationalCode}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -172,9 +178,18 @@ public class PersonController {
 																		  @NotBlank(message = "nationalCode is Required")
 																		  @Size(min = 10, max = 10, message = "nationalCode must be 10 digit")
 																		  @Pattern(regexp = "\\d+", message = "please enter valid nationalCode")
-																				  String nationalCode) {
-		return ResponseEntity.ok(personService.deletePersonByNationalCode(nationalCode));
+																				  String nationalCode,HttpServletRequest httpServletRequest) {
+		String correlation = getCorrelation(httpServletRequest);
+		return ResponseEntity.ok(personService.deletePersonByNationalCode(nationalCode,correlation));
 	}
 
+	private String getCorrelation(HttpServletRequest httpServletRequest) {
+		String correlation = "";
+		correlation = httpServletRequest.getHeader(Headers.correlation);
+		if (correlation == null || correlation.isEmpty()) {
+			correlation = UUID.randomUUID().toString();
+		}
+		return correlation;
+	}
 
 }
