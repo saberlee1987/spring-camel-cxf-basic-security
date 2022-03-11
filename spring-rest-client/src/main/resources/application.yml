@@ -1,0 +1,107 @@
+server:
+  port: 9098
+  max-http-header-size: 512000
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+  jetty:
+    threads:
+      min: 300
+      max: 3000
+      idle-timeout: 10000
+    connection-idle-timeout: 10000
+    accesslog:
+      enabled: true
+service:
+  api:
+    base-path: /services/spring-rest-client
+  person:
+    url: https://localhost
+    port: 9090
+    baseUrl : /services/person
+    findAll: /findAll
+    findByNationalCode: /find
+    addPerson: /add
+    updatePerson: /update
+    deletePerson: /delete
+  swagger:
+    path: /services/spring-rest-client-docs/v3/api-docs
+    version: 'version1.0.0-1400/12/20'
+    title: 'spring-rest-client'
+    description: 'spring-rest-client'
+    host: 'localhost'
+    api-gateway:
+      host: 'localhost'
+      port: 9096
+
+  keystore:
+    jksFile: 'keystore/person_api.jks'
+    jksPassword: saber@123
+  authorization:
+    username: saber66
+    password: saber@123
+
+camel:
+  springboot:
+    main-run-controller: true
+    jmx-management-statistics-level: extended
+    endpoint-runtime-statistics-enabled: true
+    jmx-enabled: true
+  cloud:
+    consul:
+      service-host: localhost
+      url: http://localhost:8500
+      id: ${spring.application.name}
+      registrationScheduled: 30000
+    service-call:
+      default-load-balancer: true
+
+
+spring:
+  application:
+    name: spring-rest-client
+  restTemplate:
+    connectionPerRoute: 300
+    maxTotalConnection: 3000
+    connectTimeout: 10000
+    readTimeout: 30000
+    connectionTimeToLive: 30000
+    dnsResolver: 'person-service'
+    dnsHost: localhost
+
+springdoc:
+  swagger-ui:
+    display-operation-id: true
+    display-request-duration: true
+    path: /swagger-ui.html
+
+  api-docs:
+    groups:
+      enabled: true
+    path:  ${service.swagger.path}
+  oAuthFlow:
+    authorizationUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/auth
+    tokenUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/token
+    use-pkce-with-authorization-code-grant: true
+
+
+hawtio:
+  authenticationEnabled: false
+management:
+  metrics:
+  distribution:
+    percentiles-histogram:
+      "[http.server.requests]": true
+    sla:
+      "[http.server.requests]": 10ms, 100ms
+    percentiles:
+      "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      base-path: /actuators/spring-rest-client
+      exposure:
+        include: '*'
+

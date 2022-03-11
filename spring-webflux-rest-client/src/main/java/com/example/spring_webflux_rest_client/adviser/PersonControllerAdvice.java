@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @RestControllerAdvice
 @Slf4j
-public class MyExceptionHandler  {
+public class PersonControllerAdvice {
 	
 	@ExceptionHandler(GatewayException.class)
 	public ResponseEntity<Object> handleGatewayException(GatewayException exception,ServerWebExchange exchange){

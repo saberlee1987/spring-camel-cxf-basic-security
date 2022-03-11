@@ -23,5 +23,6 @@
         <module>spring-webflux-camel-rest-client</module>
         <module>api-gateway</module>
         <module>spring-webflux-camel-soap-client</module>
+        <module>spring-rest-client</module>
     </modules>
 </project>
