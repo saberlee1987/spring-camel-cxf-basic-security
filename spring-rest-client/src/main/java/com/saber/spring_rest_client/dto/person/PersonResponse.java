@@ -1,6 +1,6 @@
-package com.saber.spring_webflux_camel_rest_client.dto;
+package com.saber.spring_rest_client.dto.person;
 
-import com.fasterxml.jackson.annotation.JsonRawValue;
+
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
 import com.google.gson.ToNumberPolicy;
@@ -9,12 +9,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ErrorResponse {
-    private Integer code;
-    private String message;
-    @JsonRawValue
-    private Object originalMessage;
-    private List<ValidationDto> validations;
+public class PersonResponse {
+    private List<PersonDto> persons ;
+
     @Override
     public String toString() {
         return new GsonBuilder()
@@ -23,6 +20,6 @@ public class ErrorResponse {
                 .enableComplexMapKeySerialization()
                 .setLongSerializationPolicy(LongSerializationPolicy.DEFAULT)
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                .create().toJson(this, ErrorResponse.class);
+                .create().toJson(this, PersonResponse.class);
     }
 }

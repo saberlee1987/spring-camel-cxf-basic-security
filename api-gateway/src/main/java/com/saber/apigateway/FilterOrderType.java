@@ -1,11 +1,11 @@
 package com.saber.apigateway;
 
 public enum FilterOrderType {
-	PRE(-1),
+	PRE(1),
 	
-	POST(0),
+	POST(2),
 	
-	ROUTE(1);
+	ROUTE(3);
 	
 	private int order;
 	

@@ -95,6 +95,16 @@ spring:
           predicates:
             - Path=/services/webflux-camel-soap-client-docs/v3/api-docs
 
+        - id: spring-rest-client
+          uri: lb://spring-rest-client
+          predicates:
+            - Path=/services/spring-rest-client/**
+            - Method=GET,POST,PUT,DELETE,OPTIONS,PATCH,HEAD,TRACE
+
+        - id: spring-rest-client-docs
+          uri: lb://spring-rest-client
+          predicates:
+            - Path=/services/spring-rest-client-docs/v3/api-docs
 
 
 
@@ -114,11 +124,14 @@ springdoc:
         name: 'webflux-rest-client'
       - url: http://localhost:${server.port}/services/webflux-camel-soap-client-docs/v3/api-docs
         name: 'webflux-camel-soap-client'
+      - url: http://localhost:${server.port}/services/spring-rest-client-docs/v3/api-docs
+        name: 'spring-rest-client'
+
     oauth:
-      app-name: saber-client
-      client-id: saber-client
-      realm: saber66
-      client-secret: 73b6e1da-d0ef-474c-97ae-d1c4438a7535
+      app-name: api_gateway
+      client-id: api_gateway
+      realm: keycloak
+      client-secret: WlMI05my0j1PIHvBkNr03kUOkHsBrCZK
       scopes:
         - "openid"
         - "read"

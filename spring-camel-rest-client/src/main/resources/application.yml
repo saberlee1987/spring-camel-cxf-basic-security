@@ -54,7 +54,7 @@ springdoc:
     groups:
       enabled: true
 
-  tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
+  tokenUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/token
 
 camel:
   springboot:

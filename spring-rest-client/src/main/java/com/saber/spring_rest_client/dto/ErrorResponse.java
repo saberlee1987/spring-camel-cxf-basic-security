@@ -1,4 +1,4 @@
-package com.saber.spring_webflux_camel_rest_client.dto;
+package com.saber.spring_rest_client.dto;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.google.gson.GsonBuilder;

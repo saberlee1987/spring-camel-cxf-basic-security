@@ -1,13 +1,21 @@
 server:
-  port: 9095
-  netty:
-    connection-timeout: 10000
-    idle-timeout: 10000
-    threads: 3000
-
+  port: 9098
+  max-http-header-size: 512000
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+  jetty:
+    threads:
+      min: 300
+      max: 3000
+      idle-timeout: 10000
+    connection-idle-timeout: 10000
+    accesslog:
+      enabled: true
 service:
   api:
-    base-path: /services/webflux-camel-rest-client
+    base-path: /services/spring-rest-client
   person:
     url: https://localhost
     port: 9090
@@ -17,12 +25,11 @@ service:
     addPerson: /add
     updatePerson: /update
     deletePerson: /delete
-
   swagger:
-    path: /services/webflux-camel-rest-client-docs/v3/api-docs
-    version: 'version1.0.0-1400/12/08'
-    title: 'webflux-camel-rest-client'
-    description: 'webflux-camel-rest-client'
+    path: /services/spring-rest-client-docs/v3/api-docs
+    version: 'version1.0.0-1400/12/20'
+    title: 'spring-rest-client'
+    description: 'spring-rest-client'
     host: 'localhost'
     api-gateway:
       host: 'localhost'
@@ -35,15 +42,12 @@ service:
     username: saber66
     password: saber@123
 
-
-
 camel:
   springboot:
     main-run-controller: true
     jmx-management-statistics-level: extended
     endpoint-runtime-statistics-enabled: true
     jmx-enabled: true
-    producer-template-cache-size: 5000
   cloud:
     consul:
       service-host: localhost
@@ -52,21 +56,19 @@ camel:
       registrationScheduled: 30000
     service-call:
       default-load-balancer: true
-  component:
-    http:
-      connections-per-route: 300
-      max-total-connections: 3000
-      connect-timeout: 5000
-      socket-timeout: 30000
-      connection-request-timeout: 30000
-      connection-time-to-live: 10000
-  dataformat:
-    jackson:
-      auto-discover-object-mapper: true
+
 
 spring:
   application:
-    name: webflux-camel-rest-client
+    name: spring-rest-client
+  restTemplate:
+    connectionPerRoute: 300
+    maxTotalConnection: 3000
+    connectTimeout: 10000
+    readTimeout: 30000
+    connectionTimeToLive: 30000
+    dnsResolver: 'person-service'
+    dnsHost: localhost
 
 springdoc:
   swagger-ui:
@@ -83,26 +85,23 @@ springdoc:
     tokenUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/token
     use-pkce-with-authorization-code-grant: true
 
+
 hawtio:
   authenticationEnabled: false
 management:
   metrics:
-    distribution:
-      percentiles-histogram:
-        "[http.server.requests]": true
-      sla:
-        "[http.server.requests]": 10ms, 100ms
-      percentiles:
-        "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
+  distribution:
+    percentiles-histogram:
+      "[http.server.requests]": true
+    sla:
+      "[http.server.requests]": 10ms, 100ms
+    percentiles:
+      "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
     tags:
       application: ${spring.application.name}
-  #    export:
-  #      jmx:
-  #        domain: hawtio
   endpoints:
     web:
+      base-path: /actuators/spring-rest-client
       exposure:
         include: '*'
-      base-path: /actuators/webflux-camel-rest-client
-  enabled: false
-  health: true
+
