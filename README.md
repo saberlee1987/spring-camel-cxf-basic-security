@@ -13,6 +13,10 @@ For further reference, please consider the following sections:
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.6.2/reference/htmlsingle/#boot-features-jpa-and-spring-data)
 * [Prometheus](https://docs.spring.io/spring-boot/docs/2.6.2/reference/html/production-ready-features.html#production-ready-metrics-export-prometheus)
 * [CXF](https://cxf.apache.org/)
+* [jaxwshandlers-to-cxfinterceptors](https://glenmazza.net/blog/entry/jaxwshandlers-to-cxfinterceptors)  
+* [Interceptors and Phases](https://cxf.apache.org/docs/interceptors.html)  
+* [jaxws-handler-tutorial](http://glenmazza.net/blog/entry/jaxws-handler-tutorial)  
+* [blog-samples](https://github.com/gmazza/blog-samples)  
 * [intelij idea classpath config](https://stackoverflow.com/questions/6381213/idea-10-5-command-line-is-too-long)
 * [camel components documents](https://people.apache.org/~dkulp/camel/components.html)
 ### Guides
