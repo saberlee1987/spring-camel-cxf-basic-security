@@ -118,15 +118,15 @@ public class AppConfig {
 
 	@Bean
 	public CorsWebFilter corsWebFilter(){
-		CorsConfiguration corsConfig = new CorsConfiguration();
-		corsConfig.setAllowedOrigins(List.of("*"));
-		corsConfig.setMaxAge(30000L);
-		corsConfig.addAllowedMethod("*");
-		corsConfig.addAllowedHeader("*");
-
+		CorsConfiguration cors = new CorsConfiguration();
+		cors.setAllowedOrigins(List.of("*"));
+		cors.setMaxAge(30000L);
+		cors.addAllowedMethod("*");
+		cors.addAllowedHeader("*");
+		cors.addAllowedOriginPattern("*");
 		UrlBasedCorsConfigurationSource source =
 				new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", corsConfig);
+		source.registerCorsConfiguration("/**", cors);
 
 		return new CorsWebFilter(source);
 	}
@@ -136,7 +136,6 @@ public class AppConfig {
 		configuration.setAllowedOrigins(List.of("*"));
 		configuration.setAllowedMethods(List.of("*"));
 		configuration.setAllowedHeaders(List.of("*"));
-		configuration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;

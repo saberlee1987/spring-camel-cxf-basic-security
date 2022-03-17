@@ -33,7 +33,7 @@ spring:
         enabled: true
       globalcors:
         cors-configurations:
-          "[/**]":
+          '[/**]':
             allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
