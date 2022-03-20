@@ -106,7 +106,13 @@ spring:
           predicates:
             - Path=/services/spring-rest-client-docs/v3/api-docs
 
-
+#  security:
+#    oauth2:
+#      resourceserver:
+#        opaquetoken:
+#          introspection-uri: http://localhost:8080/realms/keycloak/protocol/openid-connect/token/introspect
+#          client-id: api_gateway
+#          client-secret: WlMI05my0j1PIHvBkNr03kUOkHsBrCZK
 
 springdoc:
   swagger-ui:
