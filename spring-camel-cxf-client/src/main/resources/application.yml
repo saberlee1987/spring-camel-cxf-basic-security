@@ -35,8 +35,8 @@ service:
     description: 'This is person client api for test'
     host: 'localhost'
     api-gateway:
-      host: 'localhost'
-      port: 9096
+       host: 'localhost'
+       port: 9096
 
   person-api:
     serviceUrl: https://localhost:9091/soapServices/personSoap

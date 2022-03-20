@@ -15,7 +15,7 @@ spring:
       host: localhost
       port: 8500
       discovery:
-        health-check-path: /actuator/health
+        health-check-path: ${management.endpoints.web.base-path}/health
         consistency-mode: consistent
         service-name: ${spring.application.name}
         hostname: localhost
@@ -147,14 +147,14 @@ hawtio:
   authenticationEnabled: false
 management:
   metrics:
-   distribution:
+    distribution:
       percentiles-histogram:
         "[http.server.requests]": true
       sla:
         "[http.server.requests]": 10ms, 100ms
       percentiles:
         "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
-   tags:
+    tags:
       application: ${spring.application.name}
   endpoints:
     web:
