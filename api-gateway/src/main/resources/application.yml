@@ -1,6 +1,6 @@
 server:
   port: 9096
-  max-http-header-size: 512000
+  max-http-header-size: 552000
   netty:
     connection-timeout: 10000
     idle-timeout: 10000
@@ -28,7 +28,7 @@ spring:
           max-life-time: 10000
         connect-timeout: 10000
         response-timeout: 30000
-        max-header-size: 512000
+        max-header-size: 552000
       metrics:
         enabled: true
       globalcors:
@@ -105,6 +105,16 @@ spring:
           uri: lb://spring-rest-client
           predicates:
             - Path=/services/spring-rest-client-docs/v3/api-docs
+        - id: spring-webservices-soap-client
+          uri: lb://spring-webservices-soap-client
+          predicates:
+            - Path=/services/spring-webservice-soap-client/**
+            - Method=GET,POST,PUT,DELETE,OPTIONS,PATCH,HEAD,TRACE
+
+        - id: spring-webservices-soap-client-docs
+          uri: lb://spring-webservices-soap-client
+          predicates:
+            - Path=/services/spring-webservice-soap-client-docs/v3/api-docs
 
 #  security:
 #    oauth2:
@@ -132,6 +142,8 @@ springdoc:
         name: 'webflux-camel-soap-client'
       - url: http://localhost:${server.port}/services/spring-rest-client-docs/v3/api-docs
         name: 'spring-rest-client'
+      - url: http://localhost:${server.port}/services/spring-webservice-soap-client-docs/v3/api-docs
+        name: 'spring-webservices-soap-client'
 
     oauth:
       app-name: api_gateway

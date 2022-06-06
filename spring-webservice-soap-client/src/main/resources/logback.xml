@@ -1,0 +1,55 @@
+<configuration debug="true" scan="true" scanPeriod="2 minutes">
+
+    <property name="APPLICATION_LEVEL" value="INFO"/>
+    <property name="STACK_TRACE_LEVEL_COUNT" value="5"/>
+    <property name="LOG_DIR" value="${log.dir:-/var/log/integration}"/>
+    <property name="APP_NAME" value="spring-webservice-soap-client"/>
+
+    <property name="PATTERN" scope="context"
+              value="%-7([%level]) %date{yyyy-MM-dd'T'HH:mm:ss.SSS}  thread:[%-15.45(%thread)] app-name:[${APP_NAME}]  %logger{50}.%method@%line:\n%message %rootException{${STACK_TRACE_LEVEL_COUNT}}%n"/>
+
+    <param name="locationInfo" value="true"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${APP_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}_%d{yyyy-MM-dd}.log.%i.zip</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC_CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="CONSOLE"/>
+    </appender>
+
+    <appender name="ASYNC_ROLLING" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="ROLLING"/>
+    </appender>
+
+    <logger name="org.apache.camel" level="INFO"/>
+    <logger name="org.apache.camel.spring.SpringCamelContext" level="INFO"/>
+    <logger name="com.netflix.discovery" level="OFF"/>
+    <logger name="org.apache.camel.component.netty4" level="OFF"/>
+    <logger name="org.apache.http.wire" level="INFO"/>
+
+    <root>
+        <level value="${APPLICATION_LEVEL}"/>
+        <appender-ref ref="ASYNC_CONSOLE"/>
+        <appender-ref ref="ASYNC_ROLLING"/>
+    </root>
+
+</configuration>

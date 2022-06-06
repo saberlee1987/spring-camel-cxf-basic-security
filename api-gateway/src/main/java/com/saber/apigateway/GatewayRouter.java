@@ -61,6 +61,11 @@ public class GatewayRouter {
 						route.path("/services/spring-rest-client/**")
 								.filters(this::getFilterSpec)
 								.uri("lb://spring-rest-client"))
+
+				.route("spring-webservices-soap-client", route ->
+						route.path("/services/spring-webservice-soap-client/**")
+								.filters(this::getFilterSpec)
+								.uri("lb://spring-webservices-soap-client"))
 				.build();
 	}
 	

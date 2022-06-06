@@ -3,6 +3,8 @@ package com.saber.apigateway;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.boot.web.embedded.netty.NettyServerCustomizer;
@@ -13,8 +15,10 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @Configuration
 public class AppConfig  {
@@ -52,6 +56,15 @@ public class AppConfig  {
         NettyReactiveWebServerFactory webServerFactory = new NettyReactiveWebServerFactory();
         webServerFactory.addServerCustomizers(nettyServerCustomizer());
         return webServerFactory;
+    }
+
+    @Bean
+    public OpenApiCustomiser sortTagsAlphabetically() {
+        return openApi -> openApi
+                .setTags(openApi.getTags()
+                .stream()
+                .sorted(Comparator.comparing(tag -> StringUtils.stripAccents(tag.getName())))
+                .collect(Collectors.toList()));
     }
 
     private NettyServerCustomizer nettyServerCustomizer(){

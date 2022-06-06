@@ -1,0 +1,245 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.soap.spring_camel_cxf_soap_provider.saber.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="PersonSoapService" targetNamespace="http://services.soap.spring_camel_cxf_soap_provider.saber.com/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.soap.spring_camel_cxf_soap_provider.saber.com/" xmlns:ns1="http://com.saber.spring_camel_cxf_soap_provider.soap.services/" elementFormDefault="qualified" targetNamespace="http://services.soap.spring_camel_cxf_soap_provider.saber.com/" version="1.0">
+            <xs:import namespace="http://com.saber.spring_camel_cxf_soap_provider.soap.services/"/>
+            <xs:element name="AddPerson" type="tns:AddPerson"/>
+            <xs:element name="AddPersonResponse" type="tns:AddPersonResponse"/>
+            <xs:element name="DeletePersonByNationalCode" type="tns:DeletePersonByNationalCode"/>
+            <xs:element name="DeletePersonByNationalCodeResponse" type="tns:DeletePersonByNationalCodeResponse"/>
+            <xs:element name="FindAll" type="tns:FindAll"/>
+            <xs:element name="FindAllResponse" type="tns:FindAllResponse"/>
+            <xs:element name="FindByNationalCode" type="tns:FindByNationalCode"/>
+            <xs:element name="FindByNationalCodeResponse" type="tns:FindByNationalCodeResponse"/>
+            <xs:element name="UpdatePersonByNationalCode" type="tns:UpdatePersonByNationalCode"/>
+            <xs:element name="UpdatePersonByNationalCodeResponse" type="tns:UpdatePersonByNationalCodeResponse"/>
+            <xs:complexType name="FindAll">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="FindAllResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="FindAllPersonsResponse" type="ns1:FindAllPersonsResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="DeletePersonByNationalCode">
+                <xs:sequence>
+                    <xs:element default="" name="nationalCode" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="DeletePersonByNationalCodeResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="DeletePersonResponse" type="ns1:DeletePersonResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FindByNationalCode">
+                <xs:sequence>
+                    <xs:element default="" name="nationalCode" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="FindByNationalCodeResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="PersonSoapResponse" type="ns1:PersonSoapResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="AddPerson">
+                <xs:sequence>
+                    <xs:element name="PersonSoapDto" type="ns1:PersonSoapDto"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="AddPersonResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="AddPersonResponseDto" type="ns1:AddPersonResponseDto"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="UpdatePersonByNationalCode">
+                <xs:sequence>
+                    <xs:element default="" name="nationalCode" type="xs:string"/>
+                    <xs:element name="personDto" type="ns1:PersonSoapDto"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="UpdatePersonByNationalCodeResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="UpdatePersonResponse" type="ns1:UpdatePersonResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.saber.spring_camel_cxf_soap_provider.soap.services/" elementFormDefault="qualified" targetNamespace="http://com.saber.spring_camel_cxf_soap_provider.soap.services/" version="1.0">
+            <xs:complexType name="FindAllPersonsResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="response" nillable="true" type="tns:PersonSoapDto"/>
+                    <xs:element minOccurs="0" name="error" type="tns:ErrorSoapResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PersonSoapDto">
+                <xs:sequence>
+                    <xs:element default="" minOccurs="0" name="firstname" type="xs:string"/>
+                    <xs:element default="" minOccurs="0" name="lastname" type="xs:string"/>
+                    <xs:element default="" minOccurs="0" name="nationalCode" type="xs:string"/>
+                    <xs:element default="0" minOccurs="0" name="age" type="xs:int"/>
+                    <xs:element default="" minOccurs="0" name="email" type="xs:string"/>
+                    <xs:element default="" minOccurs="0" name="mobile" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ErrorSoapResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="code" type="xs:int"/>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                    <xs:element minOccurs="0" name="originalMessage" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="validations" nillable="true" type="tns:ValidationSoapDto"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ValidationSoapDto">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="fieldName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="detailMessage" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="DeletePersonResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="response" type="tns:DeleteSoapPersonDto"/>
+                    <xs:element minOccurs="0" name="error" type="tns:ErrorSoapResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="DeleteSoapPersonDto">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="code" type="xs:int"/>
+                    <xs:element minOccurs="0" name="text" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="PersonSoapResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="response" type="tns:PersonSoapDto"/>
+                    <xs:element minOccurs="0" name="error" type="tns:ErrorSoapResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="AddPersonResponseDto">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="response" type="tns:AddPersonSoapResponseDto"/>
+                    <xs:element minOccurs="0" name="error" type="tns:ErrorSoapResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="AddPersonSoapResponseDto">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="code" type="xs:int"/>
+                    <xs:element minOccurs="0" name="text" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="UpdatePersonResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="response" type="tns:UpdatePersonSoapResponseDto"/>
+                    <xs:element minOccurs="0" name="error" type="tns:ErrorSoapResponse"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="UpdatePersonSoapResponseDto">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="code" type="xs:int"/>
+                    <xs:element minOccurs="0" name="text" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="FindAll">
+        <wsdl:part element="tns:FindAll" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="DeletePersonByNationalCode">
+        <wsdl:part element="tns:DeletePersonByNationalCode" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="DeletePersonByNationalCodeResponse">
+        <wsdl:part element="tns:DeletePersonByNationalCodeResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="FindByNationalCodeResponse">
+        <wsdl:part element="tns:FindByNationalCodeResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="FindAllResponse">
+        <wsdl:part element="tns:FindAllResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="AddPersonResponse">
+        <wsdl:part element="tns:AddPersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="FindByNationalCode">
+        <wsdl:part element="tns:FindByNationalCode" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="UpdatePersonByNationalCodeResponse">
+        <wsdl:part element="tns:UpdatePersonByNationalCodeResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="AddPerson">
+        <wsdl:part element="tns:AddPerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="UpdatePersonByNationalCode">
+        <wsdl:part element="tns:UpdatePersonByNationalCode" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="PersonSoapService">
+        <wsdl:operation name="FindAll">
+            <wsdl:input message="tns:FindAll" name="FindAll"> </wsdl:input>
+            <wsdl:output message="tns:FindAllResponse" name="FindAllResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeletePersonByNationalCode">
+            <wsdl:input message="tns:DeletePersonByNationalCode" name="DeletePersonByNationalCode"> </wsdl:input>
+            <wsdl:output message="tns:DeletePersonByNationalCodeResponse" name="DeletePersonByNationalCodeResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="FindByNationalCode">
+            <wsdl:input message="tns:FindByNationalCode" name="FindByNationalCode"> </wsdl:input>
+            <wsdl:output message="tns:FindByNationalCodeResponse" name="FindByNationalCodeResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddPerson">
+            <wsdl:input message="tns:AddPerson" name="AddPerson"> </wsdl:input>
+            <wsdl:output message="tns:AddPersonResponse" name="AddPersonResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePersonByNationalCode">
+            <wsdl:input message="tns:UpdatePersonByNationalCode" name="UpdatePersonByNationalCode"> </wsdl:input>
+            <wsdl:output message="tns:UpdatePersonByNationalCodeResponse" name="UpdatePersonByNationalCodeResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="PersonSoapServiceSoapBinding" type="tns:PersonSoapService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="FindAll">
+            <soap:operation soapAction="FindAll" style="document"/>
+            <wsdl:input name="FindAll">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="FindAllResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="DeletePersonByNationalCode">
+            <soap:operation soapAction="DeletePersonByNationalCode" style="document"/>
+            <wsdl:input name="DeletePersonByNationalCode">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="DeletePersonByNationalCodeResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="FindByNationalCode">
+            <soap:operation soapAction="FindByNationalCode" style="document"/>
+            <wsdl:input name="FindByNationalCode">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="FindByNationalCodeResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddPerson">
+            <soap:operation soapAction="AddPerson" style="document"/>
+            <wsdl:input name="AddPerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="AddPersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePersonByNationalCode">
+            <soap:operation soapAction="UpdatePersonByNationalCode" style="document"/>
+            <wsdl:input name="UpdatePersonByNationalCode">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="UpdatePersonByNationalCodeResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="PersonSoapService">
+        <wsdl:port binding="tns:PersonSoapServiceSoapBinding" name="personSoapApi">
+            <soap:address location="https://localhost:9091/soapServices/personSoap"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
