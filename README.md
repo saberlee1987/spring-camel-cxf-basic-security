@@ -19,6 +19,7 @@ For further reference, please consider the following sections:
 * [blog-samples](https://github.com/gmazza/blog-samples)  
 * [intelij idea classpath config](https://stackoverflow.com/questions/6381213/idea-10-5-command-line-is-too-long)
 * [camel components documents](https://people.apache.org/~dkulp/camel/components.html)
+* [trace-soap-request-response-using-jax-ws](https://www.javatips.net/blog/trace-soap-request-response-using-jax-ws)
 ### Guides
 
 The following guides illustrate how to use some features concretely:
