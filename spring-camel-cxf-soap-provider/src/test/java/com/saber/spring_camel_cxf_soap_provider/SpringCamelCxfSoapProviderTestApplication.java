@@ -5,6 +5,8 @@ import com.saber.spring_camel_cxf_soap_provider.dto.UserAuthority;
 import com.saber.spring_camel_cxf_soap_provider.repositoreis.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,12 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SpringCamelCxfSoapProviderTestApplication {
 
-	//@Autowired
+	@Autowired
 	private  BCryptPasswordEncoder passwordEncoder;
-	//@Autowired
+	@Autowired
 	private  UserRepository userRepository;
 
-//	@Test
+	@Test
 	void testFindUserByUsername(){
 
 		User user = new User();

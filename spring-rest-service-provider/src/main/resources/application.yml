@@ -40,23 +40,13 @@ springdoc:
     display-operation-id: true
     persist-authorization: true
     operations-sorter: method
-    oauth:
-      realm: keycloak
-      clientId: api_gateway
-      clientSecret: WlMI05my0j1PIHvBkNr03kUOkHsBrCZK
-      use-pkce-with-authorization-code-grant: true
-      scopes:
-        - "openid"
-        - "read"
-        - "write"
-    oauth2-redirect-url: https://localhost:9090/swagger-ui/index.html#/
   api-docs:
     groups:
       enabled: true
     path: ${service.swagger.path}
   oAuthFlow:
-    authorizationUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/auth
-    tokenUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/token
+    authorizationUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/auth
+    tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
     use-pkce-with-authorization-code-grant: true
 
 spring:

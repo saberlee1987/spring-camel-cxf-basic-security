@@ -1,10 +1,10 @@
 server:
   port: 9096
-  max-http-header-size: 552000
   netty:
     connection-timeout: 10000
     idle-timeout: 10000
     threads: 3000
+  max-http-request-header-size: 552000
 spring:
   application:
     name: api-gateway
@@ -116,13 +116,12 @@ spring:
           predicates:
             - Path=/services/spring-webservice-soap-client-docs/v3/api-docs
 
-#  security:
-#    oauth2:
-#      resourceserver:
-#        opaquetoken:
-#          introspection-uri: http://localhost:8080/realms/keycloak/protocol/openid-connect/token/introspect
-#          client-id: api_gateway
-#          client-secret: WlMI05my0j1PIHvBkNr03kUOkHsBrCZK
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:7080/auth/realms/saber66
+          jwk-set-uri: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/certs
 
 springdoc:
   swagger-ui:
@@ -142,19 +141,23 @@ springdoc:
         name: 'webflux-camel-soap-client'
       - url: http://localhost:${server.port}/services/spring-rest-client-docs/v3/api-docs
         name: 'spring-rest-client'
-      - url: http://localhost:${server.port}/services/spring-webservice-soap-client-docs/v3/api-docs
+      - url: http://localhost:${server.port}/services/spring-rest-client-docs/v3/api-docs
         name: 'spring-webservices-soap-client'
 
     oauth:
-      app-name: api_gateway
-      client-id: api_gateway
-      realm: keycloak
-      client-secret: WlMI05my0j1PIHvBkNr03kUOkHsBrCZK
+      app-name: saber-client
+      client-id: saber-client
+      realm: saber66
+      client-secret: 73b6e1da-d0ef-474c-97ae-d1c4438a7535
       scopes:
         - "openid"
         - "read"
         - "write"
-    oauth2-redirect-url: http://localhost:9096/swagger-ui.html
+    tags-sorter: alpha
+  oAuthFlow:
+    authorizationUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/auth
+    tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
+    use-pkce-with-authorization-code-grant: true
   api-docs:
     groups:
       enabled: true

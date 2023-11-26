@@ -81,8 +81,8 @@ springdoc:
       enabled: true
     path:  ${service.swagger.path}
   oAuthFlow:
-    authorizationUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/auth
-    tokenUrl: http://localhost:8080/auth/realms/keycloak/protocol/openid-connect/token
+    authorizationUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/auth
+    tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
     use-pkce-with-authorization-code-grant: true
 
 

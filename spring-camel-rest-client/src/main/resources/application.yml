@@ -41,15 +41,13 @@ springdoc:
     display-operation-id: true
     display-request-duration: true
     path: /swagger-ui.html
-    oauth:
-      client-secret: 73b6e1da-d0ef-474c-97ae-d1c4438a7535
-      realm: saber66
-      client-id: saber-client
-      app-name: saber-client
     urls:
       - url: ${service.api.base-path}${service.api.swagger-path}
         name: 'camel rest client'
-    oauth2-redirect-url: http://localhost:${server.port}${springdoc.swagger-ui.path}
+  oAuthFlow:
+    authorizationUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/auth
+    tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
+    use-pkce-with-authorization-code-grant: true
   api-docs:
     groups:
       enabled: true
@@ -92,14 +90,14 @@ hawtio:
   authenticationEnabled: false
 management:
   metrics:
-   distribution:
+    distribution:
       percentiles-histogram:
         "[http.server.requests]": true
       sla:
         "[http.server.requests]": 10ms, 100ms
       percentiles:
         "[http.server.requests]": 0.5, 0.75, 0.95, 0.98, 0.99, 0.999, 1.0
-   tags:
+    tags:
       application: ${spring.application.name}
   endpoints:
     web:

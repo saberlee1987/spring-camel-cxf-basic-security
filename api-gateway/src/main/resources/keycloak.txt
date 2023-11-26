@@ -1,0 +1,10 @@
+{
+  "realm": "saber66",
+  "auth-server-url": "http://localhost:7080/auth/",
+  "ssl-required": "external",
+  "resource": "saber-client",
+  "credentials": {
+    "secret": "73b6e1da-d0ef-474c-97ae-d1c4438a7535"
+  },
+  "confidential-port": 0
+}

@@ -4,7 +4,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.boot.web.embedded.netty.NettyServerCustomizer;
@@ -59,7 +59,7 @@ public class AppConfig  {
     }
 
     @Bean
-    public OpenApiCustomiser sortTagsAlphabetically() {
+    public OpenApiCustomizer sortTagsAlphabetically() {
         return openApi -> openApi
                 .setTags(openApi.getTags()
                 .stream()

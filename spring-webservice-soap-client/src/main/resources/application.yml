@@ -57,6 +57,10 @@ springdoc:
     display-operation-id: true
     persist-authorization: true
     operations-sorter: method
+  oAuthFlow:
+    authorizationUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/auth
+    tokenUrl: http://localhost:7080/auth/realms/saber66/protocol/openid-connect/token
+    use-pkce-with-authorization-code-grant: true
   api-docs:
     path: ${service.swagger.path}
 
