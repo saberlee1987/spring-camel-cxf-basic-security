@@ -34,8 +34,12 @@ public class ApiGatewaySecurityConfig {
                                 "/swagger-ui/**").permitAll()
                         .anyExchange().authenticated()
                 )
-                .oauth2ResourceServer(oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec.jwt(jwt ->
-                        jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+                .oauth2ResourceServer(oAuth2ResourceServerSpec -> {
+                    oAuth2ResourceServerSpec.jwt(jwt ->
+                            jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()));
+                })
+        ;
+
         return http.build();
     }
 
