@@ -27,7 +27,7 @@ public class ApiGatewaySecurityConfig {
                                 , "/services/webflux-rest-client-docs/v3/api-docs"
                                 , "/services/webflux-camel-soap-client-docs/v3/api-docs"
                                 , "/services/spring-rest-client-docs/v3/api-docs"
-                                , "/services/spring-rest-client-docs/v3/api-docs"
+                                , "/services/spring-webservice-soap-client-docs/v3/api-docs"
                                 , "/webjars/**",
                                 "/v3/api-docs/**"
                                 , "/swagger-ui**",

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.8</version>
+        <version>2.6.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.saber</groupId>
@@ -16,7 +16,7 @@
     <properties>
         <java.version>11</java.version>
         <camel.version>3.17.0</camel.version>
-        <openapi.version>1.6.9</openapi.version>
+        <openapi.version>1.6.3</openapi.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>

@@ -21,7 +21,7 @@ service:
   swagger:
     path: '/services/spring-webservice-soap-client-docs/v3/api-docs'
     title: 'spring-webservice-soap-client'
-    version: 'version1.0.1-1401/03/17 00:40'
+    version: 'version1.0.1-1402/10/19 10:00'
     description: 'spring-webservice-soap-client'
     host: 'localhost'
     api-gateway:
